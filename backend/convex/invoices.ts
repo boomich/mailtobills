@@ -1,15 +1,13 @@
-import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
+import { v } from "convex/values";
 
 export const listForUser = query({
   args: { userId: v.string() },
-  handler: async (ctx, args) => {
-    const invoices = await ctx.db
+  handler: async ({ db }, { userId }) => {
+    return db
       .query("invoices")
-      .filter((q: any) => q.eq(q.field("userId"), args.userId))
+      .filter((q) => q.eq(q.field("userId"), userId))
       .collect();
-
-    return invoices;
   },
 });
 
@@ -19,13 +17,22 @@ export const createInvoice = mutation({
     originalFilename: v.string(),
     createdAt: v.number(),
   },
-  handler: async (ctx, args) => {
-    const invoiceId = await ctx.db.insert("invoices", {
+  handler: async ({ db }, args) => {
+    return db.insert("invoices", {
       userId: args.userId,
       originalFilename: args.originalFilename,
       createdAt: args.createdAt,
     });
+  },
+});
 
-    return invoiceId;
+export const seedDemo = mutation({
+  args: {},
+  handler: async ({ db }) => {
+    return db.insert("invoices", {
+      userId: "demo-user",
+      originalFilename: "example-invoice.pdf",
+      createdAt: Date.now(),
+    });
   },
 });
