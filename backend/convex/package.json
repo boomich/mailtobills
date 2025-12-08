@@ -1,0 +1,17 @@
+{
+  "name": "@mailtobills/convex",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "convex dev",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "convex": "latest",
+    "typescript": "^5.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.12",
+    "eslint": "^8.57.0"
+  }
+}
