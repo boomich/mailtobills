@@ -15,13 +15,15 @@ export const createInvoice = mutation({
   args: {
     userId: v.string(),
     originalFilename: v.string(),
-    createdAt: v.number(),
+    fileUrl: v.string(),
+    fromEmail: v.optional(v.string()),
+    subject: v.optional(v.string()),
+    receivedAt: v.number(),
   },
   handler: async ({ db }, args) => {
     return db.insert("invoices", {
-      userId: args.userId,
-      originalFilename: args.originalFilename,
-      createdAt: args.createdAt,
+      ...args,
+      createdAt: Date.now(),
     });
   },
 });
@@ -32,6 +34,10 @@ export const seedDemo = mutation({
     return db.insert("invoices", {
       userId: "demo-user",
       originalFilename: "example-invoice.pdf",
+      fileUrl: "https://example.com/example-invoice.pdf",
+      fromEmail: "demo@example.com",
+      subject: "Seed invoice",
+      receivedAt: Date.now(),
       createdAt: Date.now(),
     });
   },
