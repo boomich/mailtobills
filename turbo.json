@@ -7,11 +7,7 @@
     },
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [
-        "apps/*/.next/**",
-        "backend/convex/.output/**",
-        "packages/*/dist/**"
-      ]
+      "outputs": [".next/**", "backend/convex/.output/**", "packages/*/dist/**"]
     },
     "lint": {
       "outputs": []
