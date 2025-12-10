@@ -5,6 +5,11 @@ import { api } from "../convexClient";
 import { Button } from "@mailtobills/ui";
 import { useMemo, useState } from "react";
 
+const convexHttpBase =
+  process.env.NEXT_PUBLIC_CONVEX_HTTP_URL ??
+  process.env.NEXT_PUBLIC_CONVEX_URL?.replace(".cloud", ".site") ??
+  "";
+
 type InvoiceFormState = {
   originalFilename: string;
   fileUrl: string;
@@ -97,18 +102,28 @@ export default function DashboardPage() {
                   {date.toLocaleString()}
                 </td>
                 <td className="px-4 py-2 text-xs">
-                  {inv.fileUrl ? (
-                    <a
-                      href={inv.fileUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-brand-600 hover:underline"
-                    >
-                      Download
-                    </a>
-                  ) : (
-                    <span className="text-slate-400">No file</span>
-                  )}
+                  {(() => {
+                    const href =
+                      inv.fileUrl ||
+                      (inv.fileStorageId && convexHttpBase
+                        ? `${convexHttpBase}/file?storageId=${inv.fileStorageId}`
+                        : null);
+
+                    if (!href) {
+                      return <span className="text-slate-400">No file</span>;
+                    }
+
+                    return (
+                      <a
+                        href={href}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-brand-600 hover:underline"
+                      >
+                        Download
+                      </a>
+                    );
+                  })()}
                 </td>
               </tr>
             );
