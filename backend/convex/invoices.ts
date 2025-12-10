@@ -15,7 +15,7 @@ export const createInvoice = mutation({
   args: {
     userId: v.string(),
     originalFilename: v.string(),
-    fileUrl: v.string(),
+    fileUrl: v.optional(v.string()),
     fromEmail: v.optional(v.string()),
     subject: v.optional(v.string()),
     receivedAt: v.number(),
@@ -23,6 +23,28 @@ export const createInvoice = mutation({
   handler: async ({ db }, args) => {
     return db.insert("invoices", {
       ...args,
+      createdAt: Date.now(),
+    });
+  },
+});
+
+export const createInvoiceFromStorage = mutation({
+  args: {
+    userId: v.string(),
+    storageId: v.id("_storage"),
+    originalFilename: v.string(),
+    fromEmail: v.optional(v.string()),
+    subject: v.optional(v.string()),
+    receivedAt: v.number(),
+  },
+  handler: async ({ db }, args) => {
+    return db.insert("invoices", {
+      userId: args.userId,
+      originalFilename: args.originalFilename,
+      fileStorageId: args.storageId,
+      fromEmail: args.fromEmail,
+      subject: args.subject,
+      receivedAt: args.receivedAt,
       createdAt: Date.now(),
     });
   },
