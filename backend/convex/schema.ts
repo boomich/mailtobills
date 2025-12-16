@@ -1,5 +1,6 @@
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
+import { authTables } from "@convex-dev/auth/server";
 
 const invoices = defineTable({
   userId: v.string(),
@@ -13,5 +14,6 @@ const invoices = defineTable({
 });
 
 export default defineSchema({
+  ...authTables,
   invoices,
 });
