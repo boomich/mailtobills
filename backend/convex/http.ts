@@ -1,7 +1,8 @@
 import { httpRouter } from "convex/server";
 import { httpAction } from "./_generated/server";
-import { api } from "./_generated/api";
+import { internal } from "./_generated/api";
 import type { Id } from "./_generated/dataModel";
+import { auth } from "./auth";
 
 const ingestInvoice = httpAction(async (ctx, request) => {
   const authHeader = request.headers.get("authorization") ?? "";
@@ -49,7 +50,7 @@ const ingestInvoice = httpAction(async (ctx, request) => {
       receivedAt: number;
     };
 
-    await ctx.runMutation(api.invoices.createInvoice, {
+    await ctx.runMutation(internal.invoices.ingestCreateInvoice, {
       userId,
       originalFilename,
       fileUrl,
@@ -82,7 +83,7 @@ const ingestInvoice = httpAction(async (ctx, request) => {
   const fileBlob = new Blob([fileBuffer]);
   const storageId = await ctx.storage.store(fileBlob);
 
-  await ctx.runMutation(api.invoices.createInvoiceFromStorage, {
+  await ctx.runMutation(internal.invoices.ingestCreateInvoiceFromStorage, {
     userId,
     originalFilename,
     storageId,
@@ -126,6 +127,8 @@ const downloadFile = httpAction(async (ctx, request) => {
 });
 
 const http = httpRouter();
+
+auth.addHttpRoutes(http);
 
 http.route({
   path: "/ingest",

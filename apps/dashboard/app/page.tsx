@@ -1,8 +1,10 @@
 "use client";
 
-import { useMutation, useQuery } from "convex/react";
+import { useConvexAuth, useMutation, useQuery } from "convex/react";
+import { useAuthActions } from "@convex-dev/auth/react";
 import { api } from "../convexClient";
 import { Button } from "@mailtobills/ui";
+import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 
 const convexHttpBase =
@@ -18,11 +20,15 @@ type InvoiceFormState = {
 };
 
 export default function DashboardPage() {
-  const invoices = useQuery(api.invoices.listForUser, { userId: "demo-user" });
+  const invoices = useQuery(api.invoices.listMine, {});
   const createInvoice = useMutation(api.invoices.createInvoice);
+  const { signOut } = useAuthActions();
+  const { isAuthenticated, isLoading } = useConvexAuth();
+  const router = useRouter();
 
   const [isCreating, setIsCreating] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isSigningOut, setIsSigningOut] = useState(false);
   const [form, setForm] = useState<InvoiceFormState>({
     originalFilename: "",
     fileUrl: "",
@@ -51,7 +57,6 @@ export default function DashboardPage() {
     try {
       setIsCreating(true);
       await createInvoice({
-        userId: "demo-user",
         originalFilename: trimmedName,
         fileUrl: trimmedUrl,
         fromEmail: form.fromEmail.trim() || undefined,
@@ -133,6 +138,18 @@ export default function DashboardPage() {
     </div>
   );
 
+  const handleSignOut = async () => {
+    try {
+      setIsSigningOut(true);
+      await signOut();
+      router.replace("/signin");
+    } catch (error) {
+      console.error("Failed to sign out", error);
+    } finally {
+      setIsSigningOut(false);
+    }
+  };
+
   return (
     <main className="min-h-screen flex flex-col items-center px-6 py-12 bg-slate-50">
       <div className="w-full max-w-4xl space-y-6">
@@ -143,7 +160,16 @@ export default function DashboardPage() {
               All emails forwarded to your MailToBills inbox.
             </p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center">
+            {isAuthenticated && !isLoading && (
+              <Button
+                variant="secondary"
+                onClick={handleSignOut}
+                disabled={isSigningOut}
+              >
+                {isSigningOut ? "Signing out..." : "Sign out"}
+              </Button>
+            )}
             <Button variant="secondary" disabled>
               Export CSV (soon)
             </Button>
