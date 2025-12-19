@@ -1,6 +1,6 @@
-import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 import { authTables } from "@convex-dev/auth/server";
+import { defineSchema, defineTable } from "convex/server";
 
 const invoices = defineTable({
   userId: v.id("users"),
@@ -11,7 +11,7 @@ const invoices = defineTable({
   subject: v.optional(v.string()),
   receivedAt: v.number(), // timestamp do email
   createdAt: v.number(), // timestamp de criação no sistema
-});
+}).index("userId", ["userId"]);
 
 const users = defineTable({
   name: v.optional(v.string()),
@@ -27,7 +27,7 @@ const users = defineTable({
   .index("email", ["email"])
   .index("phone", ["phone"])
   // custom indexes below
-  .index("by_forwardingEmail", ["forwardingEmails"]);
+  .index("forwardingEmails", ["forwardingEmails"]);
 
 export default defineSchema({
   ...authTables,
