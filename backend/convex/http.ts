@@ -1,8 +1,10 @@
 import { httpRouter } from "convex/server";
-import { httpAction } from "./_generated/server";
-import { internal } from "./_generated/api";
-import type { Id } from "./_generated/dataModel";
+
 import { auth } from "./auth";
+import { internal } from "./_generated/api";
+import { httpAction } from "./_generated/server";
+
+import type { Id } from "./_generated/dataModel";
 
 const ingestInvoice = httpAction(async (ctx, request) => {
   const authHeader = request.headers.get("authorization") ?? "";
@@ -34,24 +36,16 @@ const ingestInvoice = httpAction(async (ctx, request) => {
       return new Response("Invalid payload", { status: 400 });
     }
 
-    const {
-      userId,
-      originalFilename,
-      fileUrl,
-      fromEmail,
-      subject,
-      receivedAt,
-    } = body as {
-      userId: string;
-      originalFilename: string;
-      fileUrl: string;
-      fromEmail?: string;
-      subject?: string;
-      receivedAt: number;
-    };
+    const { originalFilename, fileUrl, fromEmail, subject, receivedAt } =
+      body as {
+        originalFilename: string;
+        fileUrl: string;
+        fromEmail?: string;
+        subject?: string;
+        receivedAt: number;
+      };
 
     await ctx.runMutation(internal.invoices.ingestCreateInvoice, {
-      userId,
       originalFilename,
       fileUrl,
       fromEmail,
@@ -65,16 +59,23 @@ const ingestInvoice = httpAction(async (ctx, request) => {
   // 2) Caminho binário – para o n8n com attachment_0 + Convex storage
   const url = new URL(request.url);
 
-  const userId = url.searchParams.get("userId");
-  const originalFilename =
-    url.searchParams.get("originalFilename") ?? "invoice.pdf";
   const fromEmail = url.searchParams.get("fromEmail") ?? undefined;
   const subject = url.searchParams.get("subject") ?? undefined;
   const receivedAtParam = url.searchParams.get("receivedAt");
   const receivedAt = receivedAtParam ? Number(receivedAtParam) : Date.now();
+  const originalFilename =
+    url.searchParams.get("originalFilename") ?? "invoice.pdf";
 
-  if (!userId) {
-    return new Response("Missing userId", { status: 400 });
+  if (!fromEmail) {
+    return new Response("Missing forwarding email", { status: 400 });
+  }
+
+  const user = await ctx.runQuery(internal.users.getUserByForwardingEmail, {
+    fromEmail,
+  });
+
+  if (!user) {
+    return new Response("Unknown sender", { status: 404 });
   }
 
   // Aqui a mágica do Convex storage
@@ -84,7 +85,7 @@ const ingestInvoice = httpAction(async (ctx, request) => {
   const storageId = await ctx.storage.store(fileBlob);
 
   await ctx.runMutation(internal.invoices.ingestCreateInvoiceFromStorage, {
-    userId,
+    userId: user._id,
     originalFilename,
     storageId,
     fromEmail,
