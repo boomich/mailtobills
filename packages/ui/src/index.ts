@@ -15,3 +15,11 @@ export type { InputProps } from "./components/Input";
 export { Label } from "./components/Label";
 export type { LabelProps } from "./components/Label";
 export { cn } from "./lib/cn";
+export {
+  CloudIcon,
+  GithubIcon,
+  GoogleIcon,
+  InboxIcon,
+  ShieldIcon,
+  SparkleIcon,
+} from "./icons";
