@@ -1,11 +1,11 @@
-import type { Provider } from "@auth/core/providers";
+import type { AuthProviderConfig } from "@convex-dev/auth/server";
 import GitHub from "@auth/core/providers/github";
 import Google from "@auth/core/providers/google";
 import Resend from "@auth/core/providers/resend";
 import { Password } from "@convex-dev/auth/providers/Password";
 import { convexAuth } from "@convex-dev/auth/server";
 
-const providers: Provider[] = [Password];
+const providers: AuthProviderConfig[] = [Password];
 
 if (process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET) {
   providers.push(

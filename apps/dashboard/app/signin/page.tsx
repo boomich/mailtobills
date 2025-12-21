@@ -17,6 +17,7 @@ import { useEffect, useMemo, useState } from "react";
 
 type Mode = "signIn" | "signUp";
 type OAuthProvider = "github" | "google";
+type PendingAction = OAuthProvider | "password" | "magic" | null;
 
 const highlights = [
   {
@@ -49,9 +50,7 @@ export default function SignInPage() {
   const [email, setEmail] = useState("");
   const [magicEmail, setMagicEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isMagicSubmitting, setIsMagicSubmitting] = useState(false);
-  const [oauthLoading, setOauthLoading] = useState<OAuthProvider | null>(null);
+  const [pendingAction, setPendingAction] = useState<PendingAction>(null);
   const [feedback, setFeedback] = useState<
     | {
         type: "error" | "success";
@@ -88,7 +87,7 @@ export default function SignInPage() {
     }
 
     try {
-      setIsSubmitting(true);
+      setPendingAction("password");
       const result = await signIn("password", {
         flow: mode,
         email: trimmedEmail,
@@ -107,7 +106,7 @@ export default function SignInPage() {
         message: error instanceof Error ? error.message : "Failed to sign in.",
       });
     } finally {
-      setIsSubmitting(false);
+      setPendingAction(null);
     }
   };
 
@@ -125,7 +124,7 @@ export default function SignInPage() {
     }
 
     try {
-      setIsMagicSubmitting(true);
+      setPendingAction("magic");
       const result = await signIn("resend", { email: trimmedEmail });
 
       if (result.redirect) {
@@ -146,18 +145,21 @@ export default function SignInPage() {
             : "We couldn't send the magic link. Please try again.",
       });
     } finally {
-      setIsMagicSubmitting(false);
+      setPendingAction(null);
     }
   };
 
   const handleOAuth = async (provider: OAuthProvider) => {
     setFeedback(null);
     try {
-      setOauthLoading(provider);
+      setPendingAction(provider);
       const result = await signIn(provider);
       if (result.redirect) {
         window.location.href = result.redirect.toString();
+        return;
       }
+
+      router.replace("/");
     } catch (error) {
       setFeedback({
         type: "error",
@@ -167,9 +169,11 @@ export default function SignInPage() {
             : `Unable to continue with ${provider === "google" ? "Google" : "GitHub"}.`,
       });
     } finally {
-      setOauthLoading(null);
+      setPendingAction(null);
     }
   };
+
+  const isBusy = isLoading || pendingAction !== null;
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-100">
@@ -269,20 +273,20 @@ export default function SignInPage() {
                   variant="secondary"
                   className="w-full justify-center"
                   onClick={() => handleOAuth("google")}
-                  disabled={isLoading || oauthLoading !== null}
+                  disabled={isBusy}
                 >
                   <span className="text-lg">🟢</span>
-                  {oauthLoading === "google" ? "Connecting..." : "Google"}
+                  {pendingAction === "google" ? "Connecting..." : "Google"}
                 </Button>
                 <Button
                   type="button"
                   variant="secondary"
                   className="w-full justify-center"
                   onClick={() => handleOAuth("github")}
-                  disabled={isLoading || oauthLoading !== null}
+                  disabled={isBusy}
                 >
                   <span className="text-lg">💻</span>
-                  {oauthLoading === "github" ? "Connecting..." : "GitHub"}
+                  {pendingAction === "github" ? "Connecting..." : "GitHub"}
                 </Button>
               </div>
             </div>
@@ -308,9 +312,11 @@ export default function SignInPage() {
                 <Button
                   type="submit"
                   className="w-full"
-                  disabled={isMagicSubmitting || isLoading}
+                  disabled={isBusy}
                 >
-                  {isMagicSubmitting ? "Sending magic link..." : "Send me a magic link"}
+                  {pendingAction === "magic"
+                    ? "Sending magic link..."
+                    : "Send me a magic link"}
                 </Button>
               </form>
             </div>
@@ -352,9 +358,9 @@ export default function SignInPage() {
               <Button
                 type="submit"
                 className="w-full"
-                disabled={isSubmitting || isLoading}
+                disabled={isBusy}
               >
-                {isSubmitting
+                {pendingAction === "password"
                   ? "Please wait..."
                   : mode === "signIn"
                   ? "Sign in"
