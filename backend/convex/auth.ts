@@ -1,8 +1,9 @@
+import { Password } from "@convex-dev/auth/providers/Password";
+import { convexAuth, type AuthProviderConfig } from "@convex-dev/auth/server";
+
 import GitHub from "@auth/core/providers/github";
 import Google from "@auth/core/providers/google";
 import Resend from "@auth/core/providers/resend";
-import { convexAuth, type AuthProviderConfig } from "@convex-dev/auth/server";
-import { Password } from "@convex-dev/auth/providers/Password";
 
 const providers: (AuthProviderConfig | undefined)[] = [
   Password,

@@ -1,6 +1,12 @@
 export { Button } from "./components/Button";
 export type { ButtonProps, ButtonVariant } from "./components/Button";
-export { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./components/Card";
+export {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "./components/Card";
 export type {
   CardContentProps,
   CardDescriptionProps,
@@ -16,6 +22,7 @@ export { Label } from "./components/Label";
 export type { LabelProps } from "./components/Label";
 export { cn } from "./lib/cn";
 export {
+  AppleLogo,
   CloudIcon,
   GithubIcon,
   GoogleIcon,
