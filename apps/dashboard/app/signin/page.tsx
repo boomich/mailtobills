@@ -1,26 +1,28 @@
 "use client";
 
-import { useAuthActions } from "@convex-dev/auth/react";
+import { useEffect, useMemo, useState } from "react";
+
 import { useConvexAuth } from "convex/react";
+import { useAuthActions } from "@convex-dev/auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
+
 import {
-  Button,
+  cn,
   Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  CloudIcon,
-  GithubIcon,
-  GoogleIcon,
-  InboxIcon,
   Input,
   Label,
+  Button,
+  CardTitle,
+  CloudIcon,
+  InboxIcon,
+  CardHeader,
+  GithubIcon,
+  GoogleIcon,
   ShieldIcon,
+  CardContent,
   SparkleIcon,
-  cn,
+  CardDescription,
 } from "@mailtobills/ui";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
 
 type Mode = "signIn" | "signUp";
 type AuthMethod = "magic" | "password";
