@@ -1,5 +1,7 @@
 export { Button } from "./components/Button";
 export type { ButtonProps, ButtonVariant } from "./components/Button";
+export { Badge } from "./components/Badge";
+export type { BadgeProps, BadgeVariant } from "./components/Badge";
 export {
   Card,
   CardContent,
@@ -16,10 +18,28 @@ export type {
 } from "./components/Card";
 export { EmptyState } from "./components/EmptyState";
 export type { EmptyStateProps } from "./components/EmptyState";
+export { IconButton } from "./components/IconButton";
+export type { IconButtonProps } from "./components/IconButton";
 export { Input } from "./components/Input";
 export type { InputProps } from "./components/Input";
 export { Label } from "./components/Label";
 export type { LabelProps } from "./components/Label";
+export {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "./components/Table";
+export type {
+  TableBodyProps,
+  TableCellProps,
+  TableHeadProps,
+  TableHeaderProps,
+  TableProps,
+  TableRowProps,
+} from "./components/Table";
 export { cn } from "./lib/cn";
 export {
   AppleLogo,
