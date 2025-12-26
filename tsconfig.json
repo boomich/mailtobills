@@ -17,7 +17,9 @@
     "paths": {
       "@ui/*": ["packages/ui/*"],
       "@types/*": ["packages/types/*"],
-      "@config/*": ["packages/config/*"]
+      "@config/*": ["packages/config/*"],
+      "@mailtobills/convex/*": ["backend/convex/*"],
+      "@mailtobills/backend/*": ["backend/convex/*"]
     }
   },
   "include": ["apps/**/*", "backend/**/*", "packages/**/*"]
