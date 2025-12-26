@@ -2,6 +2,7 @@
 
 import { DashboardSummaryBar } from "./DashboardSummaryBar";
 import { InvoiceTable } from "./InvoiceTable";
+import { OnboardingEmptyState } from "./OnboardingEmptyState";
 import { useInvoices } from "../hooks/useInvoices";
 
 export type DashboardDataSectionProps = {
@@ -13,7 +14,16 @@ export const DashboardDataSection = ({
   monthValue,
   monthLabel,
 }: DashboardDataSectionProps) => {
-  const { invoices, summary, isLoading } = useInvoices(monthValue);
+  const { invoices, summary, isLoading, totalCount } = useInvoices(monthValue);
+
+  // Show onboarding state only when user has 0 invoices total (not just for this month)
+  if (!isLoading && totalCount === 0) {
+    return (
+      <section>
+        <OnboardingEmptyState />
+      </section>
+    );
+  }
 
   const summaryItems = [
     {
@@ -39,7 +49,11 @@ export const DashboardDataSection = ({
   return (
     <section className="space-y-4">
       <DashboardSummaryBar items={summaryItems} />
-      <InvoiceTable invoices={invoices} monthLabel={monthLabel} isLoading={isLoading} />
+      <InvoiceTable
+        invoices={invoices}
+        monthLabel={monthLabel}
+        isLoading={isLoading}
+      />
     </section>
   );
 };

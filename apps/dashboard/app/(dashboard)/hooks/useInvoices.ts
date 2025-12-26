@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { useQuery } from "convex/react";
-import { api } from "../../../convexClient";
+import { api } from "../../../lib/convexClient";
 import type { InvoiceRow } from "@mailtobills/types";
 import { getMonthInfo, isInMonthRange } from "../lib/months";
 
@@ -22,6 +22,7 @@ export type UseInvoicesResult = {
   invoices: InvoiceRow[];
   summary: InvoiceSummary;
   isLoading: boolean;
+  totalCount: number;
 };
 
 export const useInvoices = (month: string): UseInvoicesResult => {
@@ -35,7 +36,9 @@ export const useInvoices = (month: string): UseInvoicesResult => {
       .filter((invoice) =>
         isInMonthRange(invoice.receivedAt ?? invoice.createdAt, monthInfo)
       )
-      .sort((a, b) => (b.receivedAt ?? b.createdAt) - (a.receivedAt ?? a.createdAt))
+      .sort(
+        (a, b) => (b.receivedAt ?? b.createdAt) - (a.receivedAt ?? a.createdAt)
+      )
       .map<InvoiceRow>((invoice) => {
         const fileUrl =
           invoice.fileUrl ||
@@ -65,9 +68,12 @@ export const useInvoices = (month: string): UseInvoicesResult => {
     };
   }, [invoices]);
 
+  const totalCount = data?.length ?? 0;
+
   return {
     invoices,
     summary,
     isLoading: data === undefined,
+    totalCount,
   };
 };

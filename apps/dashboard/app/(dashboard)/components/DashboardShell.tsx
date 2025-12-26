@@ -1,5 +1,8 @@
 import type { ReactNode } from "react";
+
 import Link from "next/link";
+import Image from "next/image";
+
 import { Button, cn } from "@mailtobills/ui";
 
 export type DashboardShellProps = {
@@ -31,18 +34,20 @@ const NavLink = ({
 );
 
 export const DashboardShell = ({
-  monthNavigator,
   children,
   className,
+  monthNavigator,
 }: DashboardShellProps) => (
   <div className={cn("min-h-screen bg-slate-100", className)}>
     <div className="flex min-h-screen">
       <aside className="hidden w-60 flex-col border-r border-slate-200 bg-slate-50 px-4 py-6 md:flex">
         <div className="mb-8 flex items-center gap-2 text-lg font-semibold text-slate-900">
-          <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-brand-600 text-white">
-            M
-          </span>
-          MailToBills
+          <Image
+            src="/images/mailtobills-logo.png"
+            alt="MailToBills"
+            width={200}
+            height={90}
+          />
         </div>
         <nav className="flex flex-col gap-2">
           <NavLink href="/" label="Dashboard" active />
@@ -54,7 +59,9 @@ export const DashboardShell = ({
       <div className="flex flex-1 flex-col">
         <header className="flex items-center justify-between border-b border-slate-200 bg-white px-6 py-4">
           <div className="flex items-center gap-6">
-            <div className="text-lg font-semibold text-slate-900">Dashboard</div>
+            <div className="text-lg font-semibold text-slate-900">
+              Dashboard
+            </div>
             <nav className="hidden items-center gap-4 text-sm text-slate-500 md:flex">
               <Link href="/reports" className="hover:text-slate-900">
                 Reports
