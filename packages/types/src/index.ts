@@ -1,1 +1,1 @@
-export type { Invoice } from "./invoice";
+export type { Invoice, InvoiceRow } from "./invoice";
