@@ -20,3 +20,9 @@ pnpm dev
 ```
 
 `pnpm dev` runs the Turborepo pipeline; you can also run app-specific scripts inside each package.
+
+## Auth env (OAuth)
+
+For `@convex-dev/auth` OAuth redirects, the Convex backend must know the dashboard base URL:
+
+- Set `SITE_URL` (and/or `CONVEX_SITE_URL`) to the dashboard origin, e.g. `http://localhost:3001`.
