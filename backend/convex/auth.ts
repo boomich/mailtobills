@@ -5,6 +5,8 @@ import Resend from "@auth/core/providers/resend";
 import { Password } from "@convex-dev/auth/providers/Password";
 import { convexAuth } from "@convex-dev/auth/server";
 
+process.env.SITE_URL ??= process.env.CONVEX_SITE_URL;
+
 const providers: AuthProviderConfig[] = [Password];
 const magicLinkAuthEnabled = process.env.FEATURE_MAGIC_LINK_AUTH === "true";
 
