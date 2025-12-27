@@ -20,6 +20,12 @@ importers:
       '@convex-dev/auth':
         specifier: ^0.0.90
         version: 0.0.90(@auth/core@0.37.4)(convex@1.30.0(react@18.2.0))(react@18.2.0)
+      '@mailtobills/convex':
+        specifier: workspace:*
+        version: link:../../backend/convex
+      '@mailtobills/types':
+        specifier: workspace:*
+        version: link:../../packages/types
       '@mailtobills/ui':
         specifier: workspace:*
         version: link:../../packages/ui

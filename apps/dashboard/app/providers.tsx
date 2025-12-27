@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { convexClient, isConvexConfigured } from "../convexClient";
+import { convexClient, isConvexConfigured } from "../lib/convexClient";
 import { ConvexAuthNextjsProvider } from "@convex-dev/auth/nextjs";
 
 const Providers = ({ children }: { children: ReactNode }) => {

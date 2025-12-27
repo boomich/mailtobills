@@ -1,7 +1,10 @@
 import "./globals.css";
+
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+
 import Providers from "./providers";
+
 import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
 
 export const metadata: Metadata = {
@@ -11,7 +14,7 @@ export const metadata: Metadata = {
 
 const RootLayout = async ({ children }: { children: ReactNode }) => (
   <ConvexAuthNextjsServerProvider>
-    <html lang="en">
+    <html lang="en" className="overscroll-none">
       <body>
         <Providers>{children}</Providers>
       </body>
