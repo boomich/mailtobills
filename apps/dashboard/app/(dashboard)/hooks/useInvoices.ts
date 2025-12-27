@@ -51,7 +51,7 @@ export const useInvoices = (month: string): UseInvoicesResult => {
           originalFilename: invoice.originalFilename,
           fromEmail: invoice.fromEmail ?? undefined,
           subject: invoice.subject ?? undefined,
-          receivedAt: invoice.receivedAt,
+          receivedAt: invoice.receivedAt ?? invoice.createdAt,
           createdAt: invoice.createdAt,
           fileUrl,
         };

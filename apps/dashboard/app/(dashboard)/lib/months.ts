@@ -7,7 +7,8 @@ export type MonthInfo = {
   next: string;
 };
 
-const MONTH_FORMAT = /^\d{4}-\d{2}$/;
+// Validates YYYY-MM format where month is 01-12
+const MONTH_FORMAT = /^\d{4}-(0[1-9]|1[0-2])$/;
 
 const toMonthValue = (date: Date) => {
   const year = date.getFullYear();
@@ -30,7 +31,8 @@ const buildMonthRange = (value: string) => {
 
 export const getMonthInfo = (monthParam?: string): MonthInfo => {
   const fallback = toMonthValue(new Date());
-  const value = monthParam && MONTH_FORMAT.test(monthParam) ? monthParam : fallback;
+  const value =
+    monthParam && MONTH_FORMAT.test(monthParam) ? monthParam : fallback;
   const { start, end } = buildMonthRange(value);
 
   return {
