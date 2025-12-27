@@ -8,10 +8,10 @@ import Image from "next/image";
 import {
   cn,
   Button,
+  Tooltip,
   IconButton,
   ChevronLeftIcon,
   ChevronRightIcon,
-  Tooltip,
 } from "@mailtobills/ui";
 
 export type DashboardShellProps = {
@@ -53,7 +53,7 @@ const NavLink = ({
 
   if (comingSoon) {
     return (
-      <Tooltip content="Coming soon" className="w-full">
+      <Tooltip position="right" content="Coming soon" className="w-full">
         {linkContent}
       </Tooltip>
     );
@@ -127,7 +127,7 @@ export const DashboardShell = ({
                 Dashboard
               </div>
               <nav className="hidden items-center gap-4 text-sm text-slate-500 md:flex">
-                <Tooltip content="Coming soon">
+                <Tooltip position="bottom" content="Coming soon">
                   <Link
                     href="#"
                     onClick={(e) => e.preventDefault()}
