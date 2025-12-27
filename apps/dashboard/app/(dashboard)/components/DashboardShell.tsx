@@ -85,7 +85,7 @@ export const DashboardShell = ({
             )}
           >
             {isSidebarOpen && (
-              <div className="flex items-center gap-2 text-lg font-semibold text-slate-900">
+              <div className="flex items-center mx-auto gap-2 text-lg font-semibold text-slate-900">
                 <Image
                   src="/images/mailtobills-logo.png"
                   alt="MailToBills"
