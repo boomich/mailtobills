@@ -11,6 +11,7 @@ import {
   IconButton,
   ChevronLeftIcon,
   ChevronRightIcon,
+  Tooltip,
 } from "@mailtobills/ui";
 
 export type DashboardShellProps = {
@@ -23,23 +24,43 @@ const NavLink = ({
   href,
   label,
   active,
+  comingSoon,
 }: {
   href: string;
   label: string;
   active?: boolean;
-}) => (
-  <Link
-    href={href}
-    className={cn(
-      "rounded-md px-3 py-2 text-sm font-medium transition",
-      active
-        ? "bg-brand-600 text-white"
-        : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-    )}
-  >
-    {label}
-  </Link>
-);
+  comingSoon?: boolean;
+}) => {
+  const linkContent = (
+    <Link
+      href={comingSoon ? "#" : href}
+      onClick={(e) => {
+        if (comingSoon) {
+          e.preventDefault();
+        }
+      }}
+      className={cn(
+        "rounded-md px-3 py-2 text-sm font-medium transition",
+        active
+          ? "bg-brand-600 text-white"
+          : "text-slate-600 hover:bg-slate-100 hover:text-slate-900",
+        comingSoon && "cursor-not-allowed opacity-75"
+      )}
+    >
+      {label}
+    </Link>
+  );
+
+  if (comingSoon) {
+    return (
+      <Tooltip content="Coming soon" className="w-full">
+        {linkContent}
+      </Tooltip>
+    );
+  }
+
+  return linkContent;
+};
 
 export const DashboardShell = ({
   children,
@@ -81,7 +102,7 @@ export const DashboardShell = ({
             )}
           >
             <NavLink href="/" label="Dashboard" active />
-            <NavLink href="/reports" label="Reports" />
+            <NavLink href="/reports" label="Reports" comingSoon />
             <NavLink href="/settings" label="Settings" />
           </nav>
           <div
@@ -106,9 +127,15 @@ export const DashboardShell = ({
                 Dashboard
               </div>
               <nav className="hidden items-center gap-4 text-sm text-slate-500 md:flex">
-                <Link href="/reports" className="hover:text-slate-900">
-                  Reports
-                </Link>
+                <Tooltip content="Coming soon">
+                  <Link
+                    href="#"
+                    onClick={(e) => e.preventDefault()}
+                    className="hover:text-slate-900 cursor-not-allowed opacity-75"
+                  >
+                    Reports
+                  </Link>
+                </Tooltip>
                 <Link href="/settings" className="hover:text-slate-900">
                   Settings
                 </Link>
