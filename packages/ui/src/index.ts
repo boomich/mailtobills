@@ -43,10 +43,14 @@ export type {
 export { cn } from "./lib/cn";
 export {
   AppleLogo,
+  ChevronLeftIcon,
+  ChevronRightIcon,
   CloudIcon,
   GithubIcon,
   GoogleIcon,
   InboxIcon,
+  MenuIcon,
   ShieldIcon,
   SparkleIcon,
+  XIcon,
 } from "./icons";
