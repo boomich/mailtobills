@@ -99,3 +99,66 @@ export const SparkleIcon = () => (
     <path d="M11 1.5 9.5 5 6 6.5 9.5 8 11 11.5 12.5 8 16 6.5 12.5 5Zm8 7-1 2.5L15.5 12l2.5 1 1 2.5 1-2.5 2.5-1-2.5-1ZM6.5 13 5 16.5 1.5 18 5 19.5 6.5 23 8 19.5 11.5 18 8 16.5Z" />
   </svg>
 );
+
+export const MenuIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    className="h-5 w-5"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <line x1="4" y1="12" x2="20" y2="12" />
+    <line x1="4" y1="6" x2="20" y2="6" />
+    <line x1="4" y1="18" x2="20" y2="18" />
+  </svg>
+);
+
+export const XIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    className="h-5 w-5"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <line x1="18" y1="6" x2="6" y2="18" />
+    <line x1="6" y1="6" x2="18" y2="18" />
+  </svg>
+);
+
+export const ChevronLeftIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    className="h-5 w-5"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <polyline points="15 18 9 12 15 6" />
+  </svg>
+);
+
+export const ChevronRightIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    className="h-5 w-5"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <polyline points="9 18 15 12 9 6" />
+  </svg>
+);

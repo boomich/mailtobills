@@ -8,3 +8,13 @@ export interface Invoice {
   receivedAt: number;
   createdAt: number;
 }
+
+export type InvoiceRow = {
+  id: string;
+  originalFilename: string;
+  fromEmail?: string;
+  subject?: string;
+  receivedAt: number;
+  createdAt: number;
+  fileUrl?: string;
+};
