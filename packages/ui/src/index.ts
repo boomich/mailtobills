@@ -24,6 +24,8 @@ export { Input } from "./components/Input";
 export type { InputProps } from "./components/Input";
 export { Label } from "./components/Label";
 export type { LabelProps } from "./components/Label";
+export { CopyField } from "./components/CopyField";
+export { Section } from "./components/Section";
 export { Tooltip } from "./components/Tooltip";
 export type { TooltipProps } from "./components/Tooltip";
 export {
