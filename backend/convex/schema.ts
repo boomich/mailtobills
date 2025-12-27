@@ -23,6 +23,18 @@ const users = defineTable({
   isAnonymous: v.optional(v.boolean()),
   // custom fields below
   forwardingEmails: v.optional(v.array(v.string())),
+  settings: v.optional(
+    v.object({
+      inboxAlias: v.optional(v.string()),
+      emailForwardingEnabled: v.optional(v.boolean()),
+      notifyOnNewInvoice: v.optional(v.boolean()),
+      weeklyDigest: v.optional(v.boolean()),
+      timezone: v.optional(v.string()),
+      exportFormat: v.optional(
+        v.union(v.literal("zip"), v.literal("pdf"), v.literal("csv"))
+      ),
+    })
+  ),
 })
   .index("email", ["email"])
   .index("phone", ["phone"])

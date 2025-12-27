@@ -4,10 +4,10 @@ import { useState, type ReactNode } from "react";
 
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 import {
   cn,
-  Button,
   Tooltip,
   IconButton,
   ChevronLeftIcon,
@@ -17,7 +17,9 @@ import {
 export type DashboardShellProps = {
   className?: string;
   children: ReactNode;
-  monthNavigator: ReactNode;
+  monthNavigator?: ReactNode;
+  headerTitle?: string;
+  headerAction?: ReactNode;
 };
 
 const NavLink = ({
@@ -66,8 +68,13 @@ export const DashboardShell = ({
   children,
   className,
   monthNavigator,
+  headerTitle = "Dashboard",
+  headerAction,
 }: DashboardShellProps) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const pathname = usePathname();
+  const isSettings = pathname.startsWith("/settings");
+  const isDashboard = pathname === "/" || pathname.startsWith("/invoices");
 
   return (
     <div className={cn("min-h-screen bg-slate-100", className)}>
@@ -101,9 +108,9 @@ export const DashboardShell = ({
               !isSidebarOpen && "opacity-0 pointer-events-none"
             )}
           >
-            <NavLink href="/" label="Dashboard" active />
+            <NavLink href="/" label="Dashboard" active={isDashboard} />
             <NavLink href="/reports" label="Reports" comingSoon />
-            <NavLink href="/settings" label="Settings" />
+            <NavLink href="/settings" label="Settings" active={isSettings} />
           </nav>
           <div
             className={cn(
@@ -124,7 +131,7 @@ export const DashboardShell = ({
           <header className="flex items-center justify-between border-b border-slate-200 bg-white px-6 py-4">
             <div className="flex items-center gap-6">
               <div className="text-lg font-semibold text-slate-900">
-                Dashboard
+                {headerTitle}
               </div>
               <nav className="hidden items-center gap-4 text-sm text-slate-500 md:flex">
                 <Tooltip position="bottom" content="Coming soon">
@@ -136,12 +143,18 @@ export const DashboardShell = ({
                     Reports
                   </Link>
                 </Tooltip>
-                <Link href="/settings" className="hover:text-slate-900">
+                <Link
+                  href="/settings"
+                  className={cn(
+                    "hover:text-slate-900",
+                    isSettings && "text-slate-900 font-medium"
+                  )}
+                >
                   Settings
                 </Link>
               </nav>
             </div>
-            <Button>Export</Button>
+            {headerAction}
           </header>
 
           <main className="flex-1 space-y-6 px-6 py-6">

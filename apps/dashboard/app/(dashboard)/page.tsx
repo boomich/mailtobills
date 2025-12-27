@@ -1,3 +1,4 @@
+import { Button } from "@mailtobills/ui";
 import { DashboardShell } from "./components/DashboardShell";
 import { MonthNavigator } from "./components/MonthNavigator";
 import { DashboardDataSection } from "./components/DashboardDataSection";
@@ -12,6 +13,7 @@ export default function DashboardPage({
 
   return (
     <DashboardShell
+      headerAction={<Button>Export</Button>}
       monthNavigator={
         <MonthNavigator
           label={monthInfo.label}
