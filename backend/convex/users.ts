@@ -17,20 +17,28 @@ export const viewer = query({
 export const getUserByForwardingEmail = internalQuery({
   args: { fromEmail: v.string() },
   handler: async (ctx, args) => {
-    // As "contains" is not available, use a filter and check with .includes() in JS after query
-    // This will fetch users which have at least some forwardingEmails defined,
-    // and then filter on server to avoid scanning all docs
-    // Note: We still use .filter to minimize unneeded reads
-    return ctx.db
-      .query("users")
-      .filter((q) => q.field("forwardingEmails") != undefined)
-      .collect()
-      .then((users) =>
-        users.find(
-          (user) =>
-            Array.isArray(user.forwardingEmails) &&
-            user.forwardingEmails.includes(args.fromEmail)
-        )
-      );
+    // First, try to find by primary email using the index
+    if (args.fromEmail) {
+      const byPrimaryEmail = await ctx.db
+        .query("users")
+        .withIndex("email", (q) => q.eq("email", args.fromEmail))
+        .first();
+
+      if (byPrimaryEmail) {
+        return byPrimaryEmail;
+      }
+    }
+
+    // If not found by primary email, check forwardingEmails arrays
+    // Note: We need to query all users since we can't efficiently index array membership
+    const allUsers = await ctx.db.query("users").collect();
+
+    const byForwarding = allUsers.find(
+      (user) =>
+        Array.isArray(user.forwardingEmails) &&
+        user.forwardingEmails.includes(args.fromEmail)
+    );
+
+    return byForwarding ?? null;
   },
 });
