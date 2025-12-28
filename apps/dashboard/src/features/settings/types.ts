@@ -17,10 +17,5 @@ export type UserSettings = {
   name?: string;
   email?: string;
   image?: string;
-  inboxAlias?: string; // if we use alias approach
-  emailForwardingEnabled?: boolean;
-  notifyOnNewInvoice?: boolean;
-  weeklyDigest?: boolean;
-  timezone?: string;
-  exportFormat?: "zip" | "pdf" | "csv";
+  forwardingEmails?: string[];
 };

@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState, type ReactNode } from "react";
 
 import Link from "next/link";
@@ -70,6 +71,8 @@ export const DashboardShell = ({
   monthNavigator,
 }: DashboardShellProps) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+  const router = useRouter();
   const pathname = usePathname();
 
   return (
@@ -139,19 +142,29 @@ export const DashboardShell = ({
                     Reports
                   </Link>
                 </Tooltip>
-                <Link href="/settings" className={cn("hover:text-slate-900", pathname === "/settings" && "text-slate-900 font-medium")}>
+                <Link
+                  href="/settings"
+                  className={cn(
+                    "hover:text-slate-900",
+                    pathname === "/settings" && "text-slate-900 font-medium"
+                  )}
+                >
                   Settings
                 </Link>
               </nav>
             </div>
             {/* Action buttons could be dynamic based on page, but for now generic export or hidden on settings */}
             {pathname !== "/settings" && <Button>Export</Button>}
-             {/* For settings we might want a Logout here as per mock "Settings | Logout" */}
-             {pathname === "/settings" && (
-                 <div className="text-sm text-slate-500">
-                     <span className="font-medium text-slate-900">Settings</span> | <Link href="/signout" className="hover:text-slate-900">Logout</Link>
-                 </div>
-             )}
+            {/* For settings we might want a Logout here as per mock "Settings | Logout" */}
+            {pathname === "/settings" && (
+              <Button
+                variant="secondary"
+                className="pt-1.75 pb-1.75"
+                onClick={() => router.push("/")}
+              >
+                Back to Dashboard
+              </Button>
+            )}
           </header>
 
           <main className="flex-1 space-y-6 px-6 py-6">

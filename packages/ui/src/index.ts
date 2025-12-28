@@ -25,6 +25,19 @@ export type { InputProps } from "./components/Input";
 export { Label } from "./components/Label";
 export type { LabelProps } from "./components/Label";
 export { CopyField } from "./components/CopyField";
+export {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemFooter,
+  ItemGroup,
+  ItemHeader,
+  ItemMedia,
+  ItemSeparator,
+  ItemTitle,
+} from "./components/Item";
+export type { ItemProps, ItemMediaProps } from "./components/Item";
 export { Section } from "./components/Section";
 export { Tooltip } from "./components/Tooltip";
 export type { TooltipProps } from "./components/Tooltip";
