@@ -1,5 +1,7 @@
 "use client";
 
+import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState, type ReactNode } from "react";
 
 import Link from "next/link";
@@ -17,20 +19,21 @@ import {
 export type DashboardShellProps = {
   className?: string;
   children: ReactNode;
-  monthNavigator: ReactNode;
+  monthNavigator?: ReactNode;
 };
 
 const NavLink = ({
   href,
   label,
-  active,
   comingSoon,
 }: {
   href: string;
   label: string;
-  active?: boolean;
   comingSoon?: boolean;
 }) => {
+  const pathname = usePathname();
+  const isActive = pathname === href;
+
   const linkContent = (
     <Link
       href={comingSoon ? "#" : href}
@@ -41,7 +44,7 @@ const NavLink = ({
       }}
       className={cn(
         "rounded-md px-3 py-2 text-sm font-medium transition",
-        active
+        isActive
           ? "bg-brand-600 text-white"
           : "text-slate-600 hover:bg-slate-100 hover:text-slate-900",
         comingSoon && "cursor-not-allowed opacity-75"
@@ -68,6 +71,9 @@ export const DashboardShell = ({
   monthNavigator,
 }: DashboardShellProps) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+  const router = useRouter();
+  const pathname = usePathname();
 
   return (
     <div className={cn("min-h-screen bg-slate-100", className)}>
@@ -101,7 +107,7 @@ export const DashboardShell = ({
               !isSidebarOpen && "opacity-0 pointer-events-none"
             )}
           >
-            <NavLink href="/" label="Dashboard" active />
+            <NavLink href="/" label="Dashboard" />
             <NavLink href="/reports" label="Reports" comingSoon />
             <NavLink href="/settings" label="Settings" />
           </nav>
@@ -124,7 +130,7 @@ export const DashboardShell = ({
           <header className="flex items-center justify-between border-b border-slate-200 bg-white px-6 py-4">
             <div className="flex items-center gap-6">
               <div className="text-lg font-semibold text-slate-900">
-                Dashboard
+                {pathname === "/settings" ? "Settings" : "Dashboard"}
               </div>
               <nav className="hidden items-center gap-4 text-sm text-slate-500 md:flex">
                 <Tooltip position="bottom" content="Coming soon">
@@ -136,12 +142,29 @@ export const DashboardShell = ({
                     Reports
                   </Link>
                 </Tooltip>
-                <Link href="/settings" className="hover:text-slate-900">
+                <Link
+                  href="/settings"
+                  className={cn(
+                    "hover:text-slate-900",
+                    pathname === "/settings" && "text-slate-900 font-medium"
+                  )}
+                >
                   Settings
                 </Link>
               </nav>
             </div>
-            <Button>Export</Button>
+            {/* Action buttons could be dynamic based on page, but for now generic export or hidden on settings */}
+            {pathname !== "/settings" && <Button>Export</Button>}
+            {/* For settings we might want a Logout here as per mock "Settings | Logout" */}
+            {pathname === "/settings" && (
+              <Button
+                variant="secondary"
+                className="pt-1.75 pb-1.75"
+                onClick={() => router.push("/")}
+              >
+                Back to Dashboard
+              </Button>
+            )}
           </header>
 
           <main className="flex-1 space-y-6 px-6 py-6">
