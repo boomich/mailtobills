@@ -14,37 +14,47 @@ export default function SettingsPage() {
   const { signOut } = useAuthActions();
 
   if (isLoading || !settings) {
-     return (
-        <DashboardShell>
-           <SettingsLayout>
-              <SettingsHeader />
-              <div className="space-y-4">
-                 <div className="h-40 w-full animate-pulse rounded-lg bg-slate-200"></div>
-                 <div className="h-40 w-full animate-pulse rounded-lg bg-slate-200"></div>
-              </div>
-           </SettingsLayout>
-        </DashboardShell>
-     )
+    return (
+      <DashboardShell>
+        {/* <SettingsLayout> */}
+        <SettingsHeader />
+        <div className="space-y-4">
+          <div className="h-40 w-full animate-pulse rounded-lg bg-slate-200"></div>
+          <div className="h-40 w-full animate-pulse rounded-lg bg-slate-200"></div>
+        </div>
+        {/* </SettingsLayout> */}
+      </DashboardShell>
+    );
   }
 
   return (
     <DashboardShell>
+      <SettingsHeader />
       <SettingsLayout>
-        <SettingsHeader />
         <AccountSection settings={settings} />
         <ForwardingEmailSection settings={settings} />
-        
+
         <div className="flex justify-start pt-4">
-            <Button 
-                variant="secondary" 
-                onClick={() => signOut()} 
-                className="text-red-600 border-red-200 hover:bg-red-50 hover:border-red-300"
+          <Button
+            variant="secondary"
+            onClick={() => signOut()}
+            className="text-red-600 border-red-200 hover:bg-red-50 hover:border-red-300"
+          >
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
             >
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                </svg>
-                Sign Out
-            </Button>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+              />
+            </svg>
+            Sign Out
+          </Button>
         </div>
       </SettingsLayout>
     </DashboardShell>
