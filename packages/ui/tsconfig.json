@@ -3,7 +3,11 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "moduleResolution": "node",
-    "allowJs": false
+    "allowJs": false,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
