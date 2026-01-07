@@ -5,6 +5,8 @@ import * as React from "react";
 import { useParams, usePathname } from "next/navigation";
 import { Bot, LifeBuoy, Send, Settings2, SquareTerminal } from "lucide-react";
 
+import Link from "next/link";
+
 import { NavUser } from "@/components/nav-user";
 import { NavMain } from "@/components/nav-main";
 import { Logo } from "@mailtobills/ui/components/logo";
@@ -19,9 +21,17 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
 } from "@mailtobills/ui/components/sidebar";
-import Link from "next/link";
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({
+  user,
+  ...props
+}: React.ComponentProps<typeof Sidebar> & {
+  user: {
+    name?: string;
+    email: string;
+    avatar: string;
+  };
+}) {
   const params = useParams<{ month?: string }>();
   const pathname = usePathname();
   const monthParam =
@@ -44,11 +54,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const isSettingsActive = pathname.startsWith("/settings");
 
   const data = {
-    user: {
-      name: "shadcn",
-      email: "m@example.com",
-      avatar: "/avatars/shadcn.jpg",
-    },
+    user,
     navMain: [
       {
         title: "Dashboard",
