@@ -1,24 +1,30 @@
-import { SignInScreen } from "../../components/auth/SignInScreen";
-import { featureFlags } from "../../lib/featureFlags";
+import { LoginForm } from "@/components/login-form";
 
 type PageProps = {
-  searchParams?: {
+  searchParams?: Promise<{
     mode?: string | string[];
-  };
+  }>;
 };
 
-export default function SignInPage({ searchParams }: PageProps) {
+export default async function SignInPage({ searchParams }: PageProps) {
+  const params = await searchParams;
   const mode =
-    typeof searchParams?.mode === "string"
-      ? searchParams.mode
-      : searchParams?.mode?.[0];
+    typeof params?.mode === "string" ? params.mode : params?.mode?.[0];
 
   const initialMode = mode === "signup" ? "signUp" : "signIn";
 
   return (
-    <SignInScreen
-      initialMode={initialMode}
-      magicLinkEnabled={featureFlags.magicLinkAuth}
-    />
+    <div
+      style={{
+        backgroundImage: "url('/images/bg.png')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+      className="bg-muted flex min-h-svh flex-col items-center justify-center p-6 md:p-10"
+    >
+      <div className="w-full max-w-sm md:max-w-4xl">
+        <LoginForm initialMode={initialMode} />
+      </div>
+    </div>
   );
 }

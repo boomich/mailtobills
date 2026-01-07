@@ -1,26 +1,4 @@
 {
-  "compilerOptions": {
-    "target": "ES2021",
-    "module": "ESNext",
-    "lib": ["DOM", "DOM.Iterable", "ES2021"],
-    "allowJs": false,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "baseUrl": ".",
-    "paths": {
-      "@ui/*": ["packages/ui/*"],
-      "@types/*": ["packages/types/*"],
-      "@config/*": ["packages/config/*"],
-      "@mailtobills/convex/*": ["backend/convex/*"],
-      "@mailtobills/backend/*": ["backend/convex/*"]
-    }
-  },
-  "include": ["apps/**/*", "backend/**/*", "packages/**/*"]
+  "extends": "@mailtobills/typescript-config/base.json"
 }
+

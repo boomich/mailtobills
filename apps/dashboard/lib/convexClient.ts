@@ -1,7 +1,7 @@
 "use client";
 
 import { ConvexReactClient } from "convex/react";
-import { api } from "@mailtobills/backend/_generated/api";
+import { api } from "@mailtobills/convex/_generated/api";
 
 const convexUrl = process.env.NEXT_PUBLIC_CONVEX_URL;
 

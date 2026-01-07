@@ -1,77 +1,61 @@
-"use client";
+"use client"
 
-import * as React from "react";
+import * as React from "react"
+import * as TooltipPrimitive from "@radix-ui/react-tooltip"
 
-import { cn } from "../lib/cn";
+import { cn } from "@mailtobills/ui/lib/utils"
 
-export type TooltipPosition = "top" | "bottom" | "left" | "right";
-
-export type TooltipProps = {
-  className?: string;
-  content: React.ReactNode;
-  children: React.ReactElement;
-  position?: TooltipPosition;
-};
-
-export const Tooltip = ({
-  content,
-  children,
-  className,
-  position = "top",
-}: TooltipProps) => {
-  const [isVisible, setIsVisible] = React.useState(false);
-
-  const getPositionClasses = () => {
-    switch (position) {
-      case "top":
-        return {
-          tooltip: "bottom-full left-1/2 mb-1.5 -translate-x-1/2",
-          arrow:
-            "before:top-full before:left-1/2 before:-translate-x-1/2 before:border-t-slate-900",
-        };
-      case "bottom":
-        return {
-          tooltip: "top-full left-1/2 mt-1.5 -translate-x-1/2",
-          arrow:
-            "before:bottom-full before:left-1/2 before:-translate-x-1/2 before:border-b-slate-900",
-        };
-      case "left":
-        return {
-          tooltip: "right-full top-1/2 mr-1.5 -translate-y-1/2",
-          arrow:
-            "before:-right-0.5 before:top-1/2 before:-translate-y-1/2 before:translate-x-1.5 before:border-l-slate-900",
-        };
-      case "right":
-        return {
-          tooltip: "left-full top-1/2 ml-1.5 -translate-y-1/2",
-          arrow:
-            "before:-left-0.5 before:top-1/2 before:-translate-y-1/2 before:-translate-x-1.5 before:border-r-slate-900",
-        };
-    }
-  };
-
-  const positionClasses = getPositionClasses();
-
+function TooltipProvider({
+  delayDuration = 0,
+  ...props
+}: React.ComponentProps<typeof TooltipPrimitive.Provider>) {
   return (
-    <div
-      className={cn("relative inline-block", className)}
-      onMouseEnter={() => setIsVisible(true)}
-      onMouseLeave={() => setIsVisible(false)}
-    >
-      {children}
-      {isVisible && (
-        <div
-          className={cn(
-            "absolute z-50 rounded-md bg-slate-900 px-2.5 py-1.5 text-xs font-medium text-white shadow-lg whitespace-nowrap",
-            positionClasses.tooltip,
-            "before:absolute before:border-4 before:border-transparent",
-            positionClasses.arrow
-          )}
-          role="tooltip"
-        >
-          {content}
-        </div>
-      )}
-    </div>
-  );
-};
+    <TooltipPrimitive.Provider
+      data-slot="tooltip-provider"
+      delayDuration={delayDuration}
+      {...props}
+    />
+  )
+}
+
+function Tooltip({
+  ...props
+}: React.ComponentProps<typeof TooltipPrimitive.Root>) {
+  return (
+    <TooltipProvider>
+      <TooltipPrimitive.Root data-slot="tooltip" {...props} />
+    </TooltipProvider>
+  )
+}
+
+function TooltipTrigger({
+  ...props
+}: React.ComponentProps<typeof TooltipPrimitive.Trigger>) {
+  return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />
+}
+
+function TooltipContent({
+  className,
+  sideOffset = 0,
+  children,
+  ...props
+}: React.ComponentProps<typeof TooltipPrimitive.Content>) {
+  return (
+    <TooltipPrimitive.Portal>
+      <TooltipPrimitive.Content
+        data-slot="tooltip-content"
+        sideOffset={sideOffset}
+        className={cn(
+          "bg-foreground text-background animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-fit origin-(--radix-tooltip-content-transform-origin) rounded-md px-3 py-1.5 text-xs text-balance",
+          className
+        )}
+        {...props}
+      >
+        {children}
+        <TooltipPrimitive.Arrow className="bg-foreground fill-foreground z-50 size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]" />
+      </TooltipPrimitive.Content>
+    </TooltipPrimitive.Portal>
+  )
+}
+
+export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider }

@@ -8,10 +8,20 @@ const invoices = defineTable({
   fileUrl: v.optional(v.string()), // URL no storage (S3/Hetzner) – v1
   fileStorageId: v.optional(v.id("_storage")),
   fromEmail: v.optional(v.string()),
+  originFromEmail: v.optional(v.string()),
+  originFromName: v.optional(v.string()),
+  originDomain: v.optional(v.string()),
+  originSubject: v.optional(v.string()),
+  originSentAt: v.optional(v.number()),
   subject: v.optional(v.string()),
+  messageId: v.optional(v.string()),
+  attachmentId: v.optional(v.string()),
   receivedAt: v.number(), // timestamp do email
   createdAt: v.number(), // timestamp de criação no sistema
-}).index("userId", ["userId"]);
+  dedupeKey: v.string(),
+})
+  .index("userId", ["userId"])
+  .index("dedupeKey", ["dedupeKey"]);
 
 const users = defineTable({
   name: v.optional(v.string()),
