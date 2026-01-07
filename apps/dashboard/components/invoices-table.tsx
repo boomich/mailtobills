@@ -29,7 +29,7 @@ const formatAddedOn = (timestamp: number) => {
 
   if (isSameDay) return "Today";
 
-  return new Intl.DateTimeFormat(undefined, {
+  return new Intl.DateTimeFormat("en-US", {
     year: "numeric",
     month: "short",
     day: "numeric",
