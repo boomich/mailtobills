@@ -1,0 +1,426 @@
+{
+  "name": "MailtoBills Ingest",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://zany-spoonbill-120.convex.site/ingest",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "httpBearerAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "raw",
+              "value": "={{ $json.raw }}"
+            },
+            {
+              "name": "pdfMeta",
+              "value": "={{ $json.pdfMeta }}"
+            },
+            {
+              "name": "primaryPdfKey",
+              "value": "={{ $json.primaryPdfKey }}"
+            },
+            {
+              "name": "messageId",
+              "value": "={{ $json.raw.id }}"
+            },
+            {
+              "name": "receivedAt",
+              "value": "={{ $json.raw.receivedDateTime }}"
+            },
+            {
+              "name": "subject",
+              "value": "={{ $json.raw.subject }}"
+            },
+            {
+              "name": "forwarderFrom",
+              "value": "={{ $json.raw.from?.emailAddress?.address }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [-608, 496],
+      "id": "1f1b28b5-9188-4fd1-ba67-da802e802e2b",
+      "name": "HTTP Request",
+      "alwaysOutputData": false,
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "KnurFOAV5AgN2Nut",
+          "name": "Ingest secret"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 2
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [-608, 152],
+      "id": "518ccfc1-0b9e-4275-9007-f6a52716fb2f",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "resource": "folderMessage",
+        "folderId": {
+          "__rl": true,
+          "value": "AAMkADk2MGM5ODU1LTFiMGItNGNhZi05Y2ZiLTc0NDNmOTY5NDNiMgAuAAAAAACVAUBQyB1HT5er95diI5-NAQAMziO-vyovQaa3kD2yoBJZAAByv3RPAAA=",
+          "mode": "list",
+          "cachedResultName": "Inbox",
+          "cachedResultUrl": "https://outlook.office365.com/mail/AAMkADk2MGM5ODU1LTFiMGItNGNhZi05Y2ZiLTc0NDNmOTY5NDNiMgAuAAAAAACVAUBQyB1HT5er95diI5%2FNAQAMziO%2FvyovQaa3kD2yoBJZAAByv3RPAAA%3D"
+        },
+        "limit": 25,
+        "filtersUI": {
+          "values": {
+            "filters": {
+              "readStatus": "unread"
+            }
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.microsoftOutlook",
+      "typeVersion": 2,
+      "position": [-384, 152],
+      "id": "ed670184-5d8b-4c73-8c77-49b01391914e",
+      "name": "Get many folder messages",
+      "webhookId": "e9751d19-6e87-48a5-9f52-64cf26584ad8",
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "yvv59Mv6UcPafs03",
+          "name": "vitor.souza@boomich.pt"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "move",
+        "messageId": {
+          "__rl": true,
+          "value": "={{ $json.raw.id }}",
+          "mode": "id"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "AAMkADk2MGM5ODU1LTFiMGItNGNhZi05Y2ZiLTc0NDNmOTY5NDNiMgAuAAAAAACVAUBQyB1HT5er95diI5-NAQAMziO-vyovQaa3kD2yoBJZAAByv3ROAAA=",
+          "mode": "list",
+          "cachedResultName": "NeedsReview",
+          "cachedResultUrl": "https://outlook.office365.com/mail/AAMkADk2MGM5ODU1LTFiMGItNGNhZi05Y2ZiLTc0NDNmOTY5NDNiMgAuAAAAAACVAUBQyB1HT5er95diI5%2FNAQAMziO%2FvyovQaa3kD2yoBJZAAByv3ROAAA%3D"
+        }
+      },
+      "type": "n8n-nodes-base.microsoftOutlook",
+      "typeVersion": 2,
+      "position": [688, -240],
+      "id": "f8d757d8-a973-42f3-8582-73ee4e26c7cf",
+      "name": "Move to NeedsReview",
+      "webhookId": "eff8a7ef-e651-491a-8249-adc062851d24",
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "yvv59Mv6UcPafs03",
+          "name": "vitor.souza@boomich.pt"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [-160, 152],
+      "id": "41f315fb-3986-4965-96f6-ead7a4cd8a7c",
+      "name": "Loop Over Messages"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "messageId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "output": "raw",
+        "options": {
+          "downloadAttachments": true
+        }
+      },
+      "type": "n8n-nodes-base.microsoftOutlook",
+      "typeVersion": 2,
+      "position": [64, -16],
+      "id": "1d6de35c-2ded-4392-90d1-aa45d772dc45",
+      "name": "Get a message by ID",
+      "webhookId": "43afbe8f-21b9-417f-aec0-e708b61def53",
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "yvv59Mv6UcPafs03",
+          "name": "vitor.souza@boomich.pt"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "/**\n * Turns a single Outlook-trigger item into:\n * - N items (one per PDF attachment), each carrying:\n *   - raw email JSON (for Convex to parse)\n *   - pdfKey (binary key like attachment_0)\n *   - pdfMeta (filename, size, mime, etc.)\n *   - primaryPdfKey (best guess)\n *\n * If no PDFs exist, returns a single item with hasPdfs=false.\n */\n\nfunction safeLower(s) {\n  return (s ?? \"\").toString().trim().toLowerCase();\n}\n\nfunction isProbablyPdf(att) {\n  const mime = safeLower(att?.mimeType);\n  const name = safeLower(att?.fileName);\n\n  if (mime === \"application/pdf\") return true;\n  if (name.endsWith(\".pdf\")) return true;\n  if (mime === \"application/octet-stream\" && name.includes(\".pdf\")) return true;\n\n  return false;\n}\n\nfunction scoreFilename(fileName) {\n  const n = safeLower(fileName);\n\n  const positives = [\n    \"fatura\", \"factura\", \"invoice\", \"recibo\", \"conta\", \"pagamento\",\n    \"billing\", \"bill\", \"documento\", \"document\",\n    \"energia\", \"eletricidade\", \"electricidade\", \"gas\", \"água\", \"agua\",\n    \"meo\", \"vodafone\", \"nos\", \"endesa\", \"edp\",\n  ];\n\n  const negatives = [\n    \"marketing\", \"promo\", \"promocao\", \"promoção\", \"newsletter\", \"oferta\",\n    \"manual\", \"terms\", \"termos\", \"conditions\", \"condicoes\", \"condições\",\n    \"privacy\", \"privacidade\", \"politica\", \"política\", \"contract\", \"contrato\",\n  ];\n\n  let score = 0;\n  for (const p of positives) if (n.includes(p)) score += 3;\n  for (const x of negatives) if (n.includes(x)) score -= 4;\n  if (/\\d{6,}/.test(n)) score += 2; // long invoice-like numbers\n\n  return score;\n}\n\nfunction pickPrimaryPdf(pdfList) {\n  if (!pdfList.length) return null;\n\n  const sorted = [...pdfList].sort((a, b) => {\n    const sizeDiff = (b.fileSize ?? 0) - (a.fileSize ?? 0);\n    if (sizeDiff !== 0) return sizeDiff;\n\n    const scoreDiff = (b.nameScore ?? 0) - (a.nameScore ?? 0);\n    if (scoreDiff !== 0) return scoreDiff;\n\n    return safeLower(a.fileName).localeCompare(safeLower(b.fileName));\n  });\n\n  return sorted[0];\n}\n\nconst item = $input.first();\nconst raw = item.json;\nconst bin = item.binary ?? {};\n\nconst attachmentsAll = Object.entries(bin).map(([key, b]) => {\n  const fileName = b.fileName ?? null;\n  const mimeType = b.mimeType ?? null;\n  const fileSize =\n    Number(b.fileSize ?? b.fileSizeBytes ?? b.dataSize ?? 0) || 0;\n\n  const att = { key, fileName, mimeType, fileSize };\n  att.isPdf = isProbablyPdf(att);\n  att.nameScore = scoreFilename(fileName);\n\n  return att;\n});\n\nconst attachmentsPdf = attachmentsAll.filter(a => a.isPdf);\nconst primaryPdf = pickPrimaryPdf(attachmentsPdf);\nconst primaryPdfKey = primaryPdf?.key ?? null;\n\nif (!attachmentsPdf.length) {\n  // Return a single item so the workflow can branch cleanly\n  return [{\n    json: {\n      hasPdfs: false,\n      raw,\n      attachmentsAll,\n      attachmentsPdf: [],\n      primaryPdfKey: null,\n    },\n    binary: item.binary,\n  }];\n}\n\n// Return one item per PDF\nreturn attachmentsPdf.map((pdfMeta, idx) => ({\n  json: {\n    hasPdfs: true,\n    raw,\n    pdfKey: pdfMeta.key,\n    pdfMeta,\n    messageId: raw.id,\n    primaryPdfKey,\n    pdfIndex: idx,\n    pdfCount: attachmentsPdf.length,\n  },\n  binary: item.binary, // keep all binaries; HTTP node will pick via pdfKey\n}));\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [288, -16],
+      "id": "80530906-d27b-44e0-a13c-18e13315fd94",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "0bcddd8d-813b-4616-83ad-8d8be5b9c6bb",
+              "leftValue": "={{ $json.hasPdfs }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [512, -16],
+      "id": "ea34a537-6f11-4001-b150-6e4e9a0af2f9",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://zany-spoonbill-120.convex.site/ingest",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "httpBearerAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "messageId",
+              "value": "={{ $json.messageId }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [512, 176],
+      "id": "c52d24cf-21e4-4bea-a13f-db36b5dca61e",
+      "name": "HTTP Request1",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "KnurFOAV5AgN2Nut",
+          "name": "Ingest secret"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "move",
+        "messageId": {
+          "__rl": true,
+          "value": "={{ $json.data.parseJson().messageId }}",
+          "mode": "id"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "AAMkADk2MGM5ODU1LTFiMGItNGNhZi05Y2ZiLTc0NDNmOTY5NDNiMgAuAAAAAACVAUBQyB1HT5er95diI5-NAQAMziO-vyovQaa3kD2yoBJZAAByv3RNAAA=",
+          "mode": "list",
+          "cachedResultName": "Processed",
+          "cachedResultUrl": "https://outlook.office365.com/mail/AAMkADk2MGM5ODU1LTFiMGItNGNhZi05Y2ZiLTc0NDNmOTY5NDNiMgAuAAAAAACVAUBQyB1HT5er95diI5%2FNAQAMziO%2FvyovQaa3kD2yoBJZAAByv3RNAAA%3D"
+        }
+      },
+      "type": "n8n-nodes-base.microsoftOutlook",
+      "typeVersion": 2,
+      "position": [176, 368],
+      "id": "0e16c380-3bd4-4a69-b784-71f1f1606c23",
+      "name": "Move a message1",
+      "webhookId": "02e96b47-6a5e-429d-8d6d-4db4662e97d5",
+      "executeOnce": true,
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "yvv59Mv6UcPafs03",
+          "name": "vitor.souza@boomich.pt"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "amount": 1
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [512, 368],
+      "id": "d71e6b71-eeed-46cd-845e-167704198134",
+      "name": "Wait",
+      "webhookId": "9eee0e0c-54ca-45b3-ae52-caf56ff517ff"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get many folder messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many folder messages": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Messages": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Get a message by ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a message by ID": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Move to NeedsReview",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Move a message1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Move a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Move to NeedsReview": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "a70864d2-e270-428c-bbf7-c8d6183fda78",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "8d61536ff6e7a882e61e320c605c981edc50f65159338e82544fd6a619b72ca0"
+  },
+  "id": "NrsYD8mQQtxCXy42",
+  "tags": [
+    {
+      "updatedAt": "2025-12-09T23:01:40.106Z",
+      "createdAt": "2025-12-09T23:01:40.106Z",
+      "id": "xpvUeLA6bKu6Ir4D",
+      "name": "mailtobills"
+    }
+  ]
+}

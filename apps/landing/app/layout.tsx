@@ -1,16 +1,30 @@
-import "./globals.css";
-import type { Metadata } from "next";
-import type { ReactNode } from "react";
+import { Geist, Geist_Mono } from "next/font/google"
 
-export const metadata: Metadata = {
-  title: "MailToBills",
-  description: "Forward your invoices. We organize everything.",
-};
+import "@mailtobills/ui/globals.css"
+import { Providers } from "@/components/providers"
 
-const RootLayout = ({ children }: { children: ReactNode }) => (
-  <html lang="en">
-    <body>{children}</body>
-  </html>
-);
+const fontSans = Geist({
+  subsets: ["latin"],
+  variable: "--font-sans",
+})
 
-export default RootLayout;
+const fontMono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+})
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode
+}>) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased `}
+      >
+        <Providers>{children}</Providers>
+      </body>
+    </html>
+  )
+}

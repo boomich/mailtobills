@@ -37,6 +37,7 @@ export const createInvoice = mutation({
     return ctx.db.insert("invoices", {
       ...args,
       userId,
+      dedupeKey: `${userId}|manual|${args.receivedAt}|${args.originalFilename}`,
       createdAt: Date.now(),
     });
   },
@@ -59,6 +60,7 @@ export const createInvoiceFromStorage = mutation({
       fromEmail: args.fromEmail,
       subject: args.subject,
       receivedAt: args.receivedAt,
+      dedupeKey: `${userId}|manual-storage|${args.receivedAt}|${args.storageId}|${args.originalFilename}`,
       createdAt: Date.now(),
     });
   },
@@ -66,17 +68,46 @@ export const createInvoiceFromStorage = mutation({
 
 export const ingestCreateInvoice = internalMutation({
   args: {
+    userId: v.id("users"),
     originalFilename: v.string(),
     fileUrl: v.optional(v.string()),
     fromEmail: v.optional(v.string()),
     subject: v.optional(v.string()),
     receivedAt: v.number(),
+    messageId: v.optional(v.string()),
+    attachmentId: v.optional(v.string()),
+    dedupeKey: v.string(),
+    originFromEmail: v.optional(v.string()),
+    originFromName: v.optional(v.string()),
+    originDomain: v.optional(v.string()),
+    originSubject: v.optional(v.string()),
+    originSentAt: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
-    const userId = await requireSignedInUserId(ctx);
+    const existing = await ctx.db
+      .query("invoices")
+      .withIndex("dedupeKey", (q) => q.eq("dedupeKey", args.dedupeKey))
+      .first();
+
+    if (existing) {
+      return existing._id;
+    }
+
     return ctx.db.insert("invoices", {
-      ...args,
-      userId,
+      userId: args.userId,
+      originalFilename: args.originalFilename,
+      fileUrl: args.fileUrl,
+      fromEmail: args.fromEmail,
+      subject: args.subject,
+      receivedAt: args.receivedAt,
+      messageId: args.messageId,
+      attachmentId: args.attachmentId,
+      dedupeKey: args.dedupeKey,
+      originFromEmail: args.originFromEmail,
+      originFromName: args.originFromName,
+      originDomain: args.originDomain,
+      originSubject: args.originSubject,
+      originSentAt: args.originSentAt,
       createdAt: Date.now(),
     });
   },
@@ -90,8 +121,25 @@ export const ingestCreateInvoiceFromStorage = internalMutation({
     fromEmail: v.optional(v.string()),
     subject: v.optional(v.string()),
     receivedAt: v.number(),
+    messageId: v.optional(v.string()),
+    attachmentId: v.optional(v.string()),
+    dedupeKey: v.string(),
+    originFromEmail: v.optional(v.string()),
+    originFromName: v.optional(v.string()),
+    originDomain: v.optional(v.string()),
+    originSubject: v.optional(v.string()),
+    originSentAt: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
+    const existing = await ctx.db
+      .query("invoices")
+      .withIndex("dedupeKey", (q) => q.eq("dedupeKey", args.dedupeKey))
+      .first();
+
+    if (existing) {
+      return existing._id;
+    }
+
     return ctx.db.insert("invoices", {
       userId: args.userId,
       originalFilename: args.originalFilename,
@@ -99,6 +147,14 @@ export const ingestCreateInvoiceFromStorage = internalMutation({
       fromEmail: args.fromEmail,
       subject: args.subject,
       receivedAt: args.receivedAt,
+      messageId: args.messageId,
+      attachmentId: args.attachmentId,
+      dedupeKey: args.dedupeKey,
+      originFromEmail: args.originFromEmail,
+      originFromName: args.originFromName,
+      originDomain: args.originDomain,
+      originSubject: args.originSubject,
+      originSentAt: args.originSentAt,
       createdAt: Date.now(),
     });
   },
@@ -139,6 +195,7 @@ export const seedDemo = mutation({
       fromEmail: "demo@example.com",
       subject: "Seed invoice",
       receivedAt: Date.now(),
+      dedupeKey: `${userId!}|seed|${Date.now()}|example-invoice.pdf`,
       createdAt: Date.now(),
     });
   },

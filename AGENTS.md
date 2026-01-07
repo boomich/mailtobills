@@ -1,19 +1,33 @@
 # MailToBills – Agents Guide
 
+⚠️ **This file is the source of truth for AI agents (Codex, Copilot, etc.) working on this repo.**  
+If there is any ambiguity, follow this file over README or DESIGN.
+
+---
+
 ## 1. Contexto do Projeto
 
 MailToBills é um micro-SaaS para freelancers e pequenas empresas:
 
 > O usuário encaminha faturas por email, nós organizamos tudo.
 
-MVP:
+**MVP scope (não expandir):**
 
 - Receber invoices via email (n8n)
 - Guardar ficheiros e metadados
 - Expor tudo num dashboard simples
 - Permitir export (zip/csv) para o contabilista
 
-Este repositório é um monorepo gerido com **pnpm** + **Turborepo**.
+**Explicitamente fora do MVP:**
+
+- OCR
+- Extração profunda de dados (itens, IVA detalhado, parsing complexo)
+- Pipelines “inteligentes” de parsing
+- Estados complexos (ex: “pending processing” elaborados)
+
+Este repositório é um **monorepo** gerido com **pnpm + Turborepo**.
+
+---
 
 ## 2. Estrutura do Monorepo
 
@@ -21,135 +35,194 @@ Este repositório é um monorepo gerido com **pnpm** + **Turborepo**.
 
   - Next.js (TS)
   - Marketing site público
-  - Foco em clareza, não em enfeite.
+  - Foco em clareza, não em enfeite
 
 - `apps/dashboard`
 
   - Next.js (TS)
-  - Área autenticada (ligada ao Convex)
-  - Lista de invoices, download, export.
+  - Área autenticada (Convex)
+  - Lista de invoices, download, export
 
 - `backend/convex`
 
-  - Backend e database usando Convex
-  - Mutations, queries e schema de invoices, users, files.
+  - Backend + database
+  - Mutations, queries e schema
 
 - `packages/ui`
 
-  - Componentes React compartilhados (design system leve)
-  - Tailwind + shadcn.
+  - Design system leve
+  - Tailwind + shadcn/ui
+  - Não reinventar componentes base
 
 - `packages/types`
 
-  - Tipos compartilhados (e.g. `Invoice`, `User`, `EmailMetadata`).
+  - Tipos compartilhados (`Invoice`, `User`, `EmailMetadata`, etc.)
 
 - `packages/config`
 
-  - Configurações compartilhadas (ESLint, tsconfig, etc).
+  - ESLint, tsconfig, etc.
 
 - `workflows/n8n`
-  - Workflows exportados em JSON para ingestão de emails e anexos.
+  - Workflows exportados em JSON
+  - Ingestão de emails e anexos
+
+⚠️ Não criar “pastas genéricas” sem necessidade.
+
+---
 
 ## 3. Tecnologias e Ferramentas
 
-- **Package manager:** pnpm (não trocar para npm/yarn).
-- **Monorepo:** Turborepo (`turbo.json`).
-- **Frontend:** Next.js + TypeScript.
-- **Styling:** Tailwind CSS + shadcn/ui no dashboard.
-- **Backend:** Convex (auth, db, functions).
-- **Automação:** n8n (ingestão de emails, anexos, chamadas HTTP para Convex).
-- **Infra futura:** provavelmente Hetzner / S3 compatible para storage.
+- **Package manager:** pnpm (não trocar)
+- **Monorepo:** Turborepo
+- **Frontend:** Next.js + TypeScript
+- **Styling:** Tailwind + shadcn/ui
+- **Backend:** Convex (auth, db, functions)
+- **Automação:** n8n
+- **Storage:** Convex file storage ou S3-compatible (futuro)
 
-## 4. Princípios de Código
+---
 
-Quando editar ou criar código neste repo, siga estas regras:
+## 4. Princípios de Código (não negociáveis)
 
-1. **TypeScript first**
+### 4.1 TypeScript first
 
-   - Código novo em TS.
-   - Tipos explícitos em bordas de módulo e APIs.
+- Código novo sempre em TS
+- Tipos explícitos nas bordas:
+  - APIs
+  - Convex args
+  - Retornos públicos
 
-2. **Async/await e Promises**
+### 4.2 Async / Await
 
-   - Use `async/await`.
-   - Sempre trate erros com `try/catch` ou `.catch` bem pensado.
+- Usar `async/await`
+- Nada de chains confusas de `.then`
+- Tratar erros conscientemente
 
-3. **Erro e logging**
+### 4.3 Erros e logging
 
-   - No MVP: `console.error` e `console.log` centralizados em helpers.
-   - Evitar silenciar erros.
-   - Em Convex: lançar erros claros ou retornar `Result` estruturado.
+- MVP:
+  - `console.log` e `console.error` permitidos
+  - Preferir logs **estruturados**
+- Convex:
+  - Erros claros e acionáveis
+  - Não engolir exceções silenciosamente
+- Não logar em loops de render ou spam de logs
 
-4. **Reutilização**
+### 4.4 Reutilização
 
-   - Prefira criar helpers em `packages/*` em vez de duplicar lógica.
-   - Use bibliotecas consolidadas (zod, date-fns, etc.) em vez de reinventar.
+- Preferir `packages/*` a duplicação
+- Usar libs maduras:
+  - `zod`
+  - `date-fns`
+  - etc
+- Não reinventar utilidades comuns
 
-5. **Sem placeholders vazios**
+### 4.5 Sem placeholders
 
-   - Não deixar TODOs que quebrem fluxo.
-   - Se algo não for implementado ainda, comente claramente e mantenha o app compilando.
+- Nada de TODOs que quebrem fluxo
+- App deve compilar e rodar
+- Se algo não for feito:
+  - documentar claramente
+  - manter comportamento estável
 
-6. **Front-end**
+### 4.6 Frontend
 
-   - Componentes funcionais com hooks.
-   - Organização por feature sempre que possível.
-   - Evitar over-engineering no MVP (sem state machines gigantes sem necessidade).
+- Componentes funcionais + hooks
+- Organização por feature
+- Separar:
+  - componentes de UI (presentacionais)
+  - containers/orquestração
+- Evitar over-engineering no MVP
 
-7. **Convex**
-   - Schema em `backend/convex/schema.ts`.
-   - Mutations e queries bem nomeadas (`invoices/create`, `invoices/listForUser`).
-   - Autorização simples, mas explícita (checar `userId`).
+### 4.7 Convex
+
+- Schema em `backend/convex/schema.ts`
+- Nomes claros:
+  - `invoices/create`
+  - `invoices/listForUser`
+- Autorização explícita:
+  - sempre validar `userId`
+
+---
 
 ## 5. Fluxo Principal do Produto (MVP)
 
-1. Usuário encaminha email para `inbox@mailtobills.com`.
-2. n8n captura o email:
-   - Lê anexos PDF.
-   - Faz upload para storage (ou Convex file storage).
-   - Chama mutation do Convex com:
+1. Usuário encaminha email para `inbox@mailtobills.com`
+2. n8n:
+   - Lê anexos
+   - Filtra PDFs relevantes
+   - Faz upload do ficheiro
+   - Chama mutation Convex com:
      - `userId`
      - `fileId`
      - `originalFilename`
      - `receivedAt`
-     - `rawEmailMetadata` (opcional no MVP).
+     - `rawEmailMetadata` (opcional)
 3. Dashboard:
-   - Autenticação básica (Convex Auth ou similar).
-   - Listagem de invoices do usuário.
+   - Autenticação simples
+   - Listagem de invoices
    - Ações:
-     - Download do PDF.
-     - Export (zip/csv) de um período.
+     - Download PDF
+     - Export por período (zip/csv)
 
-## 6. Como os agentes devem operar
+---
 
-- **Pode fazer:**
+## 6. Attachment Handling (importante)
 
-  - Criar/editar arquivos em `apps/*`, `backend/convex`, `packages/*`.
-  - Refatorar código para ficar mais limpo e tipado.
-  - Adicionar testes leves quando fizer sentido.
-  - Sugerir novas abstrações só se simplificarem o código.
+Emails podem conter **múltiplos anexos**.
 
-- **Não deve fazer:**
-  - Mudar o package manager (manter `pnpm`).
-  - Trocar stack (não migrar de Convex para outro backend).
-  - Introduzir dependências grandes sem motivo (ex: Redux, Nest, etc.).
-  - Criar features grandes que não foram pedidas (escopo controlado).
+O sistema deve escolher **um PDF principal**, ignorando ruído.
 
-## 7. Comandos úteis
+### Heurística obrigatória (pontuação aditiva)
 
-- Instalar dependências:
-  - `pnpm install`
-- Desenvolvimento (tudo junto):
-  - `pnpm dev`
-- Build:
-  - `pnpm build`
-- Lint:
-  - `pnpm lint`
+- Preferir `application/pdf`
+- Preferir nomes contendo:
+  - `fatura`, `invoice`, `recibo`, `bill`, `pagamento`
+- Penalizar nomes contendo:
+  - `ads`, `promo`, `marketing`, `terms`, `condicoes`, `welcome`, `folheto`
+- Preferir PDFs maiores (dentro do razoável)
+- Em empate, usar o primeiro PDF recebido
 
-## 8. Estilo de Pull Request / Commits
+⚠️ Nunca hard-code vendor específico.
 
-- Mensagens claras e descritivas.
-- Escopo pequeno sempre que possível:
-  - ex: `feat(dashboard): list invoices`, `chore(convex): add invoices schema`.
+---
 
-Se tiver dúvida entre algo simples que funciona e algo “elegante” mas complexo, prefira o **simples que funciona**.
+## 7. Operação dos Agentes
+
+### Pode fazer
+
+- Criar/editar código em:
+  - `apps/*`
+  - `backend/convex`
+  - `packages/*`
+- Refatorar para clareza e tipagem
+- Adicionar testes quando a lógica for não trivial
+- Criar abstrações **apenas se simplificarem**
+
+### Não deve fazer
+
+- Trocar `pnpm`
+- Mudar stack (Convex continua)
+- Introduzir dependências pesadas sem motivo
+- Criar features grandes não pedidas
+- “Melhorar” o produto fora do escopo MVP
+
+---
+
+## 8. Commits e Pull Requests
+
+- Mensagens claras e pequenas
+- Exemplos:
+  - `feat(dashboard): list invoices`
+  - `chore(convex): add invoices schema`
+- Se houver dúvida entre:
+  - algo simples que funciona
+  - algo elegante e complexo  
+    → escolha **simples que funciona**
+
+---
+
+## Regra final
+
+**MailToBills otimiza clareza e velocidade, não inteligência artificial avançada.**  
+Qualquer decisão deve reduzir complexidade cognitiva para o usuário e para o código.

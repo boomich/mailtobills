@@ -1,0 +1,35 @@
+"use client";
+
+import { useMemo } from "react";
+
+import { useQuery } from "convex/react";
+import { api } from "@/lib/convexClient";
+import { getMonthInfo } from "../months";
+import { invoiceRowsForMonth, summarizeInvoices } from "./transform";
+import type { InvoicesResult, InvoiceSummary } from "./types";
+
+export type UseInvoicesResult = InvoicesResult;
+
+export const useInvoices = (month: string): UseInvoicesResult => {
+  const data = useQuery(api.invoices.listMine, {});
+  const monthInfo = useMemo(() => getMonthInfo(month), [month]);
+
+  const invoices = useMemo(() => {
+    if (!data) return [];
+
+    return invoiceRowsForMonth(data, monthInfo);
+  }, [data, monthInfo]);
+
+  const summary = useMemo<InvoiceSummary>(() => {
+    return summarizeInvoices(invoices);
+  }, [invoices]);
+
+  const totalCount = data?.length ?? 0;
+
+  return {
+    invoices,
+    summary,
+    isLoading: data === undefined,
+    totalCount,
+  };
+};

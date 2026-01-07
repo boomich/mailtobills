@@ -1,14 +1,11 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "@mailtobills/typescript-config/react-library.json",
   "compilerOptions": {
-    "jsx": "react-jsx",
-    "moduleResolution": "node",
-    "allowJs": false,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@mailtobills/ui/*": ["./src/*"]
     }
   },
-  "include": ["src/**/*"],
+  "include": ["."],
   "exclude": ["node_modules", "dist"]
 }

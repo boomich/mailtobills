@@ -1,0 +1,49 @@
+<svg
+  width="64"
+  height="64"
+  viewBox="0 0 64 64"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <!-- Envelope body -->
+  <rect
+    x="6"
+    y="14"
+    width="52"
+    height="36"
+    rx="8"
+    fill="#EAF5FA"
+    stroke="#5BA7C7"
+    stroke-width="3"
+  />
+
+  <!-- Envelope flap -->
+  <path
+    d="M10 18 L32 34 L54 18"
+    stroke="#5BA7C7"
+    stroke-width="3"
+    fill="none"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <!-- Paper lines -->
+  <line x1="22" y1="26" x2="42" y2="26" stroke="#8FBFD6" stroke-width="2" />
+  <line x1="22" y1="32" x2="42" y2="32" stroke="#8FBFD6" stroke-width="2" />
+
+  <!-- Badge -->
+  <rect
+    x="38"
+    y="36"
+    width="18"
+    height="18"
+    rx="5"
+    fill="#4DB6AC"
+  />
+  <path
+    d="M43 41 L51 49 M51 41 L43 49"
+    stroke="white"
+    stroke-width="2.5"
+    stroke-linecap="round"
+  />
+</svg>

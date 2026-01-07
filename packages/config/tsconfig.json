@@ -1,9 +1,0 @@
-{
-  "extends": "../../tsconfig.json",
-  "compilerOptions": {
-    "moduleResolution": "node",
-    "allowJs": true
-  },
-  "include": ["./**/*"],
-  "exclude": ["node_modules"]
-}

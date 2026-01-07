@@ -2,27 +2,104 @@
 
 Forward your invoices. We organize everything.
 
+MailToBills is a micro-SaaS that lets freelancers and small businesses forward invoice emails and get everything neatly organized in a simple dashboard.
+
+---
+
 ## Monorepo layout
 
-- `apps/landing`: Public marketing site (Next.js).
-- `apps/dashboard`: Authenticated dashboard (Next.js + Convex).
-- `backend/convex`: Convex backend (schema, queries, mutations).
-- `packages/ui`: Shared React UI components.
-- `packages/types`: Shared TypeScript types.
-- `packages/config`: Shared configs (ESLint/TS).
-- `workflows/n8n`: Email ingestion workflows (exports live here).
+- `apps/landing`  
+  Public marketing site (Next.js)
+
+- `apps/dashboard`  
+  Authenticated dashboard (Next.js + Convex)
+
+- `backend/convex`  
+  Convex backend (schema, queries, mutations)
+
+- `packages/ui`  
+  Shared React UI components (shadcn/ui + Tailwind)
+
+- `packages/types`  
+  Shared TypeScript types
+
+- `packages/config`  
+  Shared configs (ESLint, tsconfig, etc.)
+
+- `workflows/n8n`  
+  Email ingestion workflows (JSON exports)
+
+---
 
 ## Development
 
+Install dependencies:
+
 ```bash
 pnpm install
+```
+
+Run everything via Turborepo:
+
+```bash
 pnpm dev
 ```
 
-`pnpm dev` runs the Turborepo pipeline; you can also run app-specific scripts inside each package.
+You can also run app-specific scripts inside each package if needed.
 
-## Auth env (OAuth)
+---
 
-For `@convex-dev/auth` OAuth redirects, the Convex backend must know the dashboard base URL:
+## UI components (shadcn/ui)
 
-- Set `SITE_URL` (and/or `CONVEX_SITE_URL`) to the dashboard origin, e.g. `http://localhost:3001`.
+This repo uses **shadcn/ui** in a monorepo setup.
+
+### Adding components
+
+Run from the repo root and target the dashboard app:
+
+```bash
+pnpm dlx shadcn@latest add button -c apps/dashboard
+```
+
+Components are generated into:
+
+```
+packages/ui/src/components
+```
+
+### Using components
+
+Import shared components from the UI package:
+
+```tsx
+import { Button } from "@mailtobills/ui/components/button";
+```
+
+Tailwind is already configured to work across apps and the shared UI package.
+
+---
+
+## Auth env (OAuth / Convex)
+
+For `@convex-dev/auth` OAuth redirects, the Convex backend must know the dashboard base URL.
+
+Set one of the following env vars to the dashboard origin:
+
+```
+SITE_URL=http://localhost:3001
+```
+
+or
+
+```
+CONVEX_SITE_URL=http://localhost:3001
+```
+
+Adjust for preview/production environments accordingly.
+
+---
+
+## For AI-assisted development
+
+AI agents **must** follow `AGENTS.md` strictly.  
+If there is any conflict, `AGENTS.md` is the source of truth.

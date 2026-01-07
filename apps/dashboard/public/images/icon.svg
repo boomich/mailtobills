@@ -1,0 +1,41 @@
+<svg
+  width="48"
+  height="48"
+  viewBox="0 0 48 48"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <!-- Outer container -->
+  <rect
+    x="6"
+    y="6"
+    width="36"
+    height="36"
+    rx="8"
+    stroke="currentColor"
+    stroke-width="2"
+  />
+
+  <!-- Envelope flap -->
+  <path
+    d="M12 16L24 25L36 16"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <!-- Ledger / page lines -->
+  <path
+    d="M16 30H32"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+  />
+  <path
+    d="M16 34H26"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+  />
+</svg>

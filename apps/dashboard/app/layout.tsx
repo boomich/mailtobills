@@ -1,25 +1,39 @@
-import "./globals.css";
-
 import type { Metadata } from "next";
-import type { ReactNode } from "react";
-
-import Providers from "./providers";
-
+import { Geist, Geist_Mono } from "next/font/google";
 import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
+
+import "@mailtobills/ui/globals.css";
+import { Providers } from "@/components/providers";
+
+const fontSans = Geist({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
+
+const fontMono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+});
 
 export const metadata: Metadata = {
   title: "MailToBills Dashboard",
   description: "Review and export your invoices from one place.",
 };
 
-const RootLayout = async ({ children }: { children: ReactNode }) => (
-  <ConvexAuthNextjsServerProvider>
-    <html lang="en" className="overscroll-none">
-      <body>
-        <Providers>{children}</Providers>
-      </body>
-    </html>
-  </ConvexAuthNextjsServerProvider>
-);
-
-export default RootLayout;
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <ConvexAuthNextjsServerProvider>
+      <html lang="en" className="overscroll-none" suppressHydrationWarning>
+        <body
+          className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased `}
+        >
+          <Providers>{children}</Providers>
+        </body>
+      </html>
+    </ConvexAuthNextjsServerProvider>
+  );
+}
