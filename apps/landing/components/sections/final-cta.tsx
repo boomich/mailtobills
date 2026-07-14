@@ -1,7 +1,7 @@
-import { ArrowRight } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 import { Button } from "@mailtobills/ui/components/button";
+import { PostmarkMini } from "@mailtobills/ui/components/postmark";
 
 import { signUpUrl } from "@/lib/links";
 
@@ -9,35 +9,32 @@ export async function FinalCta() {
   const t = await getTranslations("FinalCta");
 
   return (
-    <section className="mx-auto max-w-6xl px-6 py-16 sm:py-20">
-      <div className="bg-primary text-primary-foreground relative overflow-hidden rounded-2xl px-6 py-14 text-center shadow-xl sm:px-12">
-        <div
-          aria-hidden
-          className="absolute inset-0 bg-[radial-gradient(50%_60%_at_50%_0%,oklch(0.55_0.09_160/0.45)_0%,transparent_70%)]"
-        />
-        <div className="relative mx-auto max-w-2xl space-y-5">
-          <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-            {t("title")}
-          </h2>
-          <p className="text-primary-foreground/80 text-pretty">
-            {t("description")}
-          </p>
-          <div className="flex justify-center">
-            <Button
-              asChild
-              size="lg"
-              typography="mono"
-              className="bg-background text-foreground hover:bg-background/90 mt-2"
-            >
-              <a href={signUpUrl}>
-                {t("cta")}
-                <ArrowRight className="size-4" />
-              </a>
-            </Button>
+    <section className="bg-background">
+      <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20">
+        <div className="relative overflow-hidden border-[1.5px] border-foreground bg-foreground px-6 py-14 text-background sm:px-12">
+          <PostmarkMini
+            className="absolute -top-10 -right-10 h-44 w-44 text-background/15"
+          />
+          <div className="relative max-w-2xl">
+            <h2 className="font-display text-3xl font-extrabold tracking-[-0.01em] [font-stretch:110%] sm:text-4xl">
+              {t("title")}
+            </h2>
+            <p className="mt-4 max-w-[54ch] text-background/75">
+              {t("description")}
+            </p>
+            <div className="mt-7">
+              <Button
+                asChild
+                size="lg"
+                className="border-background bg-background text-foreground hover:bg-background/90 max-sm:w-full max-sm:px-4 max-sm:text-[11px] max-sm:tracking-[0.06em]"
+              >
+                <a href={signUpUrl}>{t("cta")}</a>
+              </Button>
+            </div>
+            <p className="mt-5 font-mono text-[11px] tracking-[0.12em] text-background/70 uppercase">
+              {t("note")}
+            </p>
           </div>
-          <p className="text-primary-foreground font-mono text-[11px] font-medium tracking-[0.08em] uppercase">
-            {t("note")}
-          </p>
         </div>
       </div>
     </section>

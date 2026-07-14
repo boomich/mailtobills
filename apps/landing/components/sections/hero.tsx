@@ -1,52 +1,93 @@
-import { ArrowRight, Mail } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 import { Button } from "@mailtobills/ui/components/button";
+import { Carimbo } from "@mailtobills/ui/components/carimbo";
+import { Postmark } from "@mailtobills/ui/components/postmark";
 
-import { DashboardPreview } from "@/components/dashboard-preview";
 import { signUpUrl } from "@/lib/links";
 
+/* The Stamped Letter (DESIGN.md §12 bake-off winner): the page is a letter;
+   the carimbo certifies it half a second after it lands on the counter. */
 export async function Hero() {
   const t = await getTranslations("Hero");
 
   return (
-    <section className="bg-sidebar/60 relative overflow-hidden border-b">
-      <div
-        aria-hidden
-        className="absolute inset-0 bg-[radial-gradient(60%_50%_at_70%_0%,oklch(0.94_0.04_160/0.55)_0%,transparent_70%),radial-gradient(40%_40%_at_15%_20%,oklch(0.96_0.03_95/0.6)_0%,transparent_70%)] dark:bg-[radial-gradient(60%_50%_at_70%_0%,oklch(0.4_0.07_160/0.25)_0%,transparent_70%)]"
-      />
-      <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-6 py-16 sm:py-20 lg:grid-cols-[0.95fr_1.05fr] lg:py-24">
-        <div className="animate-in fade-in slide-in-from-bottom-2 max-w-2xl space-y-7 duration-500">
-          <div className="bg-background text-muted-foreground inline-flex items-center gap-1.5 rounded-full border px-3 py-1 font-mono text-[11px] font-medium tracking-[0.08em] uppercase shadow-xs">
-            <Mail className="text-primary size-3.5" />
-            {t("eyebrow")}
-          </div>
-          <div className="space-y-4">
-            <h1 className="text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
+    <section className="bg-secondary border-b border-border">
+      <div className="mx-auto flex max-w-5xl justify-center px-4 py-12 sm:px-6 sm:py-16 lg:py-20">
+        <div className="w-full border border-foreground bg-background p-7 shadow-[6px_6px_0_0_oklch(0.27_0.025_268/0.13)] sm:p-12 lg:p-16">
+          <header className="mb-8 flex items-center justify-between gap-5 sm:mb-12">
+            <Postmark
+              withWaves={false}
+              date="JUL 26"
+              className="h-16 w-16 text-foreground sm:h-21 sm:w-21"
+              label="MailToBills"
+            />
+            <span
+              className="font-mono text-[11px] tracking-[0.14em] text-muted-foreground"
+              aria-hidden
+            >
+              REGISTADO · VIA POSTAL
+            </span>
+          </header>
+
+          <div className="relative">
+            <h1 className="max-w-[15ch] font-display text-4xl leading-none font-extrabold tracking-[-0.015em] [font-stretch:112%] sm:text-6xl lg:text-[68px]">
               {t("title")}
             </h1>
-            <p className="text-muted-foreground max-w-xl text-lg leading-8 text-pretty">
-              {t("description")}
-            </p>
+            <div
+              className="absolute -top-2 right-0 hidden md:block lg:right-8"
+              aria-hidden
+            >
+              <Carimbo
+                id="hero"
+                date="14 JUL 2026"
+                refLine="M/2026-07 · Nº 027"
+                angle={-2}
+                animate
+                animationDelayMs={550}
+              />
+            </div>
           </div>
-          <div className="flex flex-wrap items-center gap-3">
-            <Button asChild size="lg" typography="mono">
-              <a href={signUpUrl}>
-                {t("primaryCta")}
-                <ArrowRight className="size-4" />
-              </a>
+
+          <p className="mt-7 mb-8 max-w-[52ch] text-lg leading-relaxed text-muted-foreground sm:text-[19px]">
+            {t("description")}
+          </p>
+
+          <div className="flex flex-wrap items-center gap-3.5">
+            <Button
+              asChild
+              size="lg"
+              className="max-sm:w-full max-sm:px-4 max-sm:text-[11px] max-sm:tracking-[0.06em]"
+            >
+              <a href={signUpUrl}>{t("primaryCta")}</a>
             </Button>
-            <Button asChild variant="outline" size="lg" typography="mono">
-              <a href="#how-it-works">{t("secondaryCta")}</a>
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className="max-sm:w-full max-sm:px-4 max-sm:text-[11px] max-sm:tracking-[0.06em]"
+            >
+              <a href="#export">{t("secondaryCta")}</a>
             </Button>
           </div>
-          <p className="text-muted-foreground font-mono text-[11px] font-medium tracking-[0.08em] uppercase">
+
+          <p className="mt-6 font-mono text-[11px] tracking-[0.12em] text-muted-foreground uppercase">
             {t("note")}
           </p>
-        </div>
 
-        <div className="animate-in fade-in slide-in-from-bottom-4 relative duration-700">
-          <DashboardPreview />
+          <div className="my-9 border-t border-border sm:my-11" />
+
+          <div className="max-w-[560px]">
+            <span className="font-display text-[11.5px] font-semibold tracking-[0.16em] text-muted-foreground uppercase [font-stretch:80%]">
+              {t("addressLabel")}
+            </span>
+            <p className="mt-2 border-b-[1.5px] border-foreground pb-2 font-mono text-[15px] font-bold break-all">
+              you.4f2a@in.mailtobills.com
+            </p>
+            <p className="mt-2.5 text-[13px] text-muted-foreground">
+              {t("addressHint")}
+            </p>
+          </div>
         </div>
       </div>
     </section>

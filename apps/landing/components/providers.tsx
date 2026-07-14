@@ -3,12 +3,12 @@
 import * as React from "react"
 import { ThemeProvider as NextThemesProvider } from "next-themes"
 
+// DESIGN.md §9: the landing is light-only — a letter is paper.
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <NextThemesProvider
       attribute="class"
-      defaultTheme="light"
-      enableSystem
+      forcedTheme="light"
       disableTransitionOnChange
       enableColorScheme
     >

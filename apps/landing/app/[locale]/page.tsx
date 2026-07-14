@@ -3,12 +3,15 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { isLocale } from "@mailtobills/i18n";
 
+import { CarimboDefs } from "@mailtobills/ui/components/carimbo";
+
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { ExportSection } from "@/components/sections/export-section";
 import { Faq } from "@/components/sections/faq";
-import { Features } from "@/components/sections/features";
 import { FinalCta } from "@/components/sections/final-cta";
 import { Hero } from "@/components/sections/hero";
+import { Honesty } from "@/components/sections/honesty";
 import { HowItWorks } from "@/components/sections/how-it-works";
 import { Pricing } from "@/components/sections/pricing";
 
@@ -34,11 +37,13 @@ export default async function Page({
       >
         {t("skipToContent")}
       </a>
+      <CarimboDefs />
       <SiteHeader />
       <main id="main-content" className="flex-1" tabIndex={-1}>
         <Hero />
         <HowItWorks />
-        <Features />
+        <ExportSection />
+        <Honesty />
         <Pricing />
         <Faq />
         <FinalCta />

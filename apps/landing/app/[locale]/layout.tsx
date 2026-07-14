@@ -78,10 +78,8 @@ export async function generateMetadata({
 }
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f3f1ea" },
-    { media: "(prefers-color-scheme: dark)", color: "#1b1c17" },
-  ],
+  // Landing is light-only (DESIGN.md §9): paper in both schemes.
+  themeColor: "#f4f1e8",
 };
 
 export default async function LocaleLayout({

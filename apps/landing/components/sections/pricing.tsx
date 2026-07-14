@@ -1,102 +1,111 @@
-import { Check } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
-import { Badge } from "@mailtobills/ui/components/badge";
 import { Button } from "@mailtobills/ui/components/button";
 import { cn } from "@mailtobills/ui/lib/utils";
 
-import { SectionEyebrow } from "@/components/section-eyebrow";
 import { signUpUrl } from "@/lib/links";
 
+/* Two tariffs on one rate card. Plan truths come from CONTEXT.md:
+   the Free Plan collects UNLIMITED documents (it is not a trial). */
 export async function Pricing() {
   const t = await getTranslations("Pricing");
   const plans = [
     {
-      key: "starter",
+      key: "free",
       highlighted: false,
       features: [
-        t("starter.features.address"),
-        t("starter.features.limit"),
-        t("starter.features.dashboard"),
-        t("starter.features.export"),
+        "free.features.address",
+        "free.features.unlimited",
+        "free.features.dashboard",
+        "free.features.export",
       ],
     },
     {
       key: "pro",
       highlighted: true,
       features: [
-        t("pro.features.starter"),
-        t("pro.features.unlimited"),
-        t("pro.features.export"),
-        t("pro.features.support"),
-        t("pro.features.access"),
+        "pro.features.free",
+        "pro.features.send",
+        "pro.features.schedule",
+        "pro.features.addresses",
       ],
     },
   ] as const;
 
   return (
-    <section id="pricing" className="scroll-mt-14 border-b">
-      <div className="mx-auto max-w-6xl px-6 py-16 sm:py-20">
-        <div className="mx-auto max-w-2xl space-y-3 text-center">
-          <SectionEyebrow>{t("eyebrow")}</SectionEyebrow>
-          <h2 className="text-3xl font-semibold tracking-tight text-balance">
+    <section
+      id="pricing"
+      className="scroll-mt-16 border-b border-border bg-secondary"
+    >
+      <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20">
+        <div className="max-w-2xl">
+          <h2 className="font-display text-2xl font-bold tracking-[0.11em] uppercase [font-stretch:86%] sm:text-[27px]">
             {t("title")}
           </h2>
-          <p className="text-muted-foreground text-pretty">
+          <p className="mt-3 text-lg text-muted-foreground">
             {t("description")}
           </p>
         </div>
-        <div className="mx-auto mt-12 grid max-w-3xl gap-4 md:grid-cols-2">
+
+        <div className="mt-10 grid max-w-3xl gap-6 md:grid-cols-2">
           {plans.map((plan) => (
             <div
               key={plan.key}
               className={cn(
-                "bg-card relative flex flex-col rounded-xl border p-6 shadow-xs",
-                plan.highlighted && "border-primary/40 shadow-md",
+                "relative flex flex-col border bg-background p-7",
+                plan.highlighted
+                  ? "border-[1.5px] border-foreground shadow-[6px_6px_0_0_oklch(0.27_0.025_268/0.13)]"
+                  : "border-border",
               )}
             >
-              {plan.highlighted ? (
-                <Badge className="absolute -top-2.5 right-6 rounded-full px-2.5 font-mono text-[10px] tracking-[0.08em] uppercase">
-                  {t("highlight")}
-                </Badge>
-              ) : null}
-              <h3 className="text-base font-semibold">
-                {t(`${plan.key}.name`)}
-              </h3>
-              <div className="mt-3 flex items-baseline gap-1.5">
-                <span className="text-4xl font-semibold tracking-tight tabular-nums">
+              <div className="flex items-baseline justify-between gap-3">
+                <h3 className="font-display text-[15px] font-bold tracking-[0.12em] uppercase [font-stretch:88%]">
+                  {t(`${plan.key}.name`)}
+                </h3>
+                {plan.highlighted && (
+                  <span className="font-mono text-[10px] tracking-[0.1em] text-muted-foreground uppercase">
+                    {t("highlight")}
+                  </span>
+                )}
+              </div>
+              <div className="mt-4 flex items-baseline gap-2 border-b border-border pb-5">
+                <span className="font-mono text-4xl font-bold tabular-nums">
                   {t(`${plan.key}.price`)}
                 </span>
-                <span className="text-muted-foreground text-sm">
+                <span className="font-mono text-[12px] text-muted-foreground">
                   {t(`${plan.key}.period`)}
                 </span>
               </div>
-              <p className="text-muted-foreground mt-2 text-sm">
+              <p className="mt-4 text-sm text-muted-foreground">
                 {t(`${plan.key}.description`)}
               </p>
-              <ul className="mt-6 flex-1 space-y-2.5">
+              <ul className="mt-5 flex-1">
                 {plan.features.map((feature) => (
-                  <li key={feature} className="flex items-start gap-2 text-sm">
-                    <Check
-                      className="text-primary mt-0.5 size-4 shrink-0"
+                  <li
+                    key={feature}
+                    className="flex items-baseline gap-3 border-b border-border py-2.5 text-sm last:border-b-0"
+                  >
+                    <span
+                      className="font-mono text-[11px] font-bold text-primary"
                       aria-hidden
-                    />
-                    {feature}
+                    >
+                      ✓
+                    </span>
+                    {t(feature)}
                   </li>
                 ))}
               </ul>
               <Button
                 asChild
                 variant={plan.highlighted ? "default" : "outline"}
-                typography="mono"
-                className="mt-6 w-full"
+                className="mt-7 w-full"
               >
                 <a href={signUpUrl}>{t(`${plan.key}.cta`)}</a>
               </Button>
             </div>
           ))}
         </div>
-        <p className="text-muted-foreground mt-6 text-center text-sm">
+        <p className="mt-6 font-mono text-[11px] tracking-[0.08em] text-muted-foreground">
           {t("note")}
         </p>
       </div>
