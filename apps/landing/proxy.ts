@@ -14,10 +14,19 @@ const landingPagePaths = new Set([
     .map((locale) => `/${locale}`),
 ]);
 
+// Design-lab specimens for the redesign (DESIGN.md); not linked from the site.
+const labPagePaths = new Set([
+  "/lab",
+  ...supportedLocales
+    .filter((locale) => locale !== defaultLocale)
+    .map((locale) => `/${locale}/lab`),
+]);
+
 export default function proxy(request: NextRequest) {
   const response = handleI18nRouting(request);
   const pathname = request.nextUrl.pathname;
-  const isLandingPage = landingPagePaths.has(pathname);
+  const isLandingPage =
+    landingPagePaths.has(pathname) || labPagePaths.has(pathname);
 
   if (isLandingPage || (response.status >= 300 && response.status < 400)) {
     return response;

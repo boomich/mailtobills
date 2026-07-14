@@ -1,0 +1,709 @@
+/*
+ * CARIMBO lab specimen — self-contained styles, scoped under .lab.
+ * Encodes DESIGN.md: paper/ink palette (§4), three type registers (§5),
+ * ink rules not gray hairlines (§4), radius-0 paper (§9), the thunk (§8).
+ * Landing is light-only (§9).
+ */
+
+.lab {
+  /* §4 palette — draft values under specimen review */
+  --paper: oklch(0.958 0.012 88);
+  --paper-raised: oklch(0.985 0.006 92);
+  --kraft: oklch(0.86 0.045 82);
+  --ink: oklch(0.27 0.025 268);
+  --ink-muted: oklch(0.49 0.02 268);
+  --postal: oklch(0.44 0.12 262);
+  --stamp: oklch(0.45 0.16 302);
+  --signal: oklch(0.55 0.19 27);
+
+  /* rules are ink, never gray (§4) */
+  --rule-minor: color-mix(in oklab, var(--ink) 25%, transparent);
+  --rule: var(--ink);
+
+  --sans: var(--font-public), "Public Sans", system-ui, sans-serif;
+  --display: var(--font-archivo), "Archivo", var(--sans);
+  --typewriter: var(--font-courier), "Courier Prime", "Courier New", monospace;
+
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.55;
+  min-height: 100vh;
+  padding: clamp(24px, 5vw, 72px) clamp(16px, 4vw, 48px);
+  -webkit-font-smoothing: antialiased;
+}
+
+.lab *,
+.lab *::before,
+.lab *::after {
+  box-sizing: border-box;
+  border-radius: 0; /* §9: paper is sharp */
+}
+
+.lab .mono {
+  font-family: var(--typewriter);
+}
+
+.lab__sheet {
+  max-width: 1020px;
+  margin: 0 auto;
+  background: var(--paper-raised);
+  border: 1px solid var(--rule);
+  box-shadow: 4px 4px 0 color-mix(in oklab, var(--ink) 14%, transparent);
+  padding: clamp(24px, 4vw, 56px);
+}
+
+/* ---------------------------------------------------------------- masthead */
+
+.masthead {
+  display: flex;
+  align-items: center;
+  gap: clamp(20px, 4vw, 44px);
+  flex-wrap: wrap;
+  padding-bottom: 32px;
+  border-bottom: 2.5px solid var(--rule);
+}
+
+.masthead__mark {
+  color: var(--ink);
+  flex-shrink: 0;
+}
+
+.masthead__title {
+  font-family: var(--display);
+  font-weight: 800;
+  font-stretch: 118%;
+  font-size: clamp(40px, 7vw, 68px);
+  line-height: 0.95;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.masthead__sub {
+  margin: 10px 0 6px;
+  font-size: 17px;
+  color: var(--ink-muted);
+}
+
+.masthead__mod {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--ink-muted);
+}
+
+/* ---------------------------------------------------------------- sections */
+
+.section {
+  padding: 40px 0 48px;
+  border-bottom: 1px solid var(--rule-minor);
+}
+
+.section:last-of-type {
+  border-bottom: none;
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.section-head__n {
+  font-family: var(--typewriter);
+  font-weight: 700;
+  font-size: 14px;
+  border: 1.5px solid var(--rule);
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+}
+
+.section-head__title {
+  font-family: var(--display);
+  font-weight: 700;
+  font-stretch: 86%;
+  font-size: 21px;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.section-head__note {
+  margin-left: auto;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--ink-muted);
+}
+
+.section__lede {
+  max-width: 56ch;
+  margin: 0 0 26px;
+  color: var(--ink-muted);
+}
+
+.section__lede em {
+  font-style: normal;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.field-label {
+  font-family: var(--display);
+  font-weight: 600;
+  font-stretch: 80%;
+  font-size: 11.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+/* ------------------------------------------------------------- stamp demo */
+
+.stamp-demo {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 32px;
+  align-items: start;
+}
+
+.sheet {
+  border: 1px solid var(--rule);
+  background: var(--paper-raised);
+  padding: 20px 24px 24px;
+  position: relative;
+  min-height: 220px;
+}
+
+/* ruled where you write: the ruling lives on the meta block so every
+   32px line box sits exactly on its rule */
+.sheet__meta {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 18px;
+  row-gap: 0;
+  align-items: baseline;
+  max-width: 75%;
+  line-height: 32px;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 30px,
+    var(--rule-minor) 30px,
+    var(--rule-minor) 31px,
+    transparent 31px,
+    transparent 32px
+  );
+}
+
+.sheet__meta .field-label {
+  line-height: 32px;
+}
+
+.sheet__meta .mono {
+  font-size: 13.5px;
+  overflow-wrap: anywhere;
+}
+
+.sheet__stamp-area {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  width: 190px;
+  min-height: 84px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.sheet__status {
+  margin: 26px 0 0;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  color: var(--ink-muted);
+}
+
+.stamp-demo__side {
+  display: grid;
+  gap: 24px;
+  align-content: start;
+}
+
+.stamp-demo__controls {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.spec-notes {
+  margin: 0;
+  display: grid;
+  gap: 10px;
+  border-top: 1px solid var(--rule-minor);
+  padding-top: 18px;
+}
+
+.spec-notes > div {
+  display: grid;
+  grid-template-columns: 132px 1fr;
+  gap: 12px;
+  align-items: baseline;
+}
+
+.spec-notes dt {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--ink-muted);
+}
+
+.spec-notes dd {
+  margin: 0;
+  font-size: 11.5px;
+  line-height: 1.5;
+}
+
+/* the Carimbo (§7) */
+
+.carimbo {
+  --carimbo-color: var(--stamp);
+  color: var(--carimbo-color);
+  border: 2.5px solid currentColor;
+  padding: 8px 16px 9px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  transform: rotate(var(--jitter, -1.2deg));
+  mix-blend-mode: multiply;
+  filter: url(#ink-rough);
+  background: transparent;
+}
+
+.carimbo--signal {
+  --carimbo-color: var(--signal);
+}
+
+.carimbo--ink {
+  --carimbo-color: var(--ink);
+}
+
+.carimbo__word {
+  font-family: var(--display);
+  font-weight: 800;
+  font-stretch: 88%;
+  font-size: 20px;
+  letter-spacing: 0.18em;
+  line-height: 1.1;
+}
+
+.carimbo__date {
+  font-family: var(--typewriter);
+  font-weight: 700;
+  font-size: 12.5px;
+  letter-spacing: 0.12em;
+}
+
+.carimbo__ref {
+  font-family: var(--typewriter);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  opacity: 0.85;
+}
+
+/* the thunk (§8): pressed, not faded */
+
+.carimbo--thunk {
+  animation: thunk 210ms cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+
+@keyframes thunk {
+  0% {
+    opacity: 0;
+    transform: rotate(var(--jitter, -1.2deg)) scale(1.22);
+  }
+  40% {
+    opacity: 1;
+  }
+  55% {
+    transform: rotate(var(--jitter, -1.2deg)) scale(0.965);
+  }
+  78% {
+    transform: rotate(var(--jitter, -1.2deg)) scale(1.015);
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(var(--jitter, -1.2deg)) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carimbo--thunk {
+    animation: none; /* §8: instant print */
+  }
+}
+
+.stamp-tones {
+  display: flex;
+  gap: 36px;
+  flex-wrap: wrap;
+  margin-top: 40px;
+  padding-top: 28px;
+  border-top: 1px solid var(--rule-minor);
+}
+
+.stamp-tones figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.stamp-tones figcaption {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--ink-muted);
+  max-width: 24ch;
+}
+
+/* ----------------------------------------------------------------- plates */
+
+.plates {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 20px;
+}
+
+.plate {
+  margin: 0;
+  border: 1px solid var(--rule);
+}
+
+.plate__color {
+  height: 84px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.plate figcaption {
+  padding: 10px 12px 12px;
+  display: grid;
+  gap: 2px;
+}
+
+.plate__name {
+  font-weight: 700;
+  font-size: 12.5px;
+}
+
+.plate__role {
+  font-size: 12.5px;
+  color: var(--ink-muted);
+}
+
+.plate__value {
+  font-size: 10.5px;
+  color: var(--ink-muted);
+}
+
+/* ------------------------------------------------------------------- type */
+
+.type-rows {
+  display: grid;
+  gap: 28px;
+  margin-bottom: 36px;
+}
+
+.type-row {
+  display: grid;
+  gap: 10px;
+}
+
+.type-row__tag {
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  color: var(--ink-muted);
+}
+
+.type-row__display {
+  font-family: var(--display);
+  font-weight: 750;
+  font-stretch: 108%;
+  font-size: clamp(30px, 4.6vw, 46px);
+  line-height: 1.04;
+  letter-spacing: -0.012em;
+  margin: 0;
+  max-width: 22ch;
+}
+
+.type-row__body {
+  font-size: 17px;
+  margin: 0;
+  max-width: 58ch;
+}
+
+.type-row__mono {
+  font-size: 14px;
+  margin: 0;
+  line-height: 1.7;
+}
+
+.form-block {
+  border: 1px solid var(--rule);
+  padding: 18px 20px 16px;
+  display: grid;
+  gap: 10px;
+  max-width: 560px;
+}
+
+.copy-field {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1.5px solid var(--rule);
+  padding-bottom: 8px;
+}
+
+.copy-field__value {
+  font-size: 15px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.copy-field .btn {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.form-block__hint {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--ink-muted);
+}
+
+/* --------------------------------------------------------------- manifest */
+
+.manifest-wrap {
+  overflow-x: auto;
+}
+
+.manifest {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+.manifest th {
+  font-family: var(--display);
+  font-weight: 600;
+  font-stretch: 80%;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-align: left;
+  color: var(--ink-muted);
+  padding: 0 14px 8px 0;
+  border-bottom: 2px solid var(--rule);
+}
+
+.manifest td {
+  padding: 9px 14px 9px 0;
+  border-bottom: 1px solid var(--rule-minor);
+  overflow-wrap: anywhere;
+}
+
+.manifest td:first-child {
+  white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------- dossier */
+
+.dossier__tabs {
+  display: flex;
+  gap: 6px;
+  padding-left: 14px;
+  overflow-x: auto;
+}
+
+.dossier__tab {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 11px 26px 10px;
+  background: var(--kraft);
+  border: 1px solid var(--rule);
+  border-bottom: none;
+  clip-path: polygon(8px 0, calc(100% - 8px) 0, 100% 100%, 0 100%);
+  font-family: var(--display);
+  font-weight: 700;
+  font-stretch: 86%;
+  font-size: 14.5px;
+  letter-spacing: 0.12em;
+  color: color-mix(in oklab, var(--ink) 78%, var(--kraft));
+  position: relative;
+  top: 1px;
+}
+
+.dossier__tab-count {
+  font-size: 11px;
+  font-weight: 400;
+  color: color-mix(in oklab, var(--ink) 60%, var(--kraft));
+}
+
+.dossier__tab--active .dossier__tab-count {
+  color: var(--ink-muted);
+}
+
+.dossier__tab--active {
+  background: var(--paper-raised);
+  color: var(--ink);
+  z-index: 1;
+}
+
+.dossier__folder {
+  border: 1px solid var(--rule);
+  padding: 22px 24px;
+  background: var(--paper-raised);
+}
+
+.dossier__folder-head {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.dossier__folder-title {
+  font-family: var(--display);
+  font-weight: 750;
+  font-stretch: 105%;
+  font-size: 26px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.dossier__folder-meta {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--ink-muted);
+}
+
+.dossier__folder-hint {
+  margin: 12px 0 0;
+  font-size: 13.5px;
+  color: var(--ink-muted);
+  max-width: 52ch;
+}
+
+/* ---------------------------------------------------------------- buttons */
+
+.btn {
+  font-family: var(--display);
+  font-weight: 700;
+  font-stretch: 88%;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 11px 22px;
+  border: 1.5px solid var(--ink);
+  background: var(--paper-raised);
+  color: var(--ink);
+  cursor: pointer;
+  transition: transform 130ms cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+.btn:hover:not(:disabled) {
+  transform: translate(-1px, -1px);
+  box-shadow: 2px 2px 0 color-mix(in oklab, var(--ink) 30%, transparent);
+}
+
+.btn:active:not(:disabled) {
+  transform: translate(0, 0);
+  box-shadow: none;
+}
+
+.btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--postal);
+  outline-offset: 2px;
+}
+
+.btn--postal {
+  background: var(--postal);
+  border-color: var(--postal);
+  color: var(--paper-raised);
+}
+
+.btn--ghost {
+  border-color: var(--rule-minor);
+}
+
+.btn--small {
+  padding: 6px 14px;
+  font-size: 11px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn {
+    transition: none;
+  }
+}
+
+/* ----------------------------------------------------------------- footer */
+
+.lab__footer {
+  margin-top: 8px;
+  padding-top: 26px;
+  border-top: 2.5px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.lab__footer .mono {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--ink-muted);
+}
+
+.lab__footer-mark {
+  color: var(--stamp);
+  width: 76px;
+  height: 76px;
+}
+
+/* --------------------------------------------------------------- responsive */
+
+@media (max-width: 760px) {
+  .stamp-demo {
+    grid-template-columns: 1fr;
+  }
+
+  .sheet__meta {
+    max-width: 100%;
+  }
+
+  .sheet__stamp-area {
+    position: static;
+    justify-content: flex-start;
+    margin-top: 18px;
+    min-height: 0;
+  }
+
+  .section-head__note {
+    margin-left: 42px;
+    width: 100%;
+  }
+}
