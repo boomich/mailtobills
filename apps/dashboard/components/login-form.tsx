@@ -8,10 +8,11 @@ import { useAuthActions } from "@convex-dev/auth/react";
 import { useTranslations } from "next-intl";
 
 import { cn } from "@mailtobills/ui/lib/utils";
-import { Logo } from "@mailtobills/ui/components/logo";
 import { Input } from "@mailtobills/ui/components/input";
 import { Button } from "@mailtobills/ui/components/button";
+import { Carimbo } from "@mailtobills/ui/components/carimbo";
 import { Card, CardContent } from "@mailtobills/ui/components/card";
+import { PostmarkMini } from "@mailtobills/ui/components/postmark";
 import { LocaleSelect } from "@/components/locale-select";
 
 import {
@@ -180,25 +181,44 @@ export function LoginForm({
   };
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card className="overflow-hidden p-0">
+    <div className={cn("flex flex-col gap-4", className)} {...props}>
+      <Card className="overflow-hidden rounded-none border border-foreground bg-background p-0 shadow-[8px_8px_0_0_oklch(0.27_0.025_268/0.12)]">
         <CardContent className="grid p-0 md:grid-cols-2">
-          <form className="p-6 md:p-8" onSubmit={handlePasswordSubmit}>
-            <FieldGroup>
-              <div className="ml-auto w-full max-w-44">
-                <LocaleSelect id="auth-language" label={t("language")} />
+          <form className="p-6 sm:p-8 md:p-10" onSubmit={handlePasswordSubmit}>
+            <FieldGroup className="gap-6">
+              <div className="flex items-start justify-between gap-4 border-b border-foreground pb-4">
+                <div className="flex items-center gap-2.5">
+                  <PostmarkMini className="size-6 shrink-0 text-foreground" />
+                  <span className="font-display text-[15px] font-bold tracking-[0.02em] [font-stretch:105%]">
+                    MailToBills
+                  </span>
+                </div>
+                <div className="w-full max-w-32 [&_label]:font-display [&_label]:text-[11px] [&_label]:font-semibold [&_label]:tracking-[0.12em] [&_label]:text-muted-foreground [&_label]:uppercase [&_label]:[font-stretch:80%] [&_select]:rounded-none [&_select]:border-foreground [&_select]:bg-background [&_select]:font-mono [&_select]:text-xs [&_select]:shadow-none">
+                  <LocaleSelect id="auth-language" label={t("language")} />
+                </div>
               </div>
-              <div className="flex flex-col items-center gap-2 text-center">
-                <h1 className="text-2xl font-bold">
+              <div
+                className="-mt-3 font-mono text-[10px] tracking-[0.14em] text-muted-foreground uppercase"
+                aria-hidden
+              >
+                BALCÃO · VIA POSTAL
+              </div>
+              <div className="flex flex-col gap-2">
+                <h1 className="font-display text-3xl leading-none font-extrabold tracking-[-0.015em] [font-stretch:105%]">
                   {mode === "signIn" ? t("signInTitle") : t("signUpTitle")}
                 </h1>
-                <p className="text-muted-foreground text-balance">
+                <p className="max-w-[44ch] text-[15px] leading-relaxed text-muted-foreground">
                   {heroSubtitle}
                 </p>
               </div>
 
               <Field>
-                <FieldLabel htmlFor="email">{t("email")}</FieldLabel>
+                <FieldLabel
+                  className="font-display text-[11.5px] font-semibold tracking-[0.14em] text-muted-foreground uppercase [font-stretch:80%]"
+                  htmlFor="email"
+                >
+                  {t("email")}
+                </FieldLabel>
                 <Input
                   id="email"
                   type="email"
@@ -212,7 +232,12 @@ export function LoginForm({
               </Field>
               <Field>
                 <div className="flex items-center">
-                  <FieldLabel htmlFor="password">{t("password")}</FieldLabel>
+                  <FieldLabel
+                    className="font-display text-[11.5px] font-semibold tracking-[0.14em] text-muted-foreground uppercase [font-stretch:80%]"
+                    htmlFor="password"
+                  >
+                    {t("password")}
+                  </FieldLabel>
                   {/* {mode === "signIn" && (
                     <a
                       href="#"
@@ -262,11 +287,11 @@ export function LoginForm({
                 ) : null}
               </Field>
 
-              <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
+              <FieldSeparator className="*:data-[slot=field-separator-content]:bg-background [&_[data-slot=field-separator-content]]:font-mono [&_[data-slot=field-separator-content]]:text-[11px] [&_[data-slot=field-separator-content]]:tracking-[0.1em] [&_[data-slot=field-separator-content]]:uppercase">
                 {t("continueWith")}
               </FieldSeparator>
 
-              <Field className="flex flex-col gap-4">
+              <Field className="flex flex-col gap-3">
                 <Button
                   variant="outline"
                   type="button"
@@ -318,10 +343,10 @@ export function LoginForm({
               {(errorMessage || successMessage) && (
                 <div
                   className={cn(
-                    "rounded-md border px-3 py-2 text-sm",
+                    "rounded-none border px-3 py-2 text-sm",
                     errorMessage
-                      ? "border-red-200 bg-red-50 text-red-700"
-                      : "border-green-200 bg-green-50 text-green-700",
+                      ? "border-destructive bg-destructive/10 text-destructive"
+                      : "border-foreground bg-secondary text-foreground",
                   )}
                   role="status"
                   aria-live="polite"
@@ -330,7 +355,7 @@ export function LoginForm({
                 </div>
               )}
 
-              <FieldDescription className="text-center">
+              <FieldDescription className="text-center text-[13px]">
                 {mode === "signIn" ? (
                   <>
                     {t("newCustomer")}{" "}
@@ -363,24 +388,25 @@ export function LoginForm({
               </FieldDescription>
             </FieldGroup>
           </form>
-          <div className="bg-sidebar relative hidden p-4 md:block">
-            <div className="flex h-full flex-col items-center justify-center rounded-lg border border-dashed">
-              <div className="flex items-center gap-3">
-                <span className="bg-primary text-primary-foreground flex size-12 items-center justify-center rounded-lg">
-                  <Logo className="size-8" />
-                </span>
-                <h1 className="text-foreground text-3xl font-bold tracking-tight">
-                  MailToBills
-                </h1>
-              </div>
-              <div className="flex flex-col gap-2 p-12">
-                <p className="text-muted-foreground font-mono text-[11px] font-medium tracking-[0.08em] uppercase">
+          <div className="relative hidden border-l border-foreground bg-secondary p-10 md:flex md:flex-col md:justify-between">
+            <div className="font-mono text-[10px] tracking-[0.14em] text-muted-foreground uppercase">
+              M/2026-07 · REGISTO DE ACESSO
+            </div>
+            <div className="flex flex-col items-start gap-7">
+              <Carimbo
+                id="signin"
+                date="14 JUL 2026"
+                refLine="M/2026-07"
+                tone="stamp"
+              />
+              <div className="flex max-w-sm flex-col gap-3 border-t border-foreground pt-5">
+                <p className="font-mono text-[11px] font-medium tracking-[0.1em] text-muted-foreground uppercase">
                   {t("tagline")}
                 </p>
-                <h2 className="text-foreground text-2xl font-bold tracking-tight">
+                <h2 className="font-display text-3xl leading-none font-extrabold tracking-[-0.015em] [font-stretch:105%]">
                   {t("heroTitle")}
                 </h2>
-                <p className="text-muted-foreground max-w-2xl text-base">
+                <p className="text-[15px] leading-relaxed text-muted-foreground">
                   {t("heroDescription")}
                 </p>
               </div>
@@ -388,7 +414,7 @@ export function LoginForm({
           </div>
         </CardContent>
       </Card>
-      <FieldDescription className="px-6 text-center">
+      <FieldDescription className="px-6 text-center text-[12px]">
         {t("legal")}
       </FieldDescription>
     </div>

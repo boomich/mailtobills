@@ -1,3 +1,5 @@
+import { CarimboDefs } from "@mailtobills/ui/components/carimbo";
+
 import { LoginForm } from "@/components/login-form";
 
 type PageProps = {
@@ -17,9 +19,10 @@ export default async function SignInPage({ searchParams }: PageProps) {
     <main
       id="main-content"
       tabIndex={-1}
-      className="bg-muted flex min-h-svh flex-col items-center justify-center p-6 md:p-10"
+      className="bg-secondary flex min-h-svh flex-col items-center justify-center p-5 sm:p-8 md:p-10"
     >
-      <div className="w-full max-w-sm md:max-w-4xl">
+      <CarimboDefs />
+      <div className="w-full max-w-4xl">
         <LoginForm initialMode={initialMode} />
       </div>
     </main>
