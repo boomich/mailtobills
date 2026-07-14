@@ -146,26 +146,36 @@
     "Public Sans", system-ui, sans-serif;
 }
 
-/* Sliding <details> (DESIGN.md §8): 180ms micro, reduced motion = instant.
-   Older engines without ::details-content fall back to instant open. */
+/* Sliding <details> (DESIGN.md §8): asymmetric — opening gets room to
+   breathe (240ms), closing is snappy (160ms); the ink fades in trailing the
+   height. Reduced motion = instant. Engines without ::details-content fall
+   back to instant open. */
 .details-slide {
   interpolate-size: allow-keywords;
 }
 
 .details-slide::details-content {
   block-size: 0;
+  opacity: 0;
   overflow-y: clip;
   transition:
-    block-size 180ms cubic-bezier(0.2, 0.7, 0.3, 1),
-    content-visibility 180ms allow-discrete;
+    block-size 160ms var(--ease-out-strong),
+    opacity 100ms ease,
+    content-visibility 160ms allow-discrete;
 }
 
 .details-slide[open]::details-content {
   block-size: auto;
+  opacity: 1;
+  transition:
+    block-size 240ms var(--ease-out-strong),
+    opacity 200ms ease 40ms,
+    content-visibility 240ms allow-discrete;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .details-slide::details-content {
+  .details-slide::details-content,
+  .details-slide[open]::details-content {
     transition: none;
   }
 }
@@ -202,6 +212,13 @@
 }
 
 @layer base {
+  :root {
+    /* DESIGN.md §8 house curves: strong ease-out for enters/exits,
+       the thunk curve for pressed things. */
+    --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-thunk: cubic-bezier(0.2, 0.7, 0.3, 1);
+  }
+
   * {
     @apply border-border outline-ring/50;
   }

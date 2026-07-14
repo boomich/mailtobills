@@ -47,7 +47,7 @@ export async function ExportSection() {
 
         <figure className="relative mx-auto w-full max-w-[420px] lg:mt-2">
           <div
-            className="relative grid rotate-[0.6deg] gap-3 border-[1.5px] border-foreground bg-kraft p-6 shadow-[6px_6px_0_0_oklch(0.27_0.025_268/0.13)] sm:p-7"
+            className="relative grid rotate-[0.6deg] gap-3 border-[1.5px] border-foreground bg-kraft p-6 shadow-[6px_6px_0_0_oklch(0.27_0.025_268/0.13)] transition-[rotate,translate,box-shadow] duration-200 ease-[var(--ease-out-strong)] hover:-translate-y-1 hover:rotate-0 hover:shadow-[10px_10px_0_0_oklch(0.27_0.025_268/0.13)] motion-reduce:transition-none motion-reduce:hover:translate-0 motion-reduce:hover:rotate-[0.6deg] sm:p-7"
             aria-hidden
           >
             <span className="font-display text-[11.5px] font-semibold tracking-[0.16em] text-foreground/70 uppercase [font-stretch:80%]">

@@ -26,7 +26,7 @@ export async function Faq() {
             <summary className="flex cursor-pointer list-none items-baseline justify-between gap-4 py-4.5 text-[15px] font-semibold [&::-webkit-details-marker]:hidden">
               {t(`items.${key}.question`)}
               <ChevronDown
-                className="size-4 shrink-0 self-center text-muted-foreground transition-transform duration-200 group-open:rotate-180 motion-reduce:transition-none"
+                className="size-4 shrink-0 self-center text-muted-foreground transition-transform duration-[240ms] ease-[var(--ease-out-strong)] group-open:rotate-180 motion-reduce:transition-none"
                 aria-hidden
               />
             </summary>

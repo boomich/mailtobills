@@ -77,19 +77,26 @@ test.describe("no blank first paint", () => {
 });
 
 // DESIGN.md §11 feel regression: FAQ panels slide open (§8 micro-motion),
-// they do not snap.
+// they do not snap — asymmetric (close 160ms, open 240ms) with the ink
+// fading in alongside the height.
 test("faq details animate their content", async ({ page }) => {
   await page.goto("/");
 
-  const transition = await page
-    .locator("#faq details")
-    .first()
-    .evaluate((el) => {
-      const styles = getComputedStyle(el, "::details-content");
-      return `${styles.transitionProperty} ${styles.transitionDuration}`;
-    });
-  expect(transition).toContain("block-size");
-  expect(transition).toContain("0.18s");
+  const details = page.locator("#faq details").first();
+  const closed = await details.evaluate((el) => {
+    const styles = getComputedStyle(el, "::details-content");
+    return `${styles.transitionProperty} ${styles.transitionDuration}`;
+  });
+  expect(closed).toContain("block-size");
+  expect(closed).toContain("opacity");
+  expect(closed).toContain("0.16s");
+
+  await details.locator("summary").click();
+  const open = await details.evaluate((el) => {
+    const styles = getComputedStyle(el, "::details-content");
+    return styles.transitionDuration;
+  });
+  expect(open).toContain("0.24s");
 });
 
 for (const { cta, path, width } of [
