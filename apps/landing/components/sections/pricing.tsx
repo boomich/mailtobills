@@ -1,114 +1,121 @@
 import { getTranslations } from "next-intl/server";
 
 import { Button } from "@mailtobills/ui/components/button";
-import { cn } from "@mailtobills/ui/lib/utils";
 
+import { SectionHead } from "@/components/letter/section-head";
 import { signUpUrl } from "@/lib/links";
 
-/* Two tariffs on one rate card. Plan truths come from CONTEXT.md:
-   the Free Plan collects UNLIMITED documents (it is not a trial). */
+/* The rate card — pricing as a printed counter tariff, not SaaS cards.
+   Plan truths from CONTEXT.md: the Free Plan collects UNLIMITED documents. */
+const ROWS = [
+  { key: "address", free: true, pro: true },
+  { key: "unlimited", free: true, pro: true },
+  { key: "dashboards", free: true, pro: true },
+  { key: "manualExport", free: true, pro: true },
+  { key: "directSend", free: false, pro: true },
+  { key: "schedule", free: false, pro: true },
+  { key: "addresses", free: false, pro: true },
+] as const;
+
+function Mark({ included }: { included: boolean }) {
+  return included ? (
+    <span className="font-mono text-[13px] font-bold text-primary">✓</span>
+  ) : (
+    <span className="font-mono text-[13px] text-muted-foreground/50">—</span>
+  );
+}
+
 export async function Pricing() {
   const t = await getTranslations("Pricing");
-  const plans = [
-    {
-      key: "free",
-      highlighted: false,
-      features: [
-        "free.features.address",
-        "free.features.unlimited",
-        "free.features.dashboard",
-        "free.features.export",
-      ],
-    },
-    {
-      key: "pro",
-      highlighted: true,
-      features: [
-        "pro.features.free",
-        "pro.features.send",
-        "pro.features.schedule",
-        "pro.features.addresses",
-      ],
-    },
-  ] as const;
 
   return (
     <section
       id="pricing"
-      className="scroll-mt-16 border-b border-border bg-secondary"
+      className="scroll-mt-20 border-b border-border px-5 py-12 sm:px-10 sm:py-14 lg:px-14"
     >
-      <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20">
-        <div className="max-w-2xl">
-          <h2 className="font-display text-2xl font-bold tracking-[0.11em] uppercase [font-stretch:86%] sm:text-[27px]">
-            {t("title")}
-          </h2>
-          <p className="mt-3 text-lg text-muted-foreground">
-            {t("description")}
-          </p>
-        </div>
+      <SectionHead n="3" title={t("title")} note="EUR · IVA EXCL." />
+      <p className="mb-8 max-w-[52ch] text-lg text-muted-foreground">
+        {t("description")}
+      </p>
 
-        <div className="mt-10 grid max-w-3xl gap-6 md:grid-cols-2">
-          {plans.map((plan) => (
-            <div
-              key={plan.key}
-              className={cn(
-                "relative flex flex-col border bg-background p-7",
-                plan.highlighted
-                  ? "border-[1.5px] border-foreground shadow-[6px_6px_0_0_oklch(0.27_0.025_268/0.13)]"
-                  : "border-border",
-              )}
-            >
-              <div className="flex items-baseline justify-between gap-3">
-                <h3 className="font-display text-[15px] font-bold tracking-[0.12em] uppercase [font-stretch:88%]">
-                  {t(`${plan.key}.name`)}
-                </h3>
-                {plan.highlighted && (
-                  <span className="font-mono text-[10px] tracking-[0.1em] text-muted-foreground uppercase">
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[560px] border-collapse">
+          <thead>
+            <tr className="border-b-2 border-foreground">
+              <th className="w-[42%] pb-4 align-bottom" aria-hidden />
+              <th className="px-4 pb-4 text-left align-bottom" scope="col">
+                <span className="font-display text-[13px] font-bold tracking-[0.12em] uppercase [font-stretch:88%]">
+                  {t("free.name")}
+                </span>
+                <span className="mt-2 flex items-baseline gap-1.5">
+                  <span className="font-mono text-3xl font-bold tabular-nums">
+                    {t("free.price")}
+                  </span>
+                  <span className="font-mono text-[11px] text-muted-foreground">
+                    {t("free.period")}
+                  </span>
+                </span>
+              </th>
+              <th
+                className="border-x-[1.5px] border-t-[1.5px] border-foreground bg-secondary px-4 pt-3 pb-4 text-left align-bottom"
+                scope="col"
+              >
+                <span className="flex flex-wrap items-baseline justify-between gap-2">
+                  <span className="font-display text-[13px] font-bold tracking-[0.12em] uppercase [font-stretch:88%]">
+                    {t("pro.name")}
+                  </span>
+                  <span className="font-mono text-[9.5px] tracking-[0.1em] text-muted-foreground uppercase">
                     {t("highlight")}
                   </span>
-                )}
-              </div>
-              <div className="mt-4 flex items-baseline gap-2 border-b border-border pb-5">
-                <span className="font-mono text-4xl font-bold tabular-nums">
-                  {t(`${plan.key}.price`)}
                 </span>
-                <span className="font-mono text-[12px] text-muted-foreground">
-                  {t(`${plan.key}.period`)}
+                <span className="mt-2 flex items-baseline gap-1.5">
+                  <span className="font-mono text-3xl font-bold tabular-nums">
+                    {t("pro.price")}
+                  </span>
+                  <span className="font-mono text-[11px] text-muted-foreground">
+                    {t("pro.period")}
+                  </span>
                 </span>
-              </div>
-              <p className="mt-4 text-sm text-muted-foreground">
-                {t(`${plan.key}.description`)}
-              </p>
-              <ul className="mt-5 flex-1">
-                {plan.features.map((feature) => (
-                  <li
-                    key={feature}
-                    className="flex items-baseline gap-3 border-b border-border py-2.5 text-sm last:border-b-0"
-                  >
-                    <span
-                      className="font-mono text-[11px] font-bold text-primary"
-                      aria-hidden
-                    >
-                      ✓
-                    </span>
-                    {t(feature)}
-                  </li>
-                ))}
-              </ul>
-              <Button
-                asChild
-                variant={plan.highlighted ? "default" : "outline"}
-                className="mt-7 w-full"
-              >
-                <a href={signUpUrl}>{t(`${plan.key}.cta`)}</a>
-              </Button>
-            </div>
-          ))}
-        </div>
-        <p className="mt-6 font-mono text-[11px] tracking-[0.08em] text-muted-foreground">
-          {t("note")}
-        </p>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {ROWS.map((row) => (
+              <tr key={row.key} className="border-b border-border">
+                <th
+                  scope="row"
+                  className="py-3 pr-4 text-left text-[14px] leading-snug font-normal"
+                >
+                  {t(`rows.${row.key}`)}
+                </th>
+                <td className="px-4 py-3">
+                  <Mark included={row.free} />
+                </td>
+                <td className="border-x-[1.5px] border-foreground bg-secondary px-4 py-3">
+                  <Mark included={row.pro} />
+                </td>
+              </tr>
+            ))}
+            <tr>
+              <td aria-hidden />
+              <td className="px-4 py-5 align-top">
+                <Button asChild variant="outline" className="w-full">
+                  <a href={signUpUrl}>{t("free.cta")}</a>
+                </Button>
+              </td>
+              <td className="border-x-[1.5px] border-b-[1.5px] border-foreground bg-secondary px-4 py-5 align-top">
+                <Button asChild className="w-full">
+                  <a href={signUpUrl}>{t("pro.cta")}</a>
+                </Button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
+
+      <p className="mt-5 font-mono text-[11px] tracking-[0.08em] text-muted-foreground">
+        {t("note")}
+      </p>
     </section>
   );
 }

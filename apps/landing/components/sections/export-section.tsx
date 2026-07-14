@@ -2,8 +2,10 @@ import { getTranslations } from "next-intl/server";
 
 import { Postmark } from "@mailtobills/ui/components/postmark";
 
-/* The Handover, demoted from hero C (DESIGN.md §12): the deliverable itself —
-   one sealed month, shown proudly (§7: the manifest is not hidden). */
+import { SectionHead } from "@/components/letter/section-head";
+
+/* ANEXO A — the deliverable enclosed with the letter (DESIGN.md §7:
+   the manifest is shown proudly). */
 const MANIFEST_ROWS = [
   ["001", "acme-receipt-2026-06.pdf"],
   ["002", "invoice-A81F42-0033.pdf"],
@@ -18,17 +20,15 @@ export async function ExportSection() {
   return (
     <section
       id="export"
-      className="scroll-mt-16 border-b border-border bg-secondary"
+      className="scroll-mt-20 border-b border-border px-5 py-12 sm:px-10 sm:py-14 lg:px-14"
     >
-      <div className="mx-auto grid max-w-5xl items-center gap-12 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-[1fr_1.05fr] lg:gap-16">
+      <SectionHead n="2" title={t("title")} note="ANEXO A" />
+      <div className="grid items-start gap-10 lg:grid-cols-[1fr_1.02fr] lg:gap-14">
         <div>
-          <h2 className="font-display text-2xl font-bold tracking-[0.11em] uppercase [font-stretch:86%] sm:text-[27px]">
-            {t("title")}
-          </h2>
-          <p className="mt-3 max-w-[48ch] text-lg text-muted-foreground">
+          <p className="max-w-[46ch] text-lg text-muted-foreground">
             {t("description")}
           </p>
-          <ul className="mt-8 grid gap-0 border-t-2 border-foreground">
+          <ul className="mt-7 grid border-t-2 border-foreground">
             {bullets.map((bullet) => (
               <li
                 key={bullet}
@@ -45,9 +45,9 @@ export async function ExportSection() {
           </ul>
         </div>
 
-        <figure className="relative mx-auto w-full max-w-[440px]">
+        <figure className="relative mx-auto w-full max-w-[420px] lg:mt-2">
           <div
-            className="relative grid gap-3 border-[1.5px] border-foreground bg-kraft p-6 shadow-[6px_6px_0_0_oklch(0.27_0.025_268/0.13)] sm:p-7"
+            className="relative grid rotate-[0.6deg] gap-3 border-[1.5px] border-foreground bg-kraft p-6 shadow-[6px_6px_0_0_oklch(0.27_0.025_268/0.13)] sm:p-7"
             aria-hidden
           >
             <span className="font-display text-[11.5px] font-semibold tracking-[0.16em] text-foreground/70 uppercase [font-stretch:80%]">
@@ -59,7 +59,10 @@ export async function ExportSection() {
             <table className="w-full border-collapse border border-border bg-background font-mono">
               <tbody>
                 {MANIFEST_ROWS.map((row) => (
-                  <tr key={row[0]} className="border-b border-border last:border-b-0">
+                  <tr
+                    key={row[0]}
+                    className="border-b border-border last:border-b-0"
+                  >
                     <td className="w-11 px-3 py-1.5 text-[11px] whitespace-nowrap text-muted-foreground">
                       {row[0]}
                     </td>
@@ -73,7 +76,7 @@ export async function ExportSection() {
             <span className="font-mono text-[10px] tracking-[0.12em] text-foreground/70">
               12 PDFS · MANIFEST.CSV · ONE ZIP
             </span>
-            <div className="absolute -top-6 -right-1 text-stamp mix-blend-multiply [filter:url(#ink-rough)] sm:-top-8 sm:-right-6">
+            <div className="absolute -top-6 -right-1 text-stamp mix-blend-multiply [filter:url(#ink-rough)] sm:-top-8 sm:-right-5">
               <Postmark
                 withWaves={false}
                 date="JUL 26"

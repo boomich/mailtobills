@@ -33,7 +33,7 @@
     "addressHint": "You get yours at sign-up. Forwarding an email is the entire setup — no apps, no scanners, no folders."
   },
   "HowItWorks": {
-    "title": "From inbox to dossier",
+    "title": "How it works",
     "description": "If you can forward an email, you are done. Everything else is our job.",
     "steps": {
       "forward": {
@@ -51,7 +51,7 @@
     }
   },
   "ExportSection": {
-    "title": "What your accountant receives",
+    "title": "The export",
     "description": "The month-end handover, done properly. This is the package skeptical accountants ask about — so here it is.",
     "bullets": {
       "zip": "One ZIP per Collection Month — nothing to hunt for, nothing missing",
@@ -66,35 +66,30 @@
     "body": "No OCR. No AI guessing your VAT. Tools that promise magic cost €20–50 a month and still get numbers wrong. MailToBills does the boring part perfectly: your PDFs, certified, filed by month, and handed over cleanly. Your accountant does the accounting."
   },
   "Pricing": {
-    "title": "Cheaper than an hour of bookkeeping",
-    "description": "Start free with unlimited documents. Upgrade when you want the handover to run itself.",
+    "title": "Rate card",
+    "description": "Cheaper than an hour of bookkeeping. Start free with unlimited documents — upgrade when you want the handover to run itself.",
     "highlight": "Early-bird price",
     "note": "Prices in EUR, VAT excluded. Cancel anytime — your documents and exports stay yours.",
+    "rows": {
+      "address": "Your private Collection Address",
+      "unlimited": "Unlimited document collection",
+      "dashboards": "Monthly dossiers with primary PDFs",
+      "manualExport": "Manual ZIP + CSV manifest download",
+      "directSend": "Send exports directly to your accountant by email",
+      "schedule": "Export Schedule — automatic delivery every month",
+      "addresses": "Additional verified forwarding addresses"
+    },
     "free": {
       "name": "Free",
       "price": "€0",
       "period": "forever",
-      "description": "The full collect-and-export flow, without limits on how much you collect.",
-      "cta": "Start free",
-      "features": {
-        "address": "Your private Collection Address",
-        "unlimited": "Unlimited document collection",
-        "dashboard": "Monthly dossiers with primary PDFs",
-        "export": "Manual ZIP + CSV manifest download"
-      }
+      "cta": "Start free"
     },
     "pro": {
       "name": "Pro",
       "price": "€9",
       "period": "per month",
-      "description": "For businesses that close every month with an accountant.",
-      "cta": "Get Pro",
-      "features": {
-        "free": "Everything in Free",
-        "send": "Send exports directly to your accountant by email",
-        "schedule": "Export Schedule — automatic delivery every month",
-        "addresses": "Additional verified forwarding addresses"
-      }
+      "cta": "Get Pro"
     }
   },
   "Faq": {

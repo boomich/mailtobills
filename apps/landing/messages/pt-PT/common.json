@@ -33,7 +33,7 @@
     "addressHint": "Recebe o seu ao criar conta. Encaminhar um email é toda a configuração — sem apps, sem scanners, sem pastas."
   },
   "HowItWorks": {
-    "title": "Da caixa de entrada ao dossiê",
+    "title": "Como funciona",
     "description": "Se sabe encaminhar um email, já está. O resto é connosco.",
     "steps": {
       "forward": {
@@ -51,7 +51,7 @@
     }
   },
   "ExportSection": {
-    "title": "O que o seu contabilista recebe",
+    "title": "A exportação",
     "description": "O fecho do mês entregue como deve ser. Este é o pacote sobre o qual os contabilistas mais céticos perguntam — por isso aqui está.",
     "bullets": {
       "zip": "Um ZIP por mês de recolha — nada para procurar, nada em falta",
@@ -66,35 +66,30 @@
     "body": "Sem OCR. Sem IA a adivinhar o IVA. As ferramentas que prometem magia custam 20–50 € por mês e continuam a errar números. O MailToBills faz a parte aborrecida na perfeição: os seus PDFs, carimbados, arquivados por mês e entregues de forma limpa. A contabilidade fica com o contabilista."
   },
   "Pricing": {
-    "title": "Mais barato do que uma hora de contabilidade",
-    "description": "Comece grátis com documentos ilimitados. Suba de plano quando quiser que a entrega se faça sozinha.",
+    "title": "Tarifário",
+    "description": "Mais barato do que uma hora de contabilidade. Comece grátis com documentos ilimitados — suba de plano quando quiser que a entrega se faça sozinha.",
     "highlight": "Preço de lançamento",
     "note": "Preços em EUR, sem IVA. Cancele quando quiser — os seus documentos e exportações continuam seus.",
+    "rows": {
+      "address": "O seu endereço de recolha privado",
+      "unlimited": "Recolha ilimitada de documentos",
+      "dashboards": "Dossiês mensais com PDFs principais",
+      "manualExport": "Download manual de ZIP + manifesto CSV",
+      "directSend": "Envio das exportações diretamente ao contabilista por email",
+      "schedule": "Exportação agendada — entrega automática todos os meses",
+      "addresses": "Endereços de reencaminhamento adicionais verificados"
+    },
     "free": {
       "name": "Gratuito",
       "price": "0 €",
       "period": "para sempre",
-      "description": "O fluxo completo de recolha e exportação, sem limites de quantidade.",
-      "cta": "Começar grátis",
-      "features": {
-        "address": "O seu endereço de recolha privado",
-        "unlimited": "Recolha ilimitada de documentos",
-        "dashboard": "Dossiês mensais com PDFs principais",
-        "export": "Download manual de ZIP + manifesto CSV"
-      }
+      "cta": "Começar grátis"
     },
     "pro": {
       "name": "Pro",
       "price": "9 €",
       "period": "por mês",
-      "description": "Para negócios que fecham todos os meses com um contabilista.",
-      "cta": "Aderir ao Pro",
-      "features": {
-        "free": "Tudo o que está no Gratuito",
-        "send": "Envio das exportações diretamente ao contabilista por email",
-        "schedule": "Exportação agendada — entrega automática todos os meses",
-        "addresses": "Endereços de reencaminhamento adicionais verificados"
-      }
+      "cta": "Aderir ao Pro"
     }
   },
   "Faq": {
