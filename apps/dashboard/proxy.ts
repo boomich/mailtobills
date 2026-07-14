@@ -12,6 +12,8 @@ const isPublicRoute = createRouteMatcher([
   "/_next(.*)",
   "/favicon.ico",
   "/images(.*)",
+  // Design-lab prototypes (mock data only; the route 404s in production).
+  "/lab(.*)",
 ]);
 
 const isSignInRoute = createRouteMatcher(["/signin(.*)"]);
