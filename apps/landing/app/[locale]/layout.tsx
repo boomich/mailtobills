@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Archivo, Courier_Prime, Public_Sans } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import {
   getMessages,
@@ -13,14 +13,21 @@ import "@mailtobills/ui/globals.css";
 
 import { Providers } from "@/components/providers";
 
-const fontSans = Geist({
+const archivo = Archivo({
   subsets: ["latin"],
-  variable: "--font-sans",
+  axes: ["wdth"],
+  variable: "--font-archivo",
 });
 
-const fontMono = Geist_Mono({
+const publicSans = Public_Sans({
   subsets: ["latin"],
-  variable: "--font-mono",
+  variable: "--font-public",
+});
+
+const courier = Courier_Prime({
+  weight: ["400", "700"],
+  subsets: ["latin"],
+  variable: "--font-courier",
 });
 
 type LocaleLayoutProps = Readonly<{
@@ -94,7 +101,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} data-scroll-behavior="smooth" suppressHydrationWarning>
       <body
-        className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased`}
+        className={`${archivo.variable} ${publicSans.variable} ${courier.variable} font-sans antialiased`}
       >
         <NextIntlClientProvider locale={locale} messages={messages}>
           <Providers>{children}</Providers>
