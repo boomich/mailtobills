@@ -5,7 +5,7 @@
  * Landing is light-only (§9).
  */
 
-.lab {
+.carimbo-root {
   /* §4 palette — draft values under specimen review */
   --paper: oklch(0.958 0.012 88);
   --paper-raised: oklch(0.985 0.006 92);
@@ -30,19 +30,55 @@
   font-size: 16px;
   line-height: 1.55;
   min-height: 100vh;
-  padding: clamp(24px, 5vw, 72px) clamp(16px, 4vw, 48px);
   -webkit-font-smoothing: antialiased;
 }
 
-.lab *,
-.lab *::before,
-.lab *::after {
+.carimbo-root *,
+.carimbo-root *::before,
+.carimbo-root *::after {
   box-sizing: border-box;
   border-radius: 0; /* §9: paper is sharp */
 }
 
-.lab .mono {
+.carimbo-root .mono {
   font-family: var(--typewriter);
+}
+
+.lab {
+  padding: clamp(24px, 5vw, 72px) clamp(16px, 4vw, 48px);
+}
+
+/* lab switcher strip (specimen + heroes) */
+.lab-switch {
+  display: flex;
+  gap: 16px;
+  align-items: baseline;
+  max-width: 1020px;
+  margin: 0 auto 18px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--ink-muted);
+}
+
+.lab-switch a {
+  color: var(--postal);
+  text-decoration: none;
+  border-bottom: 1.5px solid var(--postal);
+  padding-bottom: 1px;
+}
+
+.lab-switch a:hover {
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+.lab-switch__current {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.lab-switch__sep {
+  opacity: 0.5;
 }
 
 .lab__sheet {

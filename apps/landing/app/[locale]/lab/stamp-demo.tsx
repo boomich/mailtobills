@@ -23,17 +23,21 @@ export function Carimbo({
   ref_,
   animate = false,
   tone = "stamp",
+  angle,
 }: {
   id: string;
   date: string;
   ref_: string;
   animate?: boolean;
   tone?: "stamp" | "signal" | "ink";
+  /** Composed placements may fix the angle deliberately (still ±2°, §7). */
+  angle?: number;
 }) {
+  const jitter = angle ?? seededJitter(id);
   return (
     <div
       className={`carimbo carimbo--${tone}${animate ? " carimbo--thunk" : ""}`}
-      style={{ "--jitter": `${seededJitter(id)}deg` } as React.CSSProperties}
+      style={{ "--jitter": `${jitter}deg` } as React.CSSProperties}
     >
       <span className="carimbo__word">RECEBIDO</span>
       <span className="carimbo__date">{date}</span>

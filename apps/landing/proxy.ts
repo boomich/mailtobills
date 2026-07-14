@@ -15,18 +15,22 @@ const landingPagePaths = new Set([
 ]);
 
 // Design-lab specimens for the redesign (DESIGN.md); not linked from the site.
-const labPagePaths = new Set([
-  "/lab",
-  ...supportedLocales
-    .filter((locale) => locale !== defaultLocale)
-    .map((locale) => `/${locale}/lab`),
-]);
+function isLabPath(pathname: string): boolean {
+  const stripped = supportedLocales.reduce(
+    (path, locale) =>
+      path === `/${locale}` || path.startsWith(`/${locale}/`)
+        ? path.slice(locale.length + 1) || "/"
+        : path,
+    pathname,
+  );
+  return stripped === "/lab" || stripped.startsWith("/lab/");
+}
 
 export default function proxy(request: NextRequest) {
   const response = handleI18nRouting(request);
   const pathname = request.nextUrl.pathname;
   const isLandingPage =
-    landingPagePaths.has(pathname) || labPagePaths.has(pathname);
+    landingPagePaths.has(pathname) || isLabPath(pathname);
 
   if (isLandingPage || (response.status >= 300 && response.status < 400)) {
     return response;

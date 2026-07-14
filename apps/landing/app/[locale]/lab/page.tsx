@@ -1,31 +1,11 @@
 import type { Metadata } from "next";
-import { Archivo, Courier_Prime, Public_Sans } from "next/font/google";
+import Link from "next/link";
 
 import { Postmark } from "./postmark";
 import { Carimbo, CopyField, StampDemo } from "./stamp-demo";
 
-import "./lab.css";
-
-const archivo = Archivo({
-  subsets: ["latin"],
-  variable: "--font-archivo",
-  axes: ["wdth"],
-});
-
-const publicSans = Public_Sans({
-  subsets: ["latin"],
-  variable: "--font-public",
-});
-
-const courier = Courier_Prime({
-  weight: ["400", "700"],
-  subsets: ["latin"],
-  variable: "--font-courier",
-});
-
 export const metadata: Metadata = {
   title: "CARIMBO — design specimen",
-  robots: { index: false },
 };
 
 const PALETTE = [
@@ -65,24 +45,15 @@ function SectionHead({ n, title, note }: { n: string; title: string; note?: stri
 
 export default function LabPage() {
   return (
-    <main
-      className={`lab ${archivo.variable} ${publicSans.variable} ${courier.variable}`}
-    >
-      {/* rubber-stamp ink irregularity for .carimbo (deterministic seed) */}
-      <svg width="0" height="0" style={{ position: "absolute" }} aria-hidden>
-        <defs>
-          <filter id="ink-rough">
-            <feTurbulence
-              type="fractalNoise"
-              baseFrequency="0.55"
-              numOctaves="2"
-              seed="7"
-              result="noise"
-            />
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.8" />
-          </filter>
-        </defs>
-      </svg>
+    <main className="lab">
+      <nav className="lab-switch mono" aria-label="Design lab">
+        <span className="lab-switch__current">SPECIMEN</span>
+        <span className="lab-switch__sep">·</span>
+        <span>BAKE-OFF:</span>
+        <Link href="/lab/hero/a">HERO A</Link>
+        <Link href="/lab/hero/b">HERO B</Link>
+        <Link href="/lab/hero/c">HERO C</Link>
+      </nav>
       <div className="lab__sheet">
         <header className="masthead">
           <Postmark className="masthead__mark" withWaves />
