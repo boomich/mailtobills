@@ -204,4 +204,14 @@ its feel rules are tested:
 
 ## 12. Amendments
 
-- _(none yet — v1)_
+- **2026-07-14 · Specimen sign-off.** Palette values, type stack, the mark,
+  and the Carimbo component approved via the /lab specimen. Stamp violet
+  confirmed against red/ink comparison — §4 values are now locked.
+- **2026-07-14 · Hero bake-off decided.** Winner: **B, The Stamped Letter**
+  (typographic letter-form hero, delayed carimbo thunk). A (Franking Line)
+  rejected as a hero: mechanism-as-theater demands hand-drawn craft that
+  CSS animation cannot reach — the concept survives only as a *static*
+  diagram (How it works). C (The Handover) is demoted to the "what your
+  accountant receives" section. Rule derived: **animated illustration of
+  physical objects requires drawn frames; CSS builds may only compose
+  type, rules, stamps, and static geometry.**
