@@ -22,7 +22,7 @@ export async function Faq() {
       <SectionHead n="4" title={t("title")} note="VERSO DO FORMULÁRIO" />
       <div className="border-t-2 border-foreground">
         {faqKeys.map((key) => (
-          <details key={key} className="group border-b border-border">
+          <details key={key} className="group details-slide border-b border-border">
             <summary className="flex cursor-pointer list-none items-baseline justify-between gap-4 py-4.5 text-[15px] font-semibold [&::-webkit-details-marker]:hidden">
               {t(`items.${key}.question`)}
               <ChevronDown

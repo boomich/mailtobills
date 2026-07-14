@@ -10,9 +10,9 @@ export function SectionHead({
   note?: string;
 }) {
   return (
-    <header className="mb-7 flex flex-wrap items-baseline gap-x-4 gap-y-2">
+    <header className="mb-7 flex flex-wrap items-center gap-x-4 gap-y-2">
       {n && (
-        <span className="grid size-7 shrink-0 translate-y-1 place-items-center border-[1.5px] border-foreground font-mono text-[13px] font-bold">
+        <span className="grid size-7 shrink-0 place-items-center border-[1.5px] border-foreground pt-px font-mono text-[13px] leading-none font-bold">
           {n}
         </span>
       )}

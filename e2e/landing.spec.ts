@@ -76,6 +76,22 @@ test.describe("no blank first paint", () => {
   });
 });
 
+// DESIGN.md §11 feel regression: FAQ panels slide open (§8 micro-motion),
+// they do not snap.
+test("faq details animate their content", async ({ page }) => {
+  await page.goto("/");
+
+  const transition = await page
+    .locator("#faq details")
+    .first()
+    .evaluate((el) => {
+      const styles = getComputedStyle(el, "::details-content");
+      return `${styles.transitionProperty} ${styles.transitionDuration}`;
+    });
+  expect(transition).toContain("block-size");
+  expect(transition).toContain("0.18s");
+});
+
 for (const { cta, path, width } of [
   { cta: "Get started", path: "/", width: 360 },
   { cta: "Get started", path: "/", width: 375 },
