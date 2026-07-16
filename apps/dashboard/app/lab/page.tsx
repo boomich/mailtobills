@@ -74,8 +74,8 @@ export default function DashboardLabPage() {
             <CopyChip value="vitor.4f2a@in.mailtobills.com" />
           </div>
           <div className="flex items-center gap-1.5">
-            <Button variant="ghost" size="sm">
-              Definições
+            <Button asChild variant="ghost" size="sm">
+              <a href="/lab/settings">Definições</a>
             </Button>
             <span className="grid size-8 place-items-center border-[1.5px] border-foreground font-mono text-[11px] font-bold">
               VS
