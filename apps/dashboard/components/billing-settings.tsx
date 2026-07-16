@@ -1,19 +1,10 @@
 "use client";
 
-import {
-  CheckCircle2,
-  Clock3,
-  CreditCard,
-  MailPlus,
-  Send,
-  TriangleAlert,
-} from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 import { localeFormats, type Locale } from "@mailtobills/i18n";
-import { Badge } from "@mailtobills/ui/components/badge";
 import { Button } from "@mailtobills/ui/components/button";
 
 type SubscriptionStatus = "active" | "past_due" | "cancelled";
@@ -49,21 +40,9 @@ export function BillingSettings({
   const isPastDue = subscriptionStatus === "past_due";
   const isProLike = isPro || isPastDue;
   const proFeatures = [
-    {
-      label: t("features.addressesTitle"),
-      description: t("features.addressesDescription"),
-      icon: MailPlus,
-    },
-    {
-      label: t("features.directTitle"),
-      description: t("features.directDescription"),
-      icon: Send,
-    },
-    {
-      label: t("features.scheduleTitle"),
-      description: t("features.scheduleDescription"),
-      icon: Clock3,
-    },
+    t("features.directTitle"),
+    t("features.scheduleTitle"),
+    t("features.addressesTitle"),
   ];
 
   useEffect(() => {
@@ -73,126 +52,87 @@ export function BillingSettings({
     router.replace(pathname);
   }, [pathname, router, searchParams]);
 
+  const planTitle = isPastDue
+    ? t("pausedTitle")
+    : isPro
+      ? t("proTitle")
+      : t("freeTitle");
+  const planDescription = isPastDue
+    ? t("pausedDescription")
+    : isPro
+      ? renewalDate
+        ? t("renews", { date: renewalDate })
+        : t("activeDescription")
+      : t("freePlanDescription");
+
   return (
-    <div className="space-y-4">
+    <div className="max-w-[560px]">
       {showUpgradeSuccess ? (
-        <div
-          className={
-            isProLike
-              ? "flex items-start gap-2 rounded-md border border-emerald-500/25 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-700 dark:text-emerald-400"
-              : "flex items-start gap-2 rounded-md border border-amber-500/25 bg-amber-500/10 px-3 py-2 text-sm text-amber-700 dark:text-amber-300"
-          }
+        <p
+          className="mb-5 border border-primary px-3 py-2 text-[13px] text-primary"
+          aria-live="polite"
         >
-          {isProLike ? (
-            <CheckCircle2 className="mt-0.5 size-4" />
-          ) : (
-            <Clock3 className="mt-0.5 size-4" />
-          )}
-          <span>{isProLike ? t("upgradeConfirmed") : t("upgradePending")}</span>
-        </div>
+          {isProLike ? t("upgradeConfirmed") : t("upgradePending")}
+        </p>
       ) : null}
 
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <span className="font-medium">
-              {isPastDue
-                ? t("pausedTitle")
-                : isPro
-                  ? t("proTitle")
-                  : t("freeTitle")}
-            </span>
-            <Badge
-              variant={isPastDue ? "warning" : isPro ? "success" : "secondary"}
-            >
-              {isPastDue ? t("pastDue") : isPro ? t("pro") : t("free")}
-            </Badge>
-          </div>
-          <p className="text-muted-foreground text-sm">
-            {isPastDue
-              ? t("pausedDescription")
-              : isPro
-                ? renewalDate
-                  ? t("renews", { date: renewalDate })
-                  : t("activeDescription")
-                : t("freeDescription")}
-          </p>
-        </div>
-
-        {isProLike ? (
-          <Button asChild variant="outline">
-            <a href="/api/billing/portal">
-              <CreditCard className="size-4" />
-              {isPastDue ? t("updatePayment") : t("manageBilling")}
-            </a>
-          </Button>
-        ) : (
-          <form action="/api/billing/checkout" method="post">
-            <Button type="submit">
-              <CreditCard className="size-4" />
-              {t("upgrade")}
-            </Button>
-          </form>
-        )}
+      <div className="mb-6 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+        <span className="font-display text-[13px] font-bold tracking-[0.12em] uppercase [font-stretch:88%]">
+          {planTitle}
+        </span>
+        <span className="font-mono text-[10px] tracking-[0.1em] text-primary uppercase">
+          {isPastDue ? t("pastDue") : isPro ? t("pro") : t("free")}
+        </span>
+        <span className="font-mono text-[11px] text-muted-foreground">
+          {planDescription}
+        </span>
       </div>
 
       {isPastDue ? (
-        <div className="flex items-start gap-2 rounded-md border border-amber-500/25 bg-amber-500/10 px-3 py-2 text-sm text-amber-700 dark:text-amber-300">
-          <TriangleAlert className="mt-0.5 size-4" />
-          <span>{t("paymentFailed")}</span>
-        </div>
+        <p className="mb-5 border border-primary px-3 py-2 text-[13px] text-muted-foreground">
+          {t("paymentFailed")}
+        </p>
       ) : null}
 
-      {!isProLike ? (
-        <div className="grid gap-3 text-sm lg:grid-cols-[0.85fr_1.15fr]">
-          <div className="rounded-md border bg-muted/30 px-3 py-3">
-            <div className="flex items-center justify-between gap-3">
-              <div className="font-medium">{t("freePlan")}</div>
-              <Badge variant="secondary">{t("current")}</Badge>
-            </div>
-            <p className="text-muted-foreground mt-1">
-              {t("freePlanDescription")}
-            </p>
-          </div>
-          <div className="divide-y rounded-md border border-primary/25 bg-primary/5">
-            <div className="flex items-center justify-between gap-3 px-3 py-3">
-              <div>
-                <div className="font-medium">{t("proPlan")}</div>
-                <p className="text-muted-foreground text-xs">
-                  {t("proPlanDescription")}
-                </p>
-              </div>
-              <span className="text-muted-foreground shrink-0 font-mono text-xs">
-                {proPriceLabel}
-              </span>
-            </div>
-            {proFeatures.map(({ label, description, icon: Icon }) => (
-              <div key={label} className="flex gap-3 px-3 py-2.5">
-                <Icon className="text-primary mt-0.5 size-4 shrink-0" />
-                <div>
-                  <div className="font-medium">{label}</div>
-                  <p className="text-muted-foreground text-xs">{description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+      <div className="border-[1.5px] border-foreground">
+        <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-border bg-secondary px-5 py-3.5">
+          <span className="font-display text-[13px] font-bold tracking-[0.12em] uppercase [font-stretch:88%]">
+            {t("pro")}
+          </span>
+          <span className="font-mono text-[13px] text-muted-foreground">
+            {proPriceLabel}
+          </span>
         </div>
-      ) : (
-        <div className="divide-y rounded-md border text-sm">
-          {proFeatures.map(({ label, description, icon: Icon }) => (
-            <div key={label} className="flex items-start gap-3 px-3 py-2.5">
-              <Icon className="text-primary mt-0.5 size-4 shrink-0" />
-              <div className="min-w-0 flex-1">
-                <div className="font-medium">{label}</div>
-                <p className="text-muted-foreground text-xs">{description}</p>
-              </div>
-              <Badge variant={isPastDue ? "warning" : "success"}>
-                {isPastDue ? t("paused") : t("active")}
-              </Badge>
-            </div>
+        <ul className="px-5 py-4">
+          {proFeatures.map((feature) => (
+            <li
+              key={feature}
+              className="flex items-baseline gap-3 border-b border-border py-2 text-[13.5px] last:border-b-0"
+            >
+              <span className="font-mono text-[11px] font-bold text-primary">✓</span>
+              {feature}
+            </li>
           ))}
+        </ul>
+        <div className="border-t border-border px-5 py-4">
+          {isProLike ? (
+            <Button asChild variant="outline" className="rounded-none max-sm:w-full">
+              <a href="/api/billing/portal">
+                {isPastDue ? t("updatePayment") : t("manageBilling")}
+              </a>
+            </Button>
+          ) : (
+            <form action="/api/billing/checkout" method="post">
+              <Button type="submit" className="rounded-none max-sm:w-full">
+                {t("upgrade")}
+              </Button>
+            </form>
+          )}
+          <p className="mt-2.5 font-mono text-[10px] tracking-[0.08em] text-muted-foreground">
+            {t("freePlanDescription")}
+          </p>
         </div>
-      )}
+      </div>
     </div>
   );
 }

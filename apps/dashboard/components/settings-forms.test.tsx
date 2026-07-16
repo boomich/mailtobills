@@ -9,6 +9,7 @@ import { NextIntlClientProvider } from "next-intl";
 
 import messages from "@/messages/en/common.json";
 
+import { AccountantSettings } from "./accountant-settings";
 import { ExportScheduleForm } from "./export-schedule-form";
 import { ForwardingAddressesForm } from "./forwarding-addresses-form";
 import { PreferencesSettings } from "./preferences-settings";
@@ -126,13 +127,30 @@ describe("settings forms", () => {
     expect(
       screen.getByRole("button", { name: /remove existing@example.com/i }),
     ).toBeDisabled();
+    expect(screen.getByRole("link", { name: /^pro$/i })).toHaveAttribute(
+      "href",
+      "#plan",
+    );
   });
 
-  it("saves and disables export schedules", async () => {
-    const user = userEvent.setup();
+  it("anchors the Free Export Schedule gate to plan and billing", () => {
     render(
       <ExportScheduleForm
-        isPro
+        isPro={false}
+        accountantEmail="accountant@example.com"
+        accountantName="Marta"
+      />,
+    );
+
+    expect(
+      screen.getByRole("link", { name: /upgrade to pro/i }),
+    ).toHaveAttribute("href", "#plan");
+  });
+
+  it("saves accountant details without changing the current schedule", async () => {
+    const user = userEvent.setup();
+    render(
+      <AccountantSettings
         accountantEmail="accountant@example.com"
         accountantName="Marta"
         exportScheduleDay={5}
@@ -144,8 +162,39 @@ describe("settings forms", () => {
       screen.getByLabelText(/accountant address/i),
       "books@example.com",
     );
-    await user.clear(screen.getByLabelText(/accountant name/i));
-    await user.type(screen.getByLabelText(/accountant name/i), "Books Team");
+    await user.clear(screen.getByLabelText(/name \(optional\)/i));
+    await user.type(screen.getByLabelText(/name \(optional\)/i), "Books Team");
+    await user.click(screen.getByRole("button", { name: /save accountant/i }));
+
+    await waitFor(() =>
+      expect(mocks.updateAccountantDeliverySettings).toHaveBeenCalledOnce(),
+    );
+    const saveData = mocks.updateAccountantDeliverySettings.mock
+      .calls[0]?.[1] as FormData;
+    expect(Object.fromEntries(saveData.entries())).toEqual({
+      accountantEmail: "books@example.com",
+      accountantName: "Books Team",
+      exportScheduleDay: "5",
+      intent: "save",
+      scheduleEnabled: "on",
+    });
+    expect(await screen.findByText("Saved ✓")).toBeInTheDocument();
+
+    await user.type(screen.getByLabelText(/name \(optional\)/i), " Updated");
+    expect(screen.queryByText("Saved ✓")).not.toBeInTheDocument();
+  });
+
+  it("saves and disables export schedules", async () => {
+    const user = userEvent.setup();
+    render(
+      <ExportScheduleForm
+        isPro
+        accountantEmail="books@example.com"
+        accountantName="Books Team"
+        exportScheduleDay={5}
+      />,
+    );
+
     await user.selectOptions(screen.getByLabelText(/send on day/i), "12");
     await user.click(
       screen.getByRole("button", { name: /save export schedule/i }),
@@ -167,7 +216,7 @@ describe("settings forms", () => {
       await screen.findByText("Export Schedule saved."),
     ).toBeInTheDocument();
 
-    await user.type(screen.getByLabelText(/accountant name/i), " Updated");
+    await user.selectOptions(screen.getByLabelText(/send on day/i), "13");
     expect(
       screen.queryByText("Export Schedule saved."),
     ).not.toBeInTheDocument();
@@ -190,8 +239,7 @@ describe("settings forms", () => {
     });
     const user = userEvent.setup();
     render(
-      <ExportScheduleForm
-        isPro
+      <AccountantSettings
         accountantEmail=""
         accountantName=""
         exportScheduleDay={5}
@@ -202,9 +250,7 @@ describe("settings forms", () => {
       screen.getByLabelText(/accountant address/i),
       "not-an-email",
     );
-    await user.click(
-      screen.getByRole("button", { name: /save export schedule/i }),
-    );
+    await user.click(screen.getByRole("button", { name: /save accountant/i }));
 
     expect(mocks.updateAccountantDeliverySettings).toHaveBeenCalledOnce();
     expect(await screen.findByRole("alert")).toHaveTextContent(

@@ -86,6 +86,33 @@
   "Settings": {
     "title": "Definições",
     "description": "Gira a forma como o MailToBills reúne Documentos de Despesas e prepara Exportações para o Contabilista.",
+    "form": {
+      "code": "MOD. C-02 · FICHA DO CLIENTE",
+      "pro": "PRO",
+      "collection": {
+        "title": "Endereço de recolha",
+        "copyLabel": "Copiar",
+        "copiedLabel": "Copiado",
+        "description": "Encaminhe Documentos de Despesas para este endereço. É privado e não pode ser alterado."
+      },
+      "forwarding": {
+        "title": "Remetentes de confiança",
+        "description": "Só emails encaminhados destes endereços são aceites na sua recolha."
+      },
+      "accountant": {
+        "title": "Contabilista"
+      },
+      "schedule": {
+        "title": "Agendamento de Exportação"
+      },
+      "preferences": {
+        "title": "Preferências"
+      },
+      "billing": {
+        "title": "Plano e faturação",
+        "note": "EUR · IVA EXCL."
+      }
+    },
     "sections": {
       "forwardingTitle": "Endereços de Encaminhamento",
       "forwardingDescription": "Controle os endereços de email que podem enviar Documentos de Despesas para a sua conta.",
@@ -115,7 +142,18 @@
       "remove": "Remover {email}",
       "inputLabel": "Endereço de encaminhamento adicional",
       "placeholder": "nome@exemplo.pt",
-      "add": "Adicionar"
+      "add": "Adicionar",
+      "proGate": "Endereços adicionais verificados",
+      "pro": "Pro"
+    },
+    "accountant": {
+      "name": "Nome (opcional)",
+      "namePlaceholder": "por ex., Marta Silva",
+      "address": "Endereço do Contabilista",
+      "addressPlaceholder": "contabilista@exemplo.pt",
+      "description": "As Exportações para o Contabilista enviadas diretamente seguem para este endereço, com cópia para si.",
+      "save": "Guardar contabilista",
+      "saved": "Guardado ✓"
     },
     "delivery": {
       "lockedTitle": "O Pro transforma a entrega de fim do mês numa rota guardada.",
@@ -133,7 +171,8 @@
       "off": "Inativo",
       "nextExport": "Próxima exportação (UTC): {date}, relativa a {month}",
       "save": "Guardar Agendamento de Exportação",
-      "disable": "Desativar"
+      "disable": "Desativar",
+      "accountantRequired": "Guarde acima um Endereço do Contabilista válido antes de ativar o agendamento."
     },
     "billing": {
       "features": {

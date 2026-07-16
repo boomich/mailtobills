@@ -86,6 +86,33 @@
   "Settings": {
     "title": "Settings",
     "description": "Manage how MailToBills collects Expense Documents and prepares Accountant Exports.",
+    "form": {
+      "code": "MOD. C-02 · CUSTOMER RECORD",
+      "pro": "PRO",
+      "collection": {
+        "title": "Collection Address",
+        "copyLabel": "Copy",
+        "copiedLabel": "Copied",
+        "description": "Forward Expense Documents to this address. It is private and cannot be changed."
+      },
+      "forwarding": {
+        "title": "Trusted senders",
+        "description": "Only emails forwarded from these addresses are accepted into your collection."
+      },
+      "accountant": {
+        "title": "Accountant"
+      },
+      "schedule": {
+        "title": "Export Schedule"
+      },
+      "preferences": {
+        "title": "Preferences"
+      },
+      "billing": {
+        "title": "Plan & billing",
+        "note": "EUR · VAT EXCL."
+      }
+    },
     "sections": {
       "forwardingTitle": "Forwarding Addresses",
       "forwardingDescription": "Control which email addresses can send Expense Documents to your account.",
@@ -115,7 +142,18 @@
       "remove": "Remove {email}",
       "inputLabel": "Additional forwarding address",
       "placeholder": "name@example.com",
-      "add": "Add"
+      "add": "Add",
+      "proGate": "Additional verified addresses",
+      "pro": "Pro"
+    },
+    "accountant": {
+      "name": "Name (optional)",
+      "namePlaceholder": "e.g. Marta Silva",
+      "address": "Accountant Address",
+      "addressPlaceholder": "accountant@example.com",
+      "description": "Accountant Exports sent directly go to this address, with a copy to you.",
+      "save": "Save accountant",
+      "saved": "Saved ✓"
     },
     "delivery": {
       "lockedTitle": "Pro turns month-end handoff into a saved delivery route.",
@@ -133,7 +171,8 @@
       "off": "Off",
       "nextExport": "Next export (UTC): {date}, covering {month}",
       "save": "Save Export Schedule",
-      "disable": "Disable"
+      "disable": "Disable",
+      "accountantRequired": "Save a valid Accountant Address above before enabling the schedule."
     },
     "billing": {
       "features": {
