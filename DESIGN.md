@@ -123,9 +123,11 @@ only, no text.
   (RECEBIDO + date) in stamp violet, printed with the thunk (§8), with a
   per-instance deterministic rotation jitter of ±2° (seeded from document
   id, so a given row's stamp never dances between renders).
-- **Month tabs** — the Dossier's structure: Collection Months as physical
-  folder tabs; the active month is the open dossier. This is the dashboard's
-  primary navigation (replaces the generic sidebar).
+- **The year register** — the Dossier's structure: a flat printed month
+  index (« year » steppers + all twelve months with counts, active month
+  ink-underlined) as the dashboard's primary navigation (replaces the
+  generic sidebar). Any month of the year is one click; any older year is
+  two. Folder-tab skeuomorphs are banned (§12: CSS-pretending).
 - **The manifest** — Courier Prime tables with ink rules; the export
   preview *is* a manifest, shown proudly, not hidden behind an icon.
 - **Form rules** — crisp ink hairlines structuring sections the way a
@@ -215,3 +217,9 @@ its feel rules are tested:
   accountant receives" section. Rule derived: **animated illustration of
   physical objects requires drawn frames; CSS builds may only compose
   type, rules, stamps, and static geometry.**
+- **2026-07-16 · Dossier navigation.** Kraft folder-tab month navigation
+  rejected by the user as CSS-pretending (same law as the envelopes) and
+  as unscalable past a handful of months. Replaced by the year register
+  (§7): flat printed index, one click to any month of the year, two to any
+  archive year. The kraft *material* remains legal as a surface; kraft
+  pretending to be a 3D object does not.

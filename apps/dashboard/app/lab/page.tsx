@@ -20,12 +20,22 @@ export const metadata: Metadata = {
   robots: { index: false },
 };
 
-const MONTHS = [
-  { label: "ARQUIVO", archive: true },
+/* The year register: all twelve months of the selected year, one click
+   each; year steppers reach any archive year in one more. Flat print —
+   type and rules only (DESIGN.md §12). */
+const REGISTER = [
+  { label: "JAN", count: 9 },
+  { label: "FEV", count: 16 },
+  { label: "MAR", count: 12 },
   { label: "ABR", count: 14 },
   { label: "MAI", count: 19 },
   { label: "JUN", count: 11 },
   { label: "JUL", count: 8, active: true },
+  { label: "AGO", future: true },
+  { label: "SET", future: true },
+  { label: "OUT", future: true },
+  { label: "NOV", future: true },
+  { label: "DEZ", future: true },
 ] as const;
 
 const DOCUMENTS = [
@@ -75,42 +85,62 @@ export default function DashboardLabPage() {
       </header>
 
       <main className="mx-auto max-w-[1160px] px-2.5 pt-8 pb-14 sm:px-6">
-        {/* month tabs — the dossier drawer */}
+        {/* the year register — flat printed month index */}
         <nav
           aria-label="Meses de recolha"
-          className="flex items-end gap-1.5 overflow-x-auto pl-3"
+          className="mb-5 flex flex-wrap items-center gap-x-5 gap-y-3 px-1"
         >
-          {MONTHS.map((month) =>
-            "archive" in month && month.archive ? (
-              <button
-                key="archive"
-                type="button"
-                className="relative top-px mr-2 flex shrink-0 items-baseline gap-2 border border-dashed border-foreground/50 bg-transparent px-4 py-2 font-display text-[11.5px] font-semibold tracking-[0.12em] text-muted-foreground uppercase [font-stretch:86%] transition-colors hover:border-foreground hover:text-foreground"
-              >
-                {month.label}
-                <span aria-hidden className="text-[9px]">
-                  ▾
-                </span>
-              </button>
-            ) : (
-              <button
-                key={month.label}
-                type="button"
-                aria-current={"active" in month && month.active ? "page" : undefined}
-                className={
-                  "relative shrink-0 items-baseline gap-2.5 border border-b-0 border-foreground px-5 pt-2.5 pb-2 font-display text-[13px] font-bold tracking-[0.12em] uppercase [font-stretch:86%] [clip-path:polygon(8px_0,calc(100%-8px)_0,100%_100%,0_100%)] " +
-                  ("active" in month && month.active
-                    ? "top-px z-10 flex bg-background"
-                    : "top-px flex bg-kraft text-foreground/70 transition-[translate] hover:-translate-y-0.5 motion-reduce:hover:translate-0")
-                }
-              >
-                {month.label}
-                <span className="font-mono text-[10px] font-normal">
-                  {"count" in month ? month.count : ""}
-                </span>
-              </button>
-            ),
-          )}
+          <div className="flex items-center gap-1">
+            <button
+              type="button"
+              aria-label="Ano anterior"
+              className="grid size-7 place-items-center border border-transparent font-mono text-[13px] text-muted-foreground transition-colors hover:border-foreground hover:text-foreground"
+            >
+              «
+            </button>
+            <span className="font-mono text-[15px] font-bold tracking-[0.06em]">
+              2026
+            </span>
+            <button
+              type="button"
+              aria-label="Ano seguinte"
+              disabled
+              className="grid size-7 place-items-center border border-transparent font-mono text-[13px] text-muted-foreground opacity-35"
+            >
+              »
+            </button>
+          </div>
+          <span
+            aria-hidden
+            className="h-5 w-px bg-foreground/25 max-sm:hidden"
+          />
+          <div className="grid flex-1 grid-cols-6 gap-x-1 gap-y-2 sm:flex sm:flex-wrap sm:gap-x-0.5">
+            {REGISTER.map((month) => {
+              const isActive = "active" in month && month.active;
+              const isFuture = "future" in month && month.future;
+              return (
+                <button
+                  key={month.label}
+                  type="button"
+                  disabled={isFuture}
+                  aria-current={isActive ? "page" : undefined}
+                  className={
+                    "flex flex-col items-center gap-0.5 border-b-2 px-2.5 pt-1 pb-1.5 font-display text-[12.5px] font-bold tracking-[0.1em] uppercase [font-stretch:86%] transition-colors sm:px-3 " +
+                    (isActive
+                      ? "border-foreground text-foreground"
+                      : isFuture
+                        ? "border-transparent text-muted-foreground/40"
+                        : "border-transparent text-muted-foreground hover:border-border hover:text-foreground")
+                  }
+                >
+                  {month.label}
+                  <span className="font-mono text-[9.5px] leading-none font-normal">
+                    {"count" in month ? month.count : "—"}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </nav>
 
         {/* the open month sheet */}
