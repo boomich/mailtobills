@@ -34,13 +34,14 @@ describe("SendToAccountantButton", () => {
     mocks.sendManualExportToAccountant.mockReset();
   });
 
-  it("points Free customers to settings while keeping ZIP download available", () => {
+  it("starts direct checkout for Free customers", () => {
     renderButton({ isPro: false });
 
-    expect(screen.getByText(/Direct send is available on Pro/i)).toBeVisible();
-    expect(
-      screen.getByRole("link", { name: "Upgrade in settings" }),
-    ).toHaveAttribute("href", "/settings");
+    expect(screen.getByRole("button", { name: /Send to accountant\s*PRO/i })).toBeVisible();
+    expect(screen.getByRole("button", { name: /Send to accountant\s*PRO/i }).closest("form")).toHaveAttribute(
+      "action",
+      "/api/billing/checkout",
+    );
   });
 
   it("points Pro customers without an Accountant Address to settings", () => {

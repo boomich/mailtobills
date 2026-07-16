@@ -45,6 +45,17 @@
     "goToCurrentMonth": "Ir para o mês atual, {month}",
     "monthIsCurrent": "{month}, mês atual"
   },
+  "CounterBar": {
+    "collectionAddress": "Endereço de recolha",
+    "copyCollectionAddress": "Copiar endereço de recolha",
+    "copied": "Copiado"
+  },
+  "YearRegister": {
+    "label": "Meses de recolha",
+    "previousYear": "Ano anterior",
+    "nextYear": "Ano seguinte",
+    "month": "{month}, {count, plural, one {# documento} other {# documentos}}"
+  },
   "Auth": {
     "language": "Idioma",
     "signInTitle": "Bem-vindo de volta",
@@ -193,6 +204,11 @@
     "sectionLabel": "Mês de Recolha",
     "description": "Documentos de Despesas reunidos, prontos para revisão, transferência ou Exportação para o Contabilista.",
     "exportMonth": "Exportar mês",
+    "registrationLine": "MÊS DE RECOLHA · M/{month} · ABERTO",
+    "downloadZip": "Descarregar ZIP",
+    "exportContents": "Exportação para o contabilista: {count} PDFs principais + manifest.csv",
+    "freeScheduleUpsell": "Automatize todos os meses — Pro",
+    "scheduleNextRun": "Agendamento de exportação: dia {day}",
     "stats": {
       "collected": "Reunidos",
       "pdfAttachments": "Anexos PDF",
@@ -231,12 +247,11 @@
       "description": "Uma linha por email encaminhado aceite.",
       "count": "{count, plural, one {# doc} other {# docs}}",
       "headers": {
-        "expand": "Expandir",
+        "number": "N.º",
         "sender": "Remetente",
         "document": "Documento",
         "received": "Recebido",
-        "pdfs": "PDFs",
-        "actions": "Ações"
+        "attachments": "Anexos"
       },
       "emptyTitle": "Sem documentos",
       "emptyMonth": "Não foram reunidos documentos de despesas em {month}.",
@@ -316,6 +331,7 @@
     "proRequiredNotice": "O envio direto está disponível no plano Pro. A transferência do ZIP continua incluída. <settingsLink>Mudar nas definições</settingsLink>.",
     "missingAccountantNotice": "Nenhum contabilista configurado. <settingsLink>Configure primeiro o contabilista</settingsLink>.",
     "send": "Enviar ao contabilista",
+    "pro": "PRO",
     "sending": "A enviar...",
     "sentTo": "Enviado para {email}",
     "errors": {

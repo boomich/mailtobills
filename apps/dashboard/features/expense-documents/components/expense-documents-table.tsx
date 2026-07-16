@@ -11,20 +11,14 @@ import type {
 } from "@mailtobills/domain";
 import type { Id } from "@mailtobills/convex/_generated/dataModel";
 import { useMutation } from "convex/react";
-import {
-  ChevronRight,
-  FileText,
-  Star,
-} from "lucide-react";
+import { FileText, Star } from "lucide-react";
 
 import { api } from "@/lib/convexClient";
 import {
   formatDocumentDate,
   formatFileSize as formatLocalizedFileSize,
 } from "@/lib/localized-format";
-import { Badge } from "@mailtobills/ui/components/badge";
 import { Button } from "@mailtobills/ui/components/button";
-import { Card, CardContent } from "@mailtobills/ui/components/card";
 import {
   EmptyState,
   EmptyStateDescription,
@@ -40,7 +34,6 @@ import {
 import {
   ExpenseDocumentsTableColumns,
   ExpenseDocumentsTableHeader,
-  ExpenseDocumentsTableHeading,
 } from "./expense-documents-table-chrome";
 import { cn } from "@mailtobills/ui/lib/utils";
 
@@ -209,37 +202,44 @@ export function ExpenseDocumentsTable({
 
   if (documents.length === 0) {
     return (
-      <Card className="rounded-lg py-0 shadow-xs">
-        <CardContent className="p-0">
-          <EmptyState>
-            <EmptyStateIcon>
-              <FileText />
-            </EmptyStateIcon>
-            <EmptyStateTitle>{t("emptyTitle")}</EmptyStateTitle>
-            <EmptyStateDescription>{emptyLabel}</EmptyStateDescription>
-          </EmptyState>
-        </CardContent>
-      </Card>
+      <EmptyState>
+        <EmptyStateIcon>
+          <FileText />
+        </EmptyStateIcon>
+        <EmptyStateTitle>{t("emptyTitle")}</EmptyStateTitle>
+        <EmptyStateDescription>{emptyLabel}</EmptyStateDescription>
+      </EmptyState>
     );
   }
 
+  // Newest on top (approved lab composition); Nº counts from the month's
+  // first document, so the top row carries the highest number.
+  const manifestDocuments = documents;
+  const totalCount = documents.length;
+
   return (
-    <Card className="min-w-0 gap-0 overflow-hidden rounded-lg py-0 shadow-xs">
-      <ExpenseDocumentsTableHeading count={documents.length} />
+    <div className="min-w-0">
       {actionError && !panelOpen ? (
         <div
           role="alert"
-          className="border-destructive/30 bg-destructive/10 text-destructive border-b px-4 py-2 text-sm"
+          className="border-b border-destructive bg-destructive/10 px-5 py-2 text-sm text-destructive sm:px-8"
         >
           {actionError}
         </div>
       ) : null}
-      <CardContent className="p-0">
-        <Table className="min-w-[920px] table-fixed">
+      <Table className="table-fixed max-md:table-auto">
           <ExpenseDocumentsTableColumns />
-          <ExpenseDocumentsTableHeader />
+          <ExpenseDocumentsTableHeader
+            labels={{
+              number: t("headers.number"),
+              received: t("headers.received"),
+              sender: t("headers.sender"),
+              document: t("headers.document"),
+              attachments: t("headers.attachments"),
+            }}
+          />
           <TableBody>
-            {documents.map((document) => {
+            {manifestDocuments.map((document, index) => {
               const sender = getSenderName(document, t("unknownSender"));
               const primary = document.primaryAttachment;
               const isExpanded = expandedId === document.id;
@@ -256,11 +256,11 @@ export function ExpenseDocumentsTable({
                     aria-selected={panelOpen && selectedDocumentId === document.id}
                     tabIndex={0}
                     className={cn(
-                      "cursor-pointer focus-visible:ring-ring/50 outline-none focus-visible:ring-2 focus-visible:ring-inset",
+                      "group cursor-pointer focus-visible:ring-ring/50 outline-none focus-visible:ring-2 focus-visible:ring-inset max-md:grid max-md:grid-cols-[auto_1fr_auto] max-md:gap-x-3 max-md:px-5 max-md:py-4",
                       isExpanded && "border-b-0",
                       panelOpen &&
                         selectedDocumentId === document.id &&
-                        "bg-accent/50",
+                        "bg-secondary/60",
                     )}
                     onClick={(event) =>
                       openDocument(document, event.currentTarget)
@@ -272,99 +272,49 @@ export function ExpenseDocumentsTable({
                       openDocument(document, event.currentTarget);
                     }}
                   >
-                    <TableCell>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon-sm"
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          setExpandedId(isExpanded ? null : document.id)
-                        }}
-                        aria-expanded={isExpanded}
-                        aria-label={
-                          isExpanded
-                            ? t("collapseAttachments")
-                            : t("expandAttachments")
+                    <TableCell className="py-4 pl-8 align-top font-mono text-[12px] font-bold text-stamp max-md:row-span-2 max-md:px-0 max-md:py-0">
+                      {String(totalCount - index).padStart(3, "0")}
+                    </TableCell>
+                    <TableCell className="px-3 py-4 align-top font-mono text-[12px] whitespace-nowrap text-muted-foreground max-md:col-start-2 max-md:row-start-2 max-md:px-0 max-md:py-0 max-md:text-[11px]">
+                      {formatDocumentDate(document.receivedAt, locale)}
+                    </TableCell>
+                    <TableCell className="px-3 py-4 align-top max-md:col-start-2 max-md:row-start-3 max-md:px-0 max-md:py-0">
+                      <div className="text-[14px] leading-tight font-semibold">{sender}</div>
+                      <div
+                        className="mt-1 truncate font-mono text-[11px] text-muted-foreground"
+                        title={
+                          document.originFromEmail && document.fromEmail
+                            ? t("forwardedBy", { email: document.fromEmail })
+                            : undefined
                         }
                       >
-                        <ChevronRight
-                          className={cn(
-                            "size-4 transition-transform duration-200",
-                            isExpanded && "rotate-90",
-                          )}
-                        />
-                      </Button>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-3">
-                        <div className="bg-background flex size-9 shrink-0 items-center justify-center rounded-lg border text-xs font-semibold shadow-xs">
-                          {sender.charAt(0).toUpperCase()}
-                        </div>
-                        <div className="min-w-0">
-                          <div className="truncate font-medium">{sender}</div>
-                          <div
-                            className="text-muted-foreground truncate text-xs"
-                            title={
-                              document.originFromEmail && document.fromEmail
-                                ? t("forwardedBy", {
-                                    email: document.fromEmail,
-                                  })
-                                : undefined
-                            }
-                          >
-                            {getSenderEmail(document) ?? t("forwardedEmail")}
-                          </div>
-                        </div>
+                        {getSenderEmail(document) ?? t("forwardedEmail")}
                       </div>
                     </TableCell>
-                    <TableCell className="min-w-0">
-                      <div className="flex min-w-0 items-center gap-2">
-                        <div className="truncate font-medium">
-                          {primary?.originalFilename ?? t("noPrimaryPdf")}
-                        </div>
-                        {primary ? (
-                          <Badge variant="warning">{t("primary")}</Badge>
-                        ) : null}
+                    <TableCell className="px-3 py-4 align-top max-md:col-span-3 max-md:col-start-1 max-md:row-start-1 max-md:mt-7 max-md:px-0 max-md:py-0">
+                      <div className="font-mono text-[12.5px] leading-tight font-bold break-all">
+                        {primary?.originalFilename ?? t("noPrimaryPdf")}
                       </div>
-                      <div className="text-muted-foreground truncate text-xs">
+                      <div className="mt-1 truncate text-[12px] text-muted-foreground">
                         {document.subject ?? t("noSubject")}
                       </div>
                     </TableCell>
-                    <TableCell className="text-muted-foreground border-l font-mono text-xs whitespace-nowrap tabular-nums">
-                      <div>{formatDocumentDate(document.receivedAt, locale)}</div>
-                      {document.originSentAt ? (
-                        <div className="text-muted-foreground/70 text-[11px]">
-                          {t("sentDate", {
-                            date: formatDocumentDate(
-                              document.originSentAt,
-                              locale,
-                            ) ?? "",
-                          })}
-                        </div>
-                      ) : null}
-                    </TableCell>
-                    <TableCell className="border-l">
-                      <Badge
-                        variant="outline"
-                        className="min-w-7 justify-center tabular-nums"
+                    <TableCell className="px-3 py-4 text-right align-top font-mono text-[12px] text-muted-foreground max-md:col-start-3 max-md:row-start-3 max-md:px-0 max-md:py-0">
+                      <button
+                        type="button"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          setExpandedId(isExpanded ? null : document.id);
+                        }}
+                        aria-expanded={isExpanded}
+                        aria-label={isExpanded ? t("collapseAttachments") : t("expandAttachments")}
+                        className="font-mono text-[12px] text-muted-foreground underline decoration-transparent underline-offset-4 transition-colors hover:text-foreground hover:decoration-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                       >
                         {document.attachments.length}
-                      </Badge>
+                      </button>
                     </TableCell>
-                    <TableCell className="border-l text-right">
-                      <div className="flex justify-end gap-2">
-                        <ViewPdfButton
-                          attachment={primary}
-                          label={t("viewPdf")}
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            openDocument(document, event.currentTarget)
-                          }}
-                        >
-                          {t("viewPdf")}
-                        </ViewPdfButton>
-                      </div>
+                    <TableCell className="py-4 pr-8 text-right align-top max-md:col-start-3 max-md:row-span-2 max-md:row-start-1 max-md:px-0 max-md:py-0">
+                      <span aria-hidden className="inline-block font-mono text-[13px] text-muted-foreground transition-[translate,color] group-hover:translate-x-0.5 group-hover:text-foreground motion-reduce:group-hover:translate-0">→</span>
                     </TableCell>
                   </TableRow>
                   {isExpanded ? (
@@ -373,8 +323,8 @@ export function ExpenseDocumentsTable({
                       className="hover:bg-transparent"
                       onClick={(event) => event.stopPropagation()}
                     >
-                      <TableCell colSpan={6} className="bg-muted/25 px-4 py-3">
-                        <div className="animate-in fade-in slide-in-from-top-1 space-y-2 pl-0 duration-200 sm:pl-[52px]">
+                      <TableCell colSpan={6} className="bg-secondary/60 px-5 py-3 sm:px-8">
+                        <div className="space-y-2 sm:pl-[52px]">
                           {document.attachments.map((attachment) => {
                             const isPrimary = attachment.id === primary?.id;
                             const fileSize = formatLocalizedFileSize(
@@ -390,17 +340,17 @@ export function ExpenseDocumentsTable({
                               <div
                                 key={attachment.id}
                                 className={cn(
-                                  "bg-background flex flex-col gap-3 rounded-md border px-3 py-2 shadow-xs transition-colors sm:flex-row sm:items-center sm:justify-between",
+                                  "border border-foreground/25 bg-background flex flex-col gap-3 px-3 py-2 transition-colors sm:flex-row sm:items-center sm:justify-between",
                                   isPrimary &&
-                                    "border-amber-500/30 bg-amber-500/5",
+                                    "border-stamp/35 bg-stamp/5",
                                 )}
                               >
                                 <div className="flex min-w-0 items-center gap-3">
                                   <div
                                     className={cn(
-                                      "bg-muted/30 flex size-8 shrink-0 items-center justify-center rounded-md border",
+                                      "bg-secondary flex size-8 shrink-0 items-center justify-center border border-foreground/25",
                                       isPrimary &&
-                                        "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300",
+                                        "border-stamp/35 bg-stamp/10 text-stamp",
                                     )}
                                   >
                                     {isPrimary ? (
@@ -466,8 +416,6 @@ export function ExpenseDocumentsTable({
             })}
           </TableBody>
         </Table>
-      </CardContent>
-
       <ExpenseDocumentDetailPanel
         open={panelOpen}
         document={selectedDocument ?? null}
@@ -500,6 +448,6 @@ export function ExpenseDocumentsTable({
         }}
         onDelete={deleteSelectedDocument}
       />
-    </Card>
+    </div>
   );
 }

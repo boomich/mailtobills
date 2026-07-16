@@ -1,4 +1,3 @@
-import { Card, CardContent } from "@mailtobills/ui/components/card";
 import { Skeleton } from "@mailtobills/ui/components/skeleton";
 import {
   Table,
@@ -9,17 +8,21 @@ import {
 import {
   ExpenseDocumentsTableColumns,
   ExpenseDocumentsTableHeader,
-  ExpenseDocumentsTableHeading,
 } from "./expense-documents-table-chrome";
 
 export function ExpenseDocumentsTableSkeleton({ rows = 6 }: { rows?: number }) {
   return (
-    <Card className="min-w-0 gap-0 overflow-hidden rounded-lg py-0 shadow-xs">
-      <ExpenseDocumentsTableHeading />
-      <CardContent className="p-0">
-        <Table className="min-w-[920px] table-fixed">
+    <Table className="table-fixed">
           <ExpenseDocumentsTableColumns />
-          <ExpenseDocumentsTableHeader />
+          <ExpenseDocumentsTableHeader
+            labels={{
+              number: "",
+              received: "",
+              sender: "",
+              document: "",
+              attachments: "",
+            }}
+          />
           <TableBody>
             {Array.from({ length: rows }).map((_, index) => (
               <TableRow key={index} className="hover:bg-transparent">
@@ -57,7 +60,5 @@ export function ExpenseDocumentsTableSkeleton({ rows = 6 }: { rows?: number }) {
             ))}
           </TableBody>
         </Table>
-      </CardContent>
-    </Card>
   );
 }

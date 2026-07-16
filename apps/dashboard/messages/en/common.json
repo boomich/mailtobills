@@ -45,6 +45,17 @@
     "goToCurrentMonth": "Go to current month, {month}",
     "monthIsCurrent": "{month}, current month"
   },
+  "CounterBar": {
+    "collectionAddress": "Collection Address",
+    "copyCollectionAddress": "Copy Collection Address",
+    "copied": "Copied"
+  },
+  "YearRegister": {
+    "label": "Collection Months",
+    "previousYear": "Previous year",
+    "nextYear": "Next year",
+    "month": "{month}, {count, plural, one {# document} other {# documents}}"
+  },
   "Auth": {
     "language": "Language",
     "signInTitle": "Welcome back",
@@ -193,6 +204,11 @@
     "sectionLabel": "Collection Month",
     "description": "Collected Expense Documents ready for review, download, or Accountant Export.",
     "exportMonth": "Export month",
+    "registrationLine": "COLLECTION MONTH · M/{month} · OPEN",
+    "downloadZip": "Download ZIP",
+    "exportContents": "Accountant Export: {count} Primary PDFs + manifest.csv",
+    "freeScheduleUpsell": "Automate this every month — Pro",
+    "scheduleNextRun": "Export Schedule: day {day}",
     "stats": {
       "collected": "Collected",
       "pdfAttachments": "PDF Attachments",
@@ -231,12 +247,11 @@
       "description": "One row per accepted forwarded email.",
       "count": "{count, plural, one {# doc} other {# docs}}",
       "headers": {
-        "expand": "Expand",
+        "number": "No.",
         "sender": "Sender",
         "document": "Document",
         "received": "Received",
-        "pdfs": "PDFs",
-        "actions": "Actions"
+        "attachments": "Attachments"
       },
       "emptyTitle": "No documents",
       "emptyMonth": "No expense documents collected in {month}.",
@@ -316,6 +331,7 @@
     "proRequiredNotice": "Direct send is available on Pro. ZIP download is still included. <settingsLink>Upgrade in settings</settingsLink>.",
     "missingAccountantNotice": "No accountant configured. <settingsLink>Configure accountant first</settingsLink>.",
     "send": "Send to accountant",
+    "pro": "PRO",
     "sending": "Sending...",
     "sentTo": "Sent to {email}",
     "errors": {

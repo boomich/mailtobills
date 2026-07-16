@@ -1,4 +1,3 @@
-import { Download, FileText, Inbox, Paperclip } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 
 import { getMonthInfo } from "@/lib/months";
@@ -7,23 +6,6 @@ import { getExpenseDocuments } from "@/features/expense-documents/read-model/get
 import { percentDelta } from "@/features/expense-documents/read-model/transform";
 import { formatCollectionMonthLabel } from "@/lib/localized-format";
 import { Button } from "@mailtobills/ui/components/button";
-import {
-  PageHeader,
-  PageHeaderContent,
-  PageHeaderDescription,
-  PageHeaderTitle,
-} from "@mailtobills/ui/components/page-header";
-import { SectionLabel } from "@mailtobills/ui/components/section-label";
-import {
-  StatGroup,
-  StatLabel,
-  StatTile,
-  StatTileFooter,
-  StatTileHeader,
-  StatTilePeriod,
-  StatValue,
-} from "@mailtobills/ui/components/stat";
-import { TrendChip } from "@mailtobills/ui/components/trend-chip";
 import { OnboardingEmptyState } from "@/components/onboarding-empty-state";
 import { SendToAccountantButton } from "@/components/send-to-accountant-button";
 import { getCollectionMonthRoute } from "@/lib/collection-month-route";
@@ -37,7 +19,7 @@ export default async function DashboardPage({
   const { month } = await params;
   const monthInfo = getCollectionMonthRoute(month);
   const [
-    { summary, previousSummary, totalCount, documents },
+    { summary, previousSummary, exportSummary, totalCount, documents },
     { customer },
     locale,
     t,
@@ -60,91 +42,64 @@ export default async function DashboardPage({
     "short",
   );
   const monthLabel = formatCollectionMonthLabel(monthInfo.start, locale);
-  const vsPrevious = t("stats.vsPrevious", { month: previousShortLabel });
+  const delta = percentDelta(summary.count, previousSummary.count);
+  const deltaLabel =
+    delta === null
+      ? t("stats.new")
+      : new Intl.NumberFormat(locale, {
+          maximumFractionDigits: 0,
+          signDisplay: "always",
+          style: "percent",
+        }).format(delta / 100);
 
   return (
-    <div className="animate-in fade-in space-y-5 duration-300">
-      <PageHeader>
-        <PageHeaderContent className="space-y-2">
-          <SectionLabel>{t("sectionLabel")}</SectionLabel>
-          <PageHeaderTitle className="text-3xl">
+    <section className="relative border border-foreground bg-background shadow-[8px_8px_0_0_oklch(0.27_0.025_268/0.12)]">
+      <header className="flex flex-wrap items-end justify-between gap-x-8 gap-y-5 border-b-2 border-foreground px-5 pt-7 pb-6 sm:px-8">
+        <div>
+          <div className="mb-1.5 font-mono text-[10px] tracking-[0.14em] text-muted-foreground uppercase">
+            {t("registrationLine", { month: monthInfo.value })}
+          </div>
+          <h1 className="font-display text-4xl font-extrabold tracking-[-0.01em] [font-stretch:112%] sm:text-5xl">
             {monthLabel}
-          </PageHeaderTitle>
-          <PageHeaderDescription>
-            {t("description")}
-          </PageHeaderDescription>
-        </PageHeaderContent>
-        <div className="flex w-full flex-col items-stretch gap-2 md:w-auto md:items-end">
-          <div className="flex w-full flex-col gap-2 md:w-auto md:flex-row">
+          </h1>
+        </div>
+        <div className="flex flex-col items-start gap-2 sm:items-end">
+          <div className="flex flex-wrap gap-2.5">
+            <Button asChild variant="outline">
+              <a href={`/api/exports/${monthInfo.value}`}>{t("downloadZip")}</a>
+            </Button>
             <SendToAccountantButton
               month={monthInfo.value}
               isPro={customer.plan === "pro"}
               accountantEmail={customer.accountantAddress ?? undefined}
             />
-            <Button asChild typography="mono" className="w-full md:w-auto">
-              <a href={`/api/exports/${monthInfo.value}`}>
-                <Download className="size-4" />
-                {t("exportMonth")}
-              </a>
-            </Button>
           </div>
+          {customer.plan === "free" ? (
+            <form action="/api/billing/checkout" method="post">
+              <button type="submit" className="font-mono text-[10px] tracking-[0.1em] text-muted-foreground uppercase underline decoration-primary underline-offset-4 transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                {t("freeScheduleUpsell")}
+              </button>
+            </form>
+          ) : null}
         </div>
-      </PageHeader>
-
-      <StatGroup variant="row">
-        <StatTile>
-          <StatTileHeader>
-            <StatLabel>{t("stats.collected")}</StatLabel>
-            <Inbox />
-          </StatTileHeader>
-          <StatValue className="text-3xl">{summary.count}</StatValue>
-          <StatTileFooter>
-            <TrendChip
-              delta={percentDelta(summary.count, previousSummary.count)}
-              newLabel={t("stats.new")}
-            />
-            <StatTilePeriod>{vsPrevious}</StatTilePeriod>
-          </StatTileFooter>
-        </StatTile>
-        <StatTile>
-          <StatTileHeader>
-            <StatLabel>{t("stats.pdfAttachments")}</StatLabel>
-            <Paperclip />
-          </StatTileHeader>
-          <StatValue className="text-3xl">{summary.attachmentCount}</StatValue>
-          <StatTileFooter>
-            <TrendChip
-              delta={percentDelta(
-                summary.attachmentCount,
-                previousSummary.attachmentCount,
-              )}
-              newLabel={t("stats.new")}
-            />
-            <StatTilePeriod>{vsPrevious}</StatTilePeriod>
-          </StatTileFooter>
-        </StatTile>
-        <StatTile>
-          <StatTileHeader>
-            <StatLabel>{t("stats.primaryPdfs")}</StatLabel>
-            <FileText className="text-amber-600 dark:text-amber-400" />
-          </StatTileHeader>
-          <StatValue className="text-3xl">{summary.count}</StatValue>
-          <StatTileFooter>
-            <TrendChip
-              delta={percentDelta(summary.count, previousSummary.count)}
-              newLabel={t("stats.new")}
-            />
-            <StatTilePeriod>{vsPrevious}</StatTilePeriod>
-          </StatTileFooter>
-        </StatTile>
-      </StatGroup>
-
+      </header>
+      <div className="flex flex-wrap gap-x-7 gap-y-1 border-b border-border px-5 py-3 font-mono text-[11px] tracking-[0.1em] text-muted-foreground uppercase sm:px-8">
+        <span><span className="font-bold text-foreground">{summary.count}</span> {t("stats.collected")}</span>
+        <span><span className="font-bold text-foreground">{summary.attachmentCount}</span> {t("stats.pdfAttachments")}</span>
+        <span><span className="font-bold text-foreground">{exportSummary.includedDocumentCount}</span> {t("stats.primaryPdfs")}</span>
+        <span className="ml-auto">{t("stats.vsPrevious", { month: previousShortLabel })} · {deltaLabel}</span>
+      </div>
       <ExpenseDocumentsTable
         documents={documents}
         emptyLabel={tableT("emptyMonth", {
           month: monthLabel,
         })}
       />
-    </div>
+      <footer className="flex flex-wrap items-center justify-between gap-3 border-t-2 border-foreground px-5 py-4 sm:px-8">
+        <span className="font-mono text-[10.5px] tracking-[0.1em] text-muted-foreground uppercase">
+          {t("exportContents", { count: exportSummary.includedDocumentCount })}
+        </span>
+      </footer>
+    </section>
   );
 }

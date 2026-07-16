@@ -128,7 +128,7 @@ describe("ExpenseDocumentsTable", () => {
     renderTable([documentRow()]);
 
     expect(screen.getByText("invoice-primary.pdf")).toBeInTheDocument();
-    await user.click(screen.getAllByRole("button", { name: /view pdf/i })[0]!);
+    await user.click(screen.getByText("invoice-primary.pdf").closest("tr")!);
 
     expect(
       screen.getByRole("dialog", { name: "invoice-primary.pdf" }),
@@ -146,7 +146,7 @@ describe("ExpenseDocumentsTable", () => {
 
     const secondary = screen
       .getByText("invoice-secondary.pdf")
-      .closest("div[class*='rounded-md']");
+      .closest("div.border");
     expect(secondary).not.toBeNull();
 
     await user.click(
@@ -166,7 +166,7 @@ describe("ExpenseDocumentsTable", () => {
 
     renderTable([documentRow(), secondDocumentRow()]);
 
-    await user.click(screen.getAllByRole("button", { name: /view pdf/i })[0]!);
+    await user.click(screen.getByText("invoice-primary.pdf").closest("tr")!);
     await user.click(screen.getByRole("button", { name: "Next document" }));
 
     expect(
@@ -233,7 +233,7 @@ describe("ExpenseDocumentsTable", () => {
     );
     const secondary = screen
       .getByText("invoice-secondary.pdf")
-      .closest("div[class*='rounded-md']");
+      .closest("div.border");
     expect(secondary).not.toBeNull();
 
     await user.click(
@@ -259,22 +259,23 @@ describe("ExpenseDocumentsTable", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("restores focus to the view action when the drawer closes", async () => {
+  it("restores focus to the manifest row when the drawer closes", async () => {
     const user = userEvent.setup();
     renderTable([documentRow()]);
-    const viewAction = screen.getByRole("button", { name: /view pdf/i });
+    const row = screen.getByText("invoice-primary.pdf").closest("tr");
+    expect(row).not.toBeNull();
 
-    await user.click(viewAction);
+    await user.click(row as HTMLElement);
     await user.click(screen.getByRole("button", { name: "Close" }));
 
-    await waitFor(() => expect(viewAction).toHaveFocus());
+    await waitFor(() => expect(row).toHaveFocus());
   });
 
   it("advances to the next document after deletion succeeds", async () => {
     const user = userEvent.setup();
     renderTable([documentRow(), secondDocumentRow()]);
 
-    await user.click(screen.getAllByRole("button", { name: /view pdf/i })[0]!);
+    await user.click(screen.getByText("invoice-primary.pdf").closest("tr")!);
     await confirmDrawerDelete(user);
 
     expect(mocks.softDelete).toHaveBeenCalledWith({
@@ -289,7 +290,7 @@ describe("ExpenseDocumentsTable", () => {
     const user = userEvent.setup();
     renderTable([documentRow()]);
 
-    await user.click(screen.getByRole("button", { name: /view pdf/i }));
+    await user.click(screen.getByText("invoice-primary.pdf").closest("tr")!);
     await confirmDrawerDelete(user);
 
     await waitFor(() =>
@@ -306,7 +307,7 @@ describe("ExpenseDocumentsTable", () => {
       .mockImplementation(() => {});
     renderTable([documentRow(), secondDocumentRow()]);
 
-    await user.click(screen.getAllByRole("button", { name: /view pdf/i })[0]!);
+    await user.click(screen.getByText("invoice-primary.pdf").closest("tr")!);
     await confirmDrawerDelete(user);
 
     expect(await screen.findByRole("alert")).toHaveTextContent(
@@ -338,7 +339,7 @@ describe("ExpenseDocumentsTable", () => {
     );
     renderTable([documentRow(), secondDocumentRow()]);
 
-    await user.click(screen.getAllByRole("button", { name: /view pdf/i })[0]!);
+    await user.click(screen.getByText("invoice-primary.pdf").closest("tr")!);
     await confirmDrawerDelete(user);
 
     expect(
@@ -376,7 +377,8 @@ describe("ExpenseDocumentsTable", () => {
     );
   });
 
-  it("disables the PDF action when no primary file is available", () => {
+  it("opens the document safely when no primary PDF is available", async () => {
+    const user = userEvent.setup();
     const document = documentRow();
     document.primaryAttachment = undefined;
     document.primaryAttachmentId = undefined;
@@ -384,6 +386,10 @@ describe("ExpenseDocumentsTable", () => {
 
     renderTable([document]);
 
-    expect(screen.getByRole("button", { name: /view pdf/i })).toBeDisabled();
+    await user.click(screen.getByText("No primary PDF").closest("tr")!);
+
+    expect(
+      screen.getByRole("dialog", { name: "Expense document" }),
+    ).toBeInTheDocument();
   });
 });

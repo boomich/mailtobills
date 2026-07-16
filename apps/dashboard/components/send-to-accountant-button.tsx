@@ -63,18 +63,14 @@ export function SendToAccountantButton({
 
   if (!isPro) {
     return (
-      <p className="text-muted-foreground text-sm">
-        {t.rich("proRequiredNotice", {
-          settingsLink: (chunks) => (
-            <Link
-              className="font-medium underline underline-offset-4"
-              href="/settings"
-            >
-              {chunks}
-            </Link>
-          ),
-        })}
-      </p>
+      <form action="/api/billing/checkout" method="post">
+        <Button type="submit" variant="outline" className="border-primary text-primary">
+          {t("send")}
+          <span className="border border-primary px-1 py-0.5 font-display text-[9px] leading-none tracking-[0.12em]">
+            {t("pro")}
+          </span>
+        </Button>
+      </form>
     );
   }
 
@@ -132,8 +128,6 @@ export function SendToAccountantButton({
     <div className="space-y-1.5">
       <Button
         type="button"
-        variant="outline"
-        typography="mono"
         className="w-full md:w-auto"
         disabled={isSending}
         onClick={sendExport}
