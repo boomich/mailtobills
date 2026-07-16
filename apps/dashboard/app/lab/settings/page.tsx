@@ -149,18 +149,27 @@ export default function SettingsLabPage() {
           <section className="border-b border-border px-5 py-8 sm:px-9">
             <FormHead n="3" title="Contabilista" />
             <div className="grid max-w-[560px] gap-5">
-              <label className="grid gap-1.5">
-                <FieldLabelCaps>Nome (opcional)</FieldLabelCaps>
-                <Input defaultValue="Maria Contas" className="max-w-[320px]" />
-              </label>
-              <label className="grid gap-1.5">
-                <FieldLabelCaps>Email do contabilista</FieldLabelCaps>
+              <div className="grid gap-1.5">
+                <label htmlFor="lab-accountant-name">
+                  <FieldLabelCaps>Nome (opcional)</FieldLabelCaps>
+                </label>
                 <Input
+                  id="lab-accountant-name"
+                  defaultValue="Maria Contas"
+                  className="max-w-[320px]"
+                />
+              </div>
+              <div className="grid gap-1.5">
+                <label htmlFor="lab-accountant-email">
+                  <FieldLabelCaps>Email do contabilista</FieldLabelCaps>
+                </label>
+                <Input
+                  id="lab-accountant-email"
                   defaultValue="maria@contascertas.pt"
                   type="email"
                   className="max-w-[320px] font-mono text-[13px]"
                 />
-              </label>
+              </div>
               <p className="text-[12.5px] text-muted-foreground">
                 As exportações enviadas diretamente vão para este endereço,
                 com cópia para si.

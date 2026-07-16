@@ -1,7 +1,8 @@
 import { YearRegister } from "@/components/year-register";
-import { getCollectionYearRegister } from "@/features/expense-documents/read-model/getCollectionYearRegister";
 import { getCollectionMonthRoute } from "@/lib/collection-month-route";
 
+/* No data fetch here on purpose: the register subscribes client-side, so
+   month/year navigation is never blocked on counting documents. */
 export default async function MonthLayout({
   children,
   params,
@@ -11,18 +12,10 @@ export default async function MonthLayout({
 }) {
   const { month } = await params;
   const monthInfo = getCollectionMonthRoute(month);
-  const { counts, earliestYear } = await getCollectionYearRegister(
-    monthInfo.start.getUTCFullYear(),
-  );
 
   return (
     <div className="min-w-0">
-      <YearRegister
-        year={monthInfo.start.getUTCFullYear()}
-        activeMonth={monthInfo.value}
-        counts={counts}
-        earliestYear={earliestYear}
-      />
+      <YearRegister activeMonth={monthInfo.value} />
       {children}
     </div>
   );
