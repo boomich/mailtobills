@@ -16,6 +16,7 @@ import type * as email_templates from "../email/templates.js";
 import type * as email_types from "../email/types.js";
 import type * as expenseDocuments from "../expenseDocuments.js";
 import type * as exports from "../exports.js";
+import type * as feedback from "../feedback.js";
 import type * as http from "../http.js";
 import type * as lib_accountantDeliverySettings from "../lib/accountantDeliverySettings.js";
 import type * as lib_accountantExport from "../lib/accountantExport.js";
@@ -43,6 +44,7 @@ declare const fullApi: ApiFromModules<{
   "email/types": typeof email_types;
   expenseDocuments: typeof expenseDocuments;
   exports: typeof exports;
+  feedback: typeof feedback;
   http: typeof http;
   "lib/accountantDeliverySettings": typeof lib_accountantDeliverySettings;
   "lib/accountantExport": typeof lib_accountantExport;

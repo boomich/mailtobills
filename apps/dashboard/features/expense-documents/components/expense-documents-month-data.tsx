@@ -8,7 +8,6 @@ import { SendToAccountantButton } from "@/components/send-to-accountant-button";
 import { api } from "@/lib/convexClient";
 import { percentDelta } from "@/features/expense-documents/read-model/transform";
 import { useExpenseDocuments } from "@/features/expense-documents/read-model/useExpenseDocuments";
-import { Button } from "@mailtobills/ui/components/button";
 import { Skeleton } from "@mailtobills/ui/components/skeleton";
 
 import { ExpenseDocumentsTable } from "./expense-documents-table";

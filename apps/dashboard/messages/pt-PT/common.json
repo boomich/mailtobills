@@ -49,6 +49,20 @@
     "copyCollectionAddress": "Copiar endereço de recolha",
     "copied": "Copiado"
   },
+  "Feedback": {
+    "trigger": "Feedback",
+    "title": "Uma carta para o MailToBills",
+    "description": "Conte-nos o que está a funcionar, o que falta ou o que podia ser mais claro.",
+    "letterLabel": "A sua carta",
+    "placeholder": "Escreva aqui o seu feedback…",
+    "counter": "{count} / 2000",
+    "submit": "Enviar",
+    "sending": "A enviar…",
+    "cancel": "Cancelar",
+    "close": "Fechar",
+    "received": "Recebido — obrigado.",
+    "error": "Não foi possível enviar a sua carta. Tente novamente."
+  },
   "YearRegister": {
     "label": "Meses de recolha",
     "previousYear": "Ano anterior",

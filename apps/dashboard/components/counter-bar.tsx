@@ -18,6 +18,8 @@ import {
   DropdownMenuTrigger,
 } from "@mailtobills/ui/components/dropdown-menu";
 
+import { FeedbackDialog } from "@/components/feedback-dialog";
+
 export function CounterBar({
   customer,
   collectionAddress,
@@ -76,6 +78,7 @@ export function CounterBar({
         </div>
 
         <div className="flex shrink-0 items-center gap-1.5">
+          <FeedbackDialog />
           <Link href="/settings" className="px-2 py-1 font-display text-[12px] font-bold tracking-[0.08em] uppercase [font-stretch:86%] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
             {navigationT("settings")}
           </Link>

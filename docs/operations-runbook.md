@@ -45,6 +45,20 @@ NEXT_PUBLIC_DEV_AUTH_PASSWORD=<local-only-password>
 
 Do not set local QA credentials in production.
 
+## Feedback → Asana
+
+Set these variables on the Convex deployment:
+
+```text
+ASANA_PAT=<asana-personal-access-token>
+ASANA_PROJECT_GID=<asana-project-gid-for-customer-feedback>
+```
+
+Feedback is stored in Convex before forwarding is scheduled. If either
+variable is absent, or Asana rejects the request, the feedback remains stored
+and the customer has still received their submission receipt. To find
+unforwarded feedback, inspect `feedback` rows where `forwardedAt` is unset.
+
 ## n8n Restart
 
 1. SSH into the VPS.

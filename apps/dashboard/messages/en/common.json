@@ -49,6 +49,20 @@
     "copyCollectionAddress": "Copy Collection Address",
     "copied": "Copied"
   },
+  "Feedback": {
+    "trigger": "Feedback",
+    "title": "A letter to MailToBills",
+    "description": "Tell us what is working, what is missing, or what could be clearer.",
+    "letterLabel": "Your letter",
+    "placeholder": "Type your feedback here…",
+    "counter": "{count} / 2000",
+    "submit": "Send",
+    "sending": "Sending…",
+    "cancel": "Cancel",
+    "close": "Close",
+    "received": "Received — thank you.",
+    "error": "Your letter could not be sent. Please try again."
+  },
   "YearRegister": {
     "label": "Collection Months",
     "previousYear": "Previous year",
