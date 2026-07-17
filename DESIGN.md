@@ -229,3 +229,12 @@ its feel rules are tested:
   collecting a document. The feedback ritual follows the seal-dialog
   pattern; the letter body is typed in Courier (a letter is data on a
   form).
+- **2026-07-17 · The dispatch.** Sending the month to the accountant is
+  the handover form of the seal ritual (§7) and follows the seal-dialog
+  pattern: a registered-mail form (addressee and contents typed in
+  Courier on ruled lines, registration line CORREIO REGISTADO), an
+  explicit confirm, and the cancellation postmark — *with* waves, mail
+  that has travelled — pressed in stamp violet as proof of dispatch
+  (§4-sanctioned: the export seal in its handover form). Law derived:
+  **an action that sends email to a third party never fires on a single
+  click; it gets a ritual with an explicit confirm.**
