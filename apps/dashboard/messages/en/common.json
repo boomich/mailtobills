@@ -18,7 +18,6 @@
     "customer": "Customer",
     "menu": "Menu",
     "dashboard": "Dashboard",
-    "reports": "Reports",
     "settings": "Settings",
     "toggle": "Toggle submenu",
     "toggleSidebar": "Toggle sidebar",
@@ -271,25 +270,6 @@
       "sealAction": "Seal and download",
       "cancel": "Cancel",
       "close": "Close"
-    }
-  },
-  "Reports": {
-    "sectionLabel": "Accountant Export",
-    "description": "Download the current primary PDFs and a CSV manifest for collected expense documents in this collection month.",
-    "exportZip": "Export ZIP",
-    "stats": {
-      "documents": "Documents",
-      "pdfAttachments": "PDF Attachments",
-      "filesInExport": "Files in Export",
-      "vsPrevious": "VS {month}",
-      "new": "New"
-    },
-    "zipContents": {
-      "title": "What is inside the ZIP",
-      "primaryPdfs": "One PDF for each collected document with a Primary Attachment.",
-      "manifest": "A CSV manifest with sender, subject, received date, and filename for every included document.",
-      "skipped": "{count, plural, one {# collected document without a Primary Attachment is not included.} other {# collected documents without a Primary Attachment are not included.}}",
-      "estimate": "This estimate uses stored document metadata. The downloaded ZIP is authoritative if a Primary Attachment cannot be read."
     }
   },
   "ExpenseDocuments": {

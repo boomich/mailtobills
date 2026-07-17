@@ -32,7 +32,6 @@ vi.mock("@/features/expense-documents/read-model/getExpenseDocuments", () => ({
 
 import CollectionMonthPage from "./page";
 import CollectionMonthNotFound from "./not-found";
-import CollectionMonthReportsPage from "./reports/page";
 
 describe("Collection Month route states", () => {
   beforeEach(() => {
@@ -60,10 +59,7 @@ describe("Collection Month route states", () => {
     vi.useRealTimers();
   });
 
-  it.each([
-    ["dashboard", CollectionMonthPage],
-    ["reports", CollectionMonthReportsPage],
-  ])(
+  it.each([["dashboard", CollectionMonthPage]])(
     "routes a malformed Collection Month to not-found before loading %s data",
     async (_, Page) => {
       await expect(

@@ -31,7 +31,6 @@ export function CounterBar({
   const params = useParams<{ month?: string }>();
   const [isCopied, setIsCopied] = useState(false);
   const month = typeof params.month === "string" ? params.month : null;
-  const reportsHref = month ? `/m/${month}/reports` : "/reports";
   const initials = (customer.name || customer.email || "Customer")
     .trim()
     .split(/\s+/)
@@ -77,9 +76,6 @@ export function CounterBar({
         </div>
 
         <div className="flex shrink-0 items-center gap-1.5">
-          <Link href={reportsHref} className="px-2 py-1 font-display text-[12px] font-bold tracking-[0.08em] uppercase [font-stretch:86%] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-            {navigationT("reports")}
-          </Link>
           <Link href="/settings" className="px-2 py-1 font-display text-[12px] font-bold tracking-[0.08em] uppercase [font-stretch:86%] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
             {navigationT("settings")}
           </Link>

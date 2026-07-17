@@ -18,7 +18,6 @@
     "customer": "Cliente",
     "menu": "Menu",
     "dashboard": "Painel",
-    "reports": "Relatórios",
     "settings": "Definições",
     "toggle": "Alternar submenu",
     "toggleSidebar": "Alternar barra lateral",
@@ -271,25 +270,6 @@
       "sealAction": "Selar e descarregar",
       "cancel": "Cancelar",
       "close": "Fechar"
-    }
-  },
-  "Reports": {
-    "sectionLabel": "Exportação para o Contabilista",
-    "description": "Transfira os PDFs principais atuais e um manifesto CSV dos documentos de despesas reunidos neste mês de recolha.",
-    "exportZip": "Exportar ZIP",
-    "stats": {
-      "documents": "Documentos",
-      "pdfAttachments": "Anexos PDF",
-      "filesInExport": "Ficheiros na exportação",
-      "vsPrevious": "VS {month}",
-      "new": "Novo"
-    },
-    "zipContents": {
-      "title": "O que está dentro do ZIP",
-      "primaryPdfs": "Um PDF para cada documento reunido com um Anexo Principal.",
-      "manifest": "Um manifesto CSV com remetente, assunto, data de receção e nome do ficheiro para cada documento incluído.",
-      "skipped": "{count, plural, one {# documento reunido sem Anexo Principal não é incluído.} other {# documentos reunidos sem Anexo Principal não são incluídos.}}",
-      "estimate": "Esta estimativa usa os metadados guardados dos documentos. O ZIP transferido é a fonte definitiva se um Anexo Principal não puder ser lido."
     }
   },
   "ExpenseDocuments": {
