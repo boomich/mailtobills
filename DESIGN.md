@@ -223,3 +223,9 @@ its feel rules are tested:
   (§7): flat printed index, one click to any month of the year, two to any
   archive year. The kraft *material* remains legal as a surface; kraft
   pretending to be a 3D object does not.
+- **2026-07-17 · The feedback letter.** Customer feedback is a letter to
+  MailToBills and is stamped RECEBIDO on submission — this is a sanctioned
+  §4 violet use (certification of receipt), the same semantics as
+  collecting a document. The feedback ritual follows the seal-dialog
+  pattern; the letter body is typed in Courier (a letter is data on a
+  form).
