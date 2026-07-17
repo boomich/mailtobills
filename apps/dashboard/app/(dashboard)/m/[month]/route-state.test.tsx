@@ -77,6 +77,16 @@ describe("Collection Month route states", () => {
     },
   );
 
+  it("renders a valid month frame without server data reads", async () => {
+    await CollectionMonthPage({
+      params: Promise.resolve({ month: "2026-06" }),
+    });
+
+    expect(mocks.authToken).not.toHaveBeenCalled();
+    expect(mocks.fetchQuery).not.toHaveBeenCalled();
+    expect(mocks.getExpenseDocuments).not.toHaveBeenCalled();
+  });
+
   it("renders the Collection Month recovery action", async () => {
     render(await CollectionMonthNotFound());
 

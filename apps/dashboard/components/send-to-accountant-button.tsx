@@ -13,6 +13,7 @@ type SendToAccountantButtonProps = {
   month: string;
   isPro: boolean;
   accountantEmail?: string;
+  disabled?: boolean;
 };
 
 type OutboundExportTranslator = ReturnType<typeof useTranslations>;
@@ -43,6 +44,7 @@ export function SendToAccountantButton({
   month,
   isPro,
   accountantEmail,
+  disabled = false,
 }: SendToAccountantButtonProps) {
   const t = useTranslations("OutboundExport");
   const sendManualExportToAccountant = useAction(
@@ -64,7 +66,12 @@ export function SendToAccountantButton({
   if (!isPro) {
     return (
       <form action="/api/billing/checkout" method="post">
-        <Button type="submit" variant="outline" className="border-primary text-primary">
+        <Button
+          type="submit"
+          variant="outline"
+          className="border-primary text-primary"
+          disabled={disabled}
+        >
           {t("send")}
           <span className="border border-primary px-1 py-0.5 font-display text-[9px] leading-none tracking-[0.12em]">
             {t("pro")}
@@ -129,7 +136,7 @@ export function SendToAccountantButton({
       <Button
         type="button"
         className="w-full md:w-auto"
-        disabled={isSending}
+        disabled={disabled || isSending}
         onClick={sendExport}
       >
         {isSending ? (
