@@ -259,6 +259,18 @@
       "title": "Collection Month not found",
       "description": "Use a Collection Month in YYYY-MM format to browse collected Expense Documents.",
       "openMonth": "Open {month}"
+    },
+    "seal": {
+      "trigger": "Download ZIP",
+      "registration": "ACCOUNTANT EXPORT",
+      "title": "Seal {month}",
+      "description": "Review the Manifest, press the seal, and hand the month over. The ZIP contains every Primary PDF plus manifest.csv.",
+      "contents": "{count, plural, one {# Primary PDF} other {# Primary PDFs}} + manifest.csv",
+      "readyStatus": "Ready to seal",
+      "sealedStatus": "Sealed — download starting",
+      "sealAction": "Seal and download",
+      "cancel": "Cancel",
+      "close": "Close"
     }
   },
   "Reports": {

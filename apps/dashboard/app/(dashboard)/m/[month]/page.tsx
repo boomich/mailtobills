@@ -37,7 +37,10 @@ export default async function DashboardPage({
             {monthLabel}
           </h1>
         </div>
-        <CollectionMonthExportActions month={monthInfo.value} />
+        <CollectionMonthExportActions
+          month={monthInfo.value}
+          monthLabel={monthLabel}
+        />
       </header>
       <ExpenseDocumentsMonthData
         month={monthInfo.value}

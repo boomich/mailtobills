@@ -13,6 +13,7 @@ import { Skeleton } from "@mailtobills/ui/components/skeleton";
 
 import { ExpenseDocumentsTable } from "./expense-documents-table";
 import { ExpenseDocumentsTableSkeleton } from "./expense-documents-table-skeleton";
+import { SealMonthDialog } from "./seal-month-dialog";
 
 type ExpenseDocumentsMonthDataProps = {
   month: string;
@@ -37,7 +38,8 @@ function CollectionMonthStatsSkeleton() {
 
 export function CollectionMonthExportActions({
   month,
-}: Pick<ExpenseDocumentsMonthDataProps, "month">) {
+  monthLabel,
+}: Pick<ExpenseDocumentsMonthDataProps, "month" | "monthLabel">) {
   const t = useTranslations("CollectionMonth");
   const subscription = useQuery(api.subscriptions.getMySubscription);
   const viewer = useQuery(api.users.viewer);
@@ -47,9 +49,7 @@ export function CollectionMonthExportActions({
   return (
     <div className="flex flex-col items-start gap-2 sm:items-end">
       <div className="flex flex-wrap gap-2.5">
-        <Button asChild variant="outline">
-          <a href={`/api/exports/${month}`}>{t("downloadZip")}</a>
-        </Button>
+        <SealMonthDialog month={month} monthLabel={monthLabel} />
         <SendToAccountantButton
           month={month}
           isPro={isPro}

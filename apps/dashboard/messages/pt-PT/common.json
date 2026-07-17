@@ -259,6 +259,18 @@
       "title": "Mês de Recolha não encontrado",
       "description": "Use um Mês de Recolha no formato AAAA-MM para consultar Documentos de Despesas reunidos.",
       "openMonth": "Abrir {month}"
+    },
+    "seal": {
+      "trigger": "Descarregar ZIP",
+      "registration": "EXPORTAÇÃO PARA O CONTABILISTA",
+      "title": "Selar {month}",
+      "description": "Reveja o Manifesto, prima o selo e entregue o mês. O ZIP contém todos os PDFs principais mais o manifest.csv.",
+      "contents": "{count, plural, one {# PDF principal} other {# PDFs principais}} + manifest.csv",
+      "readyStatus": "Pronto a selar",
+      "sealedStatus": "Selado — a descarregar",
+      "sealAction": "Selar e descarregar",
+      "cancel": "Cancelar",
+      "close": "Fechar"
     }
   },
   "Reports": {
