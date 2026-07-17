@@ -4,7 +4,7 @@ import { useQuery } from "convex/react";
 import { useTranslations } from "next-intl";
 
 import { OnboardingEmptyState } from "@/components/onboarding-empty-state";
-import { SendToAccountantButton } from "@/components/send-to-accountant-button";
+import { SendToAccountantDialog } from "@/components/send-to-accountant-dialog";
 import { api } from "@/lib/convexClient";
 import { percentDelta } from "@/features/expense-documents/read-model/transform";
 import { useExpenseDocuments } from "@/features/expense-documents/read-model/useExpenseDocuments";
@@ -49,8 +49,9 @@ export function CollectionMonthExportActions({
     <div className="flex flex-col items-start gap-2 sm:items-end">
       <div className="flex flex-wrap gap-2.5">
         <SealMonthDialog month={month} monthLabel={monthLabel} />
-        <SendToAccountantButton
+        <SendToAccountantDialog
           month={month}
+          monthLabel={monthLabel}
           isPro={isPro}
           accountantEmail={viewer?.accountantEmail ?? undefined}
           disabled={isLoading}
