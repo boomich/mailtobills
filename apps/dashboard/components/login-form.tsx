@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useConvexAuth } from "convex/react";
 import { useAuthActions } from "@convex-dev/auth/react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import { cn } from "@mailtobills/ui/lib/utils";
 import { Input } from "@mailtobills/ui/components/input";
@@ -51,6 +51,11 @@ export function LoginForm({
 
   const router = useRouter();
   const t = useTranslations("Auth");
+  const locale = useLocale();
+  const legalBase =
+    locale === "pt-PT"
+      ? "https://mailtobills.com/pt-PT"
+      : "https://mailtobills.com";
   const { signIn } = useAuthActions();
   const { isLoading } = useConvexAuth();
 
@@ -415,7 +420,28 @@ export function LoginForm({
         </CardContent>
       </Card>
       <FieldDescription className="px-6 text-center text-[12px]">
-        {t("legal")}
+        {t.rich("legal", {
+          termsLink: (chunks) => (
+            <a
+              href={`${legalBase}/terms`}
+              target="_blank"
+              rel="noreferrer"
+              className="underline underline-offset-2 hover:text-foreground"
+            >
+              {chunks}
+            </a>
+          ),
+          privacyLink: (chunks) => (
+            <a
+              href={`${legalBase}/privacy`}
+              target="_blank"
+              rel="noreferrer"
+              className="underline underline-offset-2 hover:text-foreground"
+            >
+              {chunks}
+            </a>
+          ),
+        })}
       </FieldDescription>
     </div>
   );

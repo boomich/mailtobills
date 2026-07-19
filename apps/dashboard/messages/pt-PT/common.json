@@ -90,7 +90,7 @@
     "tagline": "Documentos de despesas. Organizados.",
     "heroTitle": "Encaminhe PDFs de despesas. Nós organizamo-los.",
     "heroDescription": "Reúna documentos de despesas recebidos por mês e exporte os PDFs principais com um manifesto CSV para o seu contabilista.",
-    "legal": "Ao continuar, aceita os nossos Termos de Serviço e Política de Privacidade.",
+    "legal": "Ao continuar, aceita os nossos <termsLink>Termos de Serviço</termsLink> e a <privacyLink>Política de Privacidade</privacyLink>.",
     "missingCredentials": "Introduza o email e a palavra-passe.",
     "oauthError": "Não foi possível iniciar o processo de autenticação.",
     "signInError": "Não foi possível iniciar sessão.",

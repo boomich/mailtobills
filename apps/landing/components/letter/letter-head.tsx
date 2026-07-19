@@ -14,11 +14,14 @@ export async function LetterHead() {
     getLocale(),
     getTranslations("Navigation"),
   ]);
+  // Anchors resolve from any page (the legal letters link back to the
+  // home sheet); same-path hash navigation stays a smooth scroll.
+  const home = locale === "en" ? "/" : `/${locale}`;
   const navLinks = [
-    { href: "#how-it-works", label: t("howItWorks") },
-    { href: "#export", label: t("export") },
-    { href: "#pricing", label: t("pricing") },
-    { href: "#faq", label: t("faq") },
+    { href: `${home}#how-it-works`, label: t("howItWorks") },
+    { href: `${home}#export`, label: t("export") },
+    { href: `${home}#pricing`, label: t("pricing") },
+    { href: `${home}#faq`, label: t("faq") },
   ];
 
   return (

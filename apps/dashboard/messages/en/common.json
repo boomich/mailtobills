@@ -90,7 +90,7 @@
     "tagline": "Expense documents. Organized.",
     "heroTitle": "Forward expense PDFs. We'll organize them.",
     "heroDescription": "Collect received expense documents by month and export the current primary PDFs with a CSV manifest for your accountant.",
-    "legal": "By continuing, you agree to our Terms of Service and Privacy Policy.",
+    "legal": "By continuing, you agree to our <termsLink>Terms of Service</termsLink> and <privacyLink>Privacy Policy</privacyLink>.",
     "missingCredentials": "Please enter both email and password.",
     "oauthError": "Unable to start the sign-in flow.",
     "signInError": "Failed to sign in.",
