@@ -1,0 +1,1262 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MailToBills Expense Document Side Panel Plan</title>
+    <style>
+      :root {
+        --paper: #f5f3ec;
+        --surface: #ffffff;
+        --surface-2: #faf9f5;
+        --ink: #28302a;
+        --muted: #5f665d;
+        --line: #e5e0d4;
+        --line-strong: #d2cab9;
+        --green: #286653;
+        --green-soft: #e8f1ec;
+        --amber: #b7791f;
+        --amber-soft: #fff6df;
+        --danger: #b42318;
+        --shadow: 0 24px 60px rgba(42, 48, 38, 0.16);
+        --drawer-shadow: -28px 0 80px rgba(28, 32, 24, 0.32);
+        --radius: 8px;
+        color-scheme: light;
+        font-family:
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        line-height: 1.5;
+      }
+
+      a {
+        color: var(--green);
+      }
+
+      .page {
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 28px;
+      }
+
+      .intro {
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+        gap: 24px;
+        align-items: end;
+        margin-bottom: 24px;
+      }
+
+      .eyebrow,
+      .kicker,
+      .tag,
+      th,
+      .button,
+      .metric-label {
+        font-family:
+          ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .eyebrow {
+        margin: 0 0 10px;
+        color: var(--green);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        max-width: 840px;
+        margin-bottom: 12px;
+        font-size: clamp(34px, 5vw, 66px);
+        line-height: 0.96;
+        letter-spacing: 0;
+      }
+
+      .lead {
+        max-width: 760px;
+        margin-bottom: 0;
+        color: var(--muted);
+        font-size: 18px;
+      }
+
+      .decision-card {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--surface);
+        padding: 18px;
+        box-shadow: 0 10px 30px rgba(42, 48, 38, 0.08);
+      }
+
+      .decision-card h2 {
+        margin-bottom: 8px;
+        font-size: 18px;
+      }
+
+      .decision-card p {
+        margin-bottom: 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .decision-card p + p {
+        margin-top: 10px;
+      }
+
+      .mock-shell {
+        position: relative;
+        display: grid;
+        grid-template-columns: 248px minmax(0, 1fr);
+        min-height: 760px;
+        overflow: hidden;
+        border: 1px solid var(--line-strong);
+        border-radius: 10px;
+        background: var(--surface);
+        box-shadow: var(--shadow);
+      }
+
+      .sidebar {
+        border-right: 1px solid var(--line);
+        background: #efede4;
+        padding: 18px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 28px;
+        font-weight: 800;
+      }
+
+      .brand-mark {
+        display: grid;
+        width: 32px;
+        height: 32px;
+        place-items: center;
+        border-radius: 7px;
+        background: var(--green);
+        color: white;
+        font-weight: 900;
+      }
+
+      .nav-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 6px;
+        border-radius: 7px;
+        padding: 10px 12px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .nav-item.active {
+        background: var(--surface);
+        color: var(--green);
+        font-weight: 700;
+      }
+
+      .main {
+        min-width: 0;
+        background: var(--surface);
+      }
+
+      .main-header {
+        display: flex;
+        justify-content: space-between;
+        gap: 18px;
+        border-bottom: 1px solid var(--line);
+        padding: 24px;
+      }
+
+      .kicker {
+        margin-bottom: 8px;
+        color: var(--green);
+        font-size: 11px;
+        font-weight: 800;
+      }
+
+      .main-header h2 {
+        margin-bottom: 6px;
+        font-size: 34px;
+        line-height: 1;
+      }
+
+      .main-header p {
+        max-width: 540px;
+        margin-bottom: 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .button-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-content: flex-start;
+        justify-content: flex-end;
+      }
+
+      .button {
+        display: inline-flex;
+        min-height: 36px;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid var(--line-strong);
+        border-radius: 7px;
+        background: var(--surface);
+        padding: 9px 12px;
+        color: var(--ink);
+        font-size: 11px;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      .button.primary {
+        border-color: var(--green);
+        background: var(--green);
+        color: white;
+      }
+
+      .metrics {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1px;
+        border-bottom: 1px solid var(--line);
+        background: var(--line);
+      }
+
+      .metric {
+        background: var(--surface-2);
+        padding: 18px 20px;
+      }
+
+      .metric-label {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        color: var(--muted);
+        font-size: 10px;
+        font-weight: 800;
+      }
+
+      .metric strong {
+        display: block;
+        margin-top: 8px;
+        font-size: 30px;
+        line-height: 1;
+      }
+
+      .table-card {
+        margin: 20px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+      }
+
+      .table-title {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--line);
+        background: var(--surface);
+        padding: 12px 14px;
+      }
+
+      .table-title strong {
+        font-size: 14px;
+      }
+
+      .table-title span {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+      }
+
+      th {
+        border-bottom: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 10px;
+        text-align: left;
+      }
+
+      th,
+      td {
+        padding: 12px 14px;
+        vertical-align: middle;
+      }
+
+      tr + tr td {
+        border-top: 1px solid var(--line);
+      }
+
+      tr.selected {
+        background: #f8fbf8;
+        box-shadow: inset 3px 0 0 var(--green);
+      }
+
+      .sender {
+        display: flex;
+        min-width: 0;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .avatar {
+        display: grid;
+        width: 34px;
+        height: 34px;
+        flex: 0 0 auto;
+        place-items: center;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        background: var(--surface);
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .truncate {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .muted {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        border: 1px solid var(--line-strong);
+        border-radius: 999px;
+        padding: 3px 8px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .pill.primary {
+        border-color: #bcdccb;
+        background: var(--green-soft);
+        color: var(--green);
+      }
+
+      .view-button {
+        border: 1px solid var(--green);
+        border-radius: 7px;
+        background: var(--green-soft);
+        padding: 7px 10px;
+        color: var(--green);
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      /* Drawer overlay (Asana / ClickUp task-detail pattern) */
+      .scrim {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        background: linear-gradient(
+          to right,
+          rgba(22, 26, 20, 0) 0%,
+          rgba(22, 26, 20, 0.12) 45%,
+          rgba(22, 26, 20, 0.34) 100%
+        );
+      }
+
+      .panel {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 2;
+        display: grid;
+        grid-template-rows: auto auto auto minmax(280px, 1fr) auto;
+        width: min(92%, 560px);
+        min-width: 0;
+        border-left: 1px solid var(--line-strong);
+        background: var(--surface);
+        box-shadow: var(--drawer-shadow);
+      }
+
+      .panel-header {
+        border-bottom: 1px solid var(--line);
+        padding: 16px 18px 14px;
+      }
+
+      .panel-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .panel-nav .nav-pager {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .pager-button {
+        display: grid;
+        width: 26px;
+        height: 26px;
+        place-items: center;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: var(--surface);
+        color: var(--ink);
+        font-weight: 800;
+      }
+
+      .panel-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 14px;
+      }
+
+      .panel h2 {
+        margin: 6px 0 6px;
+        font-size: 22px;
+        line-height: 1.15;
+      }
+
+      .icon-button {
+        display: grid;
+        width: 34px;
+        height: 34px;
+        flex: 0 0 auto;
+        place-items: center;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        background: var(--surface);
+        color: var(--muted);
+        font-weight: 800;
+      }
+
+      .panel-actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        margin-top: 14px;
+      }
+
+      .panel-actions .spacer {
+        flex: 1 1 auto;
+      }
+
+      .meta-section {
+        border-bottom: 1px solid var(--line);
+      }
+
+      .meta-section > summary {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 16px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        list-style: none;
+      }
+
+      .meta-section > summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .meta-section > summary::before {
+        content: "▸";
+        font-size: 10px;
+        transition: transform 0.15s ease;
+      }
+
+      .meta-section[open] > summary::before {
+        transform: rotate(90deg);
+      }
+
+      .meta-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1px;
+        border-top: 1px solid var(--line);
+        background: var(--line);
+      }
+
+      .meta {
+        min-width: 0;
+        background: var(--surface-2);
+        padding: 12px 14px;
+      }
+
+      .meta dt {
+        margin-bottom: 4px;
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .meta dd {
+        margin: 0;
+        overflow-wrap: anywhere;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .pdf-zone {
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+        padding: 14px;
+        background: #efede5;
+      }
+
+      .pdf-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        border: 1px solid #252a25;
+        border-bottom: 0;
+        border-radius: 7px 7px 0 0;
+        background: #252a25;
+        padding: 9px 10px;
+        color: white;
+      }
+
+      .pdf-toolbar strong {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 12px;
+      }
+
+      .pdf-toolbar a {
+        color: #cfe6da;
+        font-size: 12px;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+
+      .pdf-preview {
+        flex: 1 1 auto;
+        min-height: 280px;
+        overflow: hidden;
+        border: 1px solid #252a25;
+        border-radius: 0 0 7px 7px;
+        background:
+          linear-gradient(90deg, rgba(40, 102, 83, 0.08) 1px, transparent 1px) 0
+            0 / 26px 26px,
+          linear-gradient(rgba(40, 102, 83, 0.06) 1px, transparent 1px) 0 0 /
+            26px 26px,
+          #fcfbf7;
+        padding: 28px 34px;
+      }
+
+      .pdf-page {
+        min-height: 560px;
+        border: 1px solid #ded8c9;
+        background: white;
+        padding: 34px;
+        box-shadow: 0 18px 30px rgba(42, 48, 38, 0.18);
+      }
+
+      .pdf-page h3 {
+        margin-bottom: 24px;
+        color: var(--green);
+        font-size: 28px;
+      }
+
+      .line {
+        height: 10px;
+        margin-bottom: 12px;
+        border-radius: 999px;
+        background: #e8e2d5;
+      }
+
+      .line.short {
+        width: 48%;
+      }
+
+      .line.medium {
+        width: 72%;
+      }
+
+      .invoice-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 28px;
+      }
+
+      .invoice-cell {
+        min-height: 48px;
+        border: 1px solid #ebe5d8;
+        border-radius: 6px;
+        background: #fbfaf6;
+      }
+
+      .attachment-strip {
+        display: flex;
+        min-width: 0;
+        gap: 8px;
+        overflow-x: auto;
+        border-top: 1px solid var(--line);
+        padding: 12px 14px;
+      }
+
+      .attachment {
+        min-width: 160px;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        background: var(--surface);
+        padding: 10px;
+      }
+
+      .attachment.active {
+        border-color: #bcdccb;
+        background: var(--green-soft);
+      }
+
+      .attachment strong {
+        display: block;
+        margin-bottom: 4px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 12px;
+      }
+
+      .plan-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+        margin-top: 24px;
+      }
+
+      .plan-card {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--surface);
+        padding: 18px;
+      }
+
+      .plan-card h2 {
+        margin-bottom: 10px;
+        font-size: 18px;
+      }
+
+      .plan-card ul,
+      .plan-card ol {
+        margin: 0;
+        padding-left: 20px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .plan-card li + li {
+        margin-top: 8px;
+      }
+
+      .wide {
+        grid-column: span 2;
+      }
+
+      .full {
+        grid-column: 1 / -1;
+      }
+
+      code {
+        border: 1px solid var(--line);
+        border-radius: 5px;
+        background: var(--surface-2);
+        padding: 1px 5px;
+        color: var(--ink);
+        font-family:
+          ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 0.92em;
+      }
+
+      @media (max-width: 1180px) {
+        .intro,
+        .plan-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .mock-shell {
+          grid-template-columns: 72px minmax(0, 1fr);
+        }
+
+        .sidebar {
+          padding: 14px 10px;
+        }
+
+        .brand span:not(.brand-mark),
+        .nav-item span:first-child {
+          display: none;
+        }
+
+        .wide {
+          grid-column: auto;
+        }
+      }
+
+      @media (max-width: 860px) {
+        .page {
+          padding: 16px;
+        }
+
+        .mock-shell {
+          display: block;
+        }
+
+        .sidebar,
+        .scrim {
+          display: none;
+        }
+
+        .panel {
+          position: static;
+          width: 100%;
+          min-height: 740px;
+          border-left: 0;
+          box-shadow: none;
+        }
+
+        .panel-header {
+          padding-top: 20px;
+        }
+
+        .meta-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .pdf-preview {
+          min-height: 320px;
+          padding: 18px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <section class="intro">
+        <div>
+          <p class="eyebrow">MailToBills UX exploration</p>
+          <h1>Review expense documents in a right-side drawer.</h1>
+          <p class="lead">
+            Replace the current external PDF navigation with an in-app drawer
+            that slides over the dashboard, exposes email context, and embeds the
+            selected Primary Attachment PDF — so the user never loses their place
+            in the month.
+          </p>
+        </div>
+        <aside class="decision-card">
+          <h2>Recommended direction (decided)</h2>
+          <p>
+            Use a right-side overlay drawer for the selected Collected Expense
+            Document — the Asana / ClickUp task-detail pattern: the drawer slides
+            in from the right edge over a dimming scrim, the dashboard stays
+            mounted behind it, and clicking the scrim or pressing Escape returns
+            the user to the table.
+          </p>
+          <p>
+            Build it on the existing <code>Sheet</code> component (side="right",
+            with backdrop). The row action selects the row, opens the drawer, and
+            renders the authenticated file route inside an embedded viewer.
+          </p>
+        </aside>
+      </section>
+
+      <section class="mock-shell" aria-label="Dashboard detail drawer mockup">
+        <aside class="sidebar" aria-label="App navigation">
+          <div class="brand">
+            <span class="brand-mark">M</span><span>MailToBills</span>
+          </div>
+          <div class="nav-item active">
+            <span>Documents</span><span>12</span>
+          </div>
+          <div class="nav-item"><span>Reports</span><span></span></div>
+          <div class="nav-item"><span>Settings</span><span></span></div>
+        </aside>
+
+        <section class="main" aria-label="Current dashboard table state">
+          <header class="main-header">
+            <div>
+              <p class="kicker">Collection month</p>
+              <h2>June 2026</h2>
+              <p>
+                Collected Expense Documents ready for review, download, or
+                Accountant Export.
+              </p>
+            </div>
+            <div class="button-row">
+              <span class="button">Send to accountant</span>
+              <span class="button primary">Export month</span>
+            </div>
+          </header>
+
+          <div class="metrics">
+            <div class="metric">
+              <div class="metric-label">
+                <span>Collected</span><span>Inbox</span>
+              </div>
+              <strong>12</strong>
+            </div>
+            <div class="metric">
+              <div class="metric-label">
+                <span>PDF attachments</span><span>PDF</span>
+              </div>
+              <strong>18</strong>
+            </div>
+            <div class="metric">
+              <div class="metric-label">
+                <span>Primary PDFs</span><span>Star</span>
+              </div>
+              <strong>12</strong>
+            </div>
+          </div>
+
+          <div class="table-card">
+            <div class="table-title">
+              <strong>Collected Expense Documents</strong>
+              <span>Click a row or View to inspect without leaving the app</span>
+            </div>
+            <table>
+              <colgroup>
+                <col style="width: 34%" />
+                <col style="width: 34%" />
+                <col style="width: 18%" />
+                <col style="width: 14%" />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th>Sender</th>
+                  <th>Document</th>
+                  <th>Received</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="sender">
+                      <span class="avatar">G</span>
+                      <div class="truncate">
+                        <strong>Google Workspace</strong>
+                        <div class="muted truncate">
+                          workspace-noreply@google.com
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="truncate">
+                      <strong>google-workspace-june.pdf</strong>
+                    </div>
+                    <div class="muted truncate">
+                      Your Google Workspace invoice
+                    </div>
+                  </td>
+                  <td><span class="muted">Jun 3, 2026</span></td>
+                  <td><span class="view-button">View</span></td>
+                </tr>
+                <tr class="selected">
+                  <td>
+                    <div class="sender">
+                      <span class="avatar">L</span>
+                      <div class="truncate">
+                        <strong>Linear</strong>
+                        <div class="muted truncate">billing@linear.app</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="truncate">
+                      <strong>linear-receipt-2026-06.pdf</strong>
+                      <span class="pill primary">★ Primary</span>
+                    </div>
+                    <div class="muted truncate">
+                      Receipt for your Linear subscription
+                    </div>
+                  </td>
+                  <td><span class="muted">Jun 12, 2026</span></td>
+                  <td><span class="view-button">View</span></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="sender">
+                      <span class="avatar">F</span>
+                      <div class="truncate">
+                        <strong>Figma</strong>
+                        <div class="muted truncate">billing@figma.com</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="truncate">
+                      <strong>figma-invoice.pdf</strong>
+                    </div>
+                    <div class="muted truncate">Figma team billing receipt</div>
+                  </td>
+                  <td><span class="muted">Jun 18, 2026</span></td>
+                  <td><span class="view-button">View</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Dimming scrim: click to close, returns focus to the triggering row -->
+        <div class="scrim" aria-hidden="true"></div>
+
+        <aside
+          class="panel"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Expense document detail"
+        >
+          <header class="panel-header">
+            <div class="panel-nav">
+              <span>Document 2 of 12</span>
+              <div class="nav-pager" aria-label="Move between documents">
+                <span class="pager-button" aria-label="Previous document"
+                  >‹</span
+                >
+                <span class="pager-button" aria-label="Next document">›</span>
+              </div>
+            </div>
+            <div class="panel-top">
+              <div>
+                <p class="kicker">Collected expense document</p>
+                <h2>linear-receipt-2026-06.pdf</h2>
+                <p class="muted">Receipt for your Linear subscription</p>
+              </div>
+              <span class="icon-button" aria-label="Close panel">✕</span>
+            </div>
+            <div class="panel-actions">
+              <span class="button primary">Download PDF</span>
+              <span class="button">Make primary</span>
+              <span class="spacer"></span>
+              <span class="icon-button" aria-label="More actions">⋯</span>
+            </div>
+          </header>
+
+          <details class="meta-section" open>
+            <summary>Email details</summary>
+            <dl class="meta-grid">
+              <div class="meta">
+                <dt>Original sender</dt>
+                <dd>billing@linear.app</dd>
+              </div>
+              <div class="meta">
+                <dt>Forwarded by</dt>
+                <dd>joao@example.com</dd>
+              </div>
+              <div class="meta">
+                <dt>Received by MailToBills</dt>
+                <dd>Jun 12, 2026</dd>
+              </div>
+              <div class="meta">
+                <dt>Original sent date</dt>
+                <dd>Jun 11, 2026</dd>
+              </div>
+            </dl>
+          </details>
+
+          <section class="pdf-zone" aria-label="Embedded PDF preview">
+            <div class="pdf-toolbar">
+              <strong>Primary PDF preview</strong>
+              <a href="#">Open original ↗</a>
+            </div>
+            <div class="pdf-preview">
+              <article class="pdf-page">
+                <h3>Linear</h3>
+                <div class="line medium"></div>
+                <div class="line short"></div>
+                <div class="invoice-grid">
+                  <div class="invoice-cell"></div>
+                  <div class="invoice-cell"></div>
+                  <div class="invoice-cell"></div>
+                  <div class="invoice-cell"></div>
+                </div>
+                <div style="height: 34px"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line medium"></div>
+              </article>
+            </div>
+          </section>
+
+          <div class="attachment-strip" aria-label="Attachment set">
+            <div class="attachment active">
+              <strong>linear-receipt-2026-06.pdf</strong>
+              <span class="muted">Primary PDF - 244 KB</span>
+            </div>
+            <div class="attachment">
+              <strong>terms.pdf</strong>
+              <span class="muted">PDF - 91 KB</span>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="plan-grid" aria-label="Implementation plan">
+        <article class="plan-card">
+          <h2>Product behavior</h2>
+          <ul>
+            <li>
+              Clicking a row or <code>View</code> selects the row and opens the
+              right-side drawer instead of navigating to a new tab.
+            </li>
+            <li>
+              The drawer overlays the dashboard with a dimming scrim. The
+              dashboard stays mounted behind it; the selected row stays
+              highlighted underneath.
+            </li>
+            <li>
+              Closing (scrim click, Escape, or ✕) returns the user to the same
+              scroll position in the table.
+            </li>
+            <li>
+              Previous / next pager moves through the month's documents without
+              closing the drawer.
+            </li>
+            <li>
+              The drawer switches between attachments in the same Attachment Set
+              without closing.
+            </li>
+            <li>Keep a download action for users who need the raw PDF file.</li>
+          </ul>
+        </article>
+
+        <article class="plan-card">
+          <h2>Data already available</h2>
+          <ul>
+            <li>
+              <code>ExpenseDocumentRow.primaryAttachment</code> gives the
+              default PDF.
+            </li>
+            <li>
+              <code>attachments</code> supports alternate PDFs and Primary
+              Attachment changes.
+            </li>
+            <li>
+              <code>originFromEmail</code>, <code>originFromName</code>,
+              <code>originSubject</code>, and <code>originSentAt</code> provide
+              richer email detail than the row can show.
+            </li>
+            <li>
+              <code>downloadUrl</code> already points to the authenticated Next
+              route.
+            </li>
+          </ul>
+        </article>
+
+        <article class="plan-card">
+          <h2>Component shape</h2>
+          <ul>
+            <li>
+              Add <code>expense-document-detail-panel.tsx</code> inside
+              <code>apps/dashboard/features/expense-documents/components</code>.
+            </li>
+            <li>
+              Build on the existing <code>Sheet</code> component with
+              <code>side="right"</code> and a backdrop; override width to
+              <code>min(92vw, 720px)</code>.
+            </li>
+            <li>
+              Keep selection state in <code>ExpenseDocumentsTable</code>:
+              selected document id plus selected attachment id. Derive the pager
+              index from the current filtered row list.
+            </li>
+            <li>
+              Turn <code>ViewPdfButton</code> into a button callback, not an
+              anchor. Make the whole row clickable too.
+            </li>
+          </ul>
+        </article>
+
+        <article class="plan-card wide">
+          <h2>PDF viewer approach</h2>
+          <ol>
+            <li>
+              First pass: embed <code>/api/files/[attachmentId]</code> with an
+              <code>iframe</code> or <code>object type="application/pdf"</code>.
+              This keeps auth and routing simple. <strong>No custom zoom
+              chrome</strong> in this pass — the browser's native PDF viewer owns
+              zoom/page controls. The toolbar carries only the filename and an
+              "Open original" link.
+            </li>
+            <li>
+              Always render an "Open original ↗" link to the file route as a
+              fallback. iOS Safari and some in-app browsers refuse to render PDFs
+              inside <code>iframe</code>/<code>object</code> and will need it.
+            </li>
+            <li>
+              Set the file route response to stay inline and keep
+              <code>cache-control: private</code>, which it already does.
+            </li>
+            <li>
+              Later pass, only if needed: introduce a dedicated viewer library
+              (e.g. pdf.js) for in-app zoom, thumbnails, page navigation, and
+              consistent cross-browser controls. Custom zoom UI belongs here, not
+              in pass one.
+            </li>
+          </ol>
+        </article>
+
+        <article class="plan-card">
+          <h2>States to design</h2>
+          <ul>
+            <li>
+              <strong>Loading:</strong> skeleton in the PDF frame while the
+              embed loads.
+            </li>
+            <li>
+              <strong>Render failure:</strong> if the embed can't display (mobile
+              Safari, blocked plugin), show "Can't preview this PDF here" with the
+              "Open original" and "Download" actions.
+            </li>
+            <li>
+              <strong>Auth / 404:</strong> handle a failed file route gracefully
+              rather than a broken frame.
+            </li>
+            <li>
+              <strong>Single attachment:</strong> hide the attachment strip when
+              there is only one file.
+            </li>
+          </ul>
+        </article>
+
+        <article class="plan-card">
+          <h2>Destructive actions</h2>
+          <ul>
+            <li>
+              Keep Delete <strong>out</strong> of the primary action row. Put it
+              behind the <code>⋯</code> overflow menu in the header.
+            </li>
+            <li>
+              Require a confirmation step (dialog) before deleting; deletion is
+              irreversible.
+            </li>
+            <li>
+              After delete, advance the drawer to the next document (or close if
+              it was the last).
+            </li>
+          </ul>
+        </article>
+
+        <article class="plan-card">
+          <h2>Accessibility and keyboard</h2>
+          <ul>
+            <li>
+              The drawer is a modal dialog: trap focus, close with Escape, and
+              restore focus to the triggering row action on close.
+            </li>
+            <li>
+              Move focus to the drawer heading (or close button) on open; mark
+              the scrim <code>aria-hidden</code>.
+            </li>
+            <li>
+              Rows expose selected state with <code>aria-selected</code> while the
+              drawer is open.
+            </li>
+            <li>
+              Every control is a real <code>button</code> — close, pager,
+              overflow, and attachment cards — with explicit names like "Preview
+              terms.pdf" and "Make terms.pdf primary".
+            </li>
+            <li>
+              Pager and attachment switching announce the change (live region or
+              focus move) for screen readers.
+            </li>
+          </ul>
+        </article>
+
+        <article class="plan-card">
+          <h2>Responsive</h2>
+          <ul>
+            <li>
+              Desktop: drawer is <code>min(92vw, 720px)</code> over a scrim;
+              dashboard visible behind.
+            </li>
+            <li>
+              Mobile: drawer becomes a full-screen sheet. The pager and ✕ are the
+              way back to the list, so keep both reachable at the top.
+            </li>
+            <li>
+              Collapse "Email details" by default on small screens so the PDF is
+              above the fold.
+            </li>
+          </ul>
+        </article>
+
+        <article class="plan-card full">
+          <h2>Implementation sequence</h2>
+          <ol>
+            <li>
+              Create the detail drawer component (Sheet, side="right", backdrop)
+              with: header + pager, collapsible email-detail section, PDF frame
+              with loading/error states, attachment strip, and Download / Make
+              primary actions plus an overflow menu housing Delete.
+            </li>
+            <li>
+              Update <code>ExpenseDocumentsTable</code> to store drawer state
+              (selected document id, selected attachment id), expose the row list
+              for the pager, and pass mutation handlers into the drawer.
+            </li>
+            <li>
+              Replace external PDF links in row and expanded attachment actions
+              with drawer-opening buttons; make the row body clickable.
+            </li>
+            <li>
+              Add dashboard component tests covering "View opens the drawer",
+              "scrim/Escape closes and restores focus", "pager moves to next
+              document", "attachment switch changes iframe src", "download link
+              remains available", "Delete is behind the overflow menu and
+              confirms", and "Make primary still calls the Convex mutation".
+            </li>
+            <li>
+              Update <code>docs/launch-validation-checklist.md</code> so
+              validation checks say "open the in-app drawer" instead of only
+              opening the raw PDF link.
+            </li>
+          </ol>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>
