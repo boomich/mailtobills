@@ -1,12 +1,12 @@
 "use client";
 
-import { Check, Monitor, Moon, Sun } from "lucide-react";
+import { Monitor, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
-import { Button } from "@mailtobills/ui/components/button";
 import { Label } from "@mailtobills/ui/components/label";
+import { cn } from "@mailtobills/ui/lib/utils";
 import { LocaleSelect } from "@/components/locale-select";
 
 export function PreferencesSettings() {
@@ -34,25 +34,31 @@ export function PreferencesSettings() {
             {t("themeDescription")}
           </p>
         </div>
-        <div className="grid gap-2 sm:grid-cols-3">
+        <div
+          role="radiogroup"
+          aria-label={t("theme")}
+          className="bg-muted/40 inline-flex flex-wrap items-center gap-1 rounded-lg border p-1"
+        >
           {themeOptions.map(({ value, label, icon: Icon }) => {
             const isSelected = selectedTheme === value;
 
             return (
-              <Button
+              <button
                 key={value}
                 type="button"
-                variant={isSelected ? "default" : "outline"}
+                role="radio"
+                aria-checked={isSelected}
                 onClick={() => setTheme(value)}
-                aria-pressed={isSelected}
-                className="justify-between"
+                className={cn(
+                  "focus-visible:ring-ring/50 inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 font-mono text-[11px] font-medium tracking-[0.08em] uppercase transition-colors outline-none focus-visible:ring-[3px]",
+                  isSelected
+                    ? "bg-background text-foreground border shadow-xs"
+                    : "text-muted-foreground hover:text-foreground",
+                )}
               >
-                <span className="flex items-center gap-2">
-                  <Icon className="size-4" />
-                  {label}
-                </span>
-                {isSelected ? <Check className="size-4" /> : null}
-              </Button>
+                <Icon className="size-3.5" />
+                {label}
+              </button>
             );
           })}
         </div>

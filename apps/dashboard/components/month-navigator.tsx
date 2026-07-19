@@ -202,13 +202,13 @@ export const MonthNavigator = () => {
                     disabled={isNavigating}
                     onClick={() => navigateToMonth(month)}
                     className={cn(
-                      "focus-visible:ring-ring/50 inline-flex h-9 items-center justify-center rounded-md border bg-background px-2 font-mono text-xs font-semibold tracking-[0.04em] uppercase tabular-nums shadow-xs transition outline-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50",
+                      "text-foreground focus-visible:ring-ring/50 inline-flex h-9 items-center justify-center rounded-md px-2 font-mono text-xs font-semibold tracking-[0.04em] uppercase tabular-nums transition outline-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50",
                       "hover:bg-accent hover:text-accent-foreground",
                       isSelected &&
-                        "border-primary bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground",
+                        "bg-primary text-primary-foreground shadow-xs hover:bg-primary hover:text-primary-foreground",
                       isToday &&
                         !isSelected &&
-                        "border-amber-600/50 text-amber-700 dark:border-amber-400/50 dark:text-amber-300",
+                        "text-amber-700 ring-1 ring-inset ring-amber-500/50 dark:text-amber-300",
                     )}
                   >
                     {shortLabel}
