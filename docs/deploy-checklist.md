@@ -20,29 +20,33 @@ Companion documents:
 Found during pre-deploy review; everything else in this checklist is
 configuration, these are commits:
 
-- [ ] **Legal pages (launch blocker).** Terms and Privacy do not exist and
-      the landing footer has no legal links. A product ingesting financial
-      documents cannot launch without them (GDPR applies — PT/EU customers).
-      Write short honest pages in both locales: what we store (email
-      metadata + PDFs, in Convex), where, that we never share or parse it,
-      how to delete everything, billing via Lemon Squeezy, contact address.
-      Link both from the landing footer and the signin page.
-- [ ] **Gate the landing `/lab`.** `apps/landing/app/[locale]/lab/*` (the
-      specimen and the hero bake-off archive, including rejected options)
-      has no production guard — it would ship publicly. Add the same
-      `NODE_ENV !== "development" → notFound()` gate the dashboard lab pages
-      already have.
-- [ ] **Landing SEO files.** `generateMetadata` + OpenGraph copy exist, but
-      there is no `sitemap.ts`, no `robots.ts`, and no OG image. Add all
-      three (OG image in the CARIMBO world — the stamped-letter hero frame
-      is the obvious candidate; static file, no external requests).
-- [ ] **Analytics + error tracking.** Nothing is instrumented. Minimum for
-      launch: privacy-friendly page analytics on the landing (Plausible or
-      PostHog EU), and error visibility for the dashboard (Sentry free tier
-      or, at minimum, alerting on Convex function error logs). The four GTM
-      metrics (see `docs/gtm-plan.md` §6) need: signup event, first
-      non-demo document collected, month sealed/dispatched, checkout
-      completed.
+- [x] **Legal pages (launch blocker).** Shipped 2026-07-19: `/terms` and
+      `/privacy` on the landing (MOD. J-01 / J-02 letter documents, both
+      locales), linked from the footer and the signin legal line. The text
+      is plain-language and verifiable against the codebase. **Founder
+      still owes:** a read of both pages (they speak for the operator —
+      confirm the "operated from Portugal" framing matches the real legal
+      setup), and the `support@mailtobills.com` mailbox they reference
+      (added to Phase 1).
+- [x] **Gate the landing `/lab`.** Done 2026-07-19 — the landing lab
+      layout now `notFound()`s outside development, same as the dashboard
+      labs.
+- [x] **Landing SEO files.** Done 2026-07-19: `sitemap.ts` (both locales,
+      hreflang alternates), `robots.ts`, and a static 1200×630
+      `opengraph-image.png` (the stamped-letter hero, screenshot of the
+      real page) with alt text.
+- [x] **Page analytics.** Done 2026-07-19: `@vercel/analytics` wired in
+      both apps — cookieless, no consent banner needed, zero account setup
+      beyond Vercel (which also means it reports nothing until the apps
+      run on Vercel).
+- [ ] **Event analytics + error tracking (founder decision).** The four
+      GTM metrics (signup, first non-demo document, month sealed/
+      dispatched, checkout) still have no event sink, and dashboard errors
+      have no alerting beyond Convex function logs. Options: PostHog EU
+      (free tier) for events, Sentry (free tier) for errors — both need
+      founder-created accounts and keys. Per `docs/gtm-plan.md` §6 the
+      Convex tables answer metrics 1–3 directly, so this must not delay
+      the beta.
 - [ ] **n8n workflow re-export.** The committed
       `workflows/n8n/ingest-mailtobills.json` has dev mailbox and folder IDs
       baked in. Re-export it against the production mailbox once Phase 3 is
@@ -63,6 +67,8 @@ configuration, these are commits:
       to Vercel without carrying MX kills ingestion.
 - [ ] Mailbox `inbox@mailtobills.com` live, with `Processed` and
       `NeedsReview` folders created (names must match the n8n workflow).
+- [ ] Mailbox or alias `support@mailtobills.com` live — the legal pages
+      and the GDPR contact promise depend on it being read.
 - [ ] Resend: verify the `mailtobills.com` domain (SPF + DKIM records).
       Outbound sender is hardcoded as `exports@mailtobills.com`
       (`backend/convex/email/resendAdapter.ts`) — the domain must be
