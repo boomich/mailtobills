@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { Archivo, Courier_Prime, Public_Sans } from "next/font/google";
 
 import "./lab.css";
@@ -29,6 +30,11 @@ export default function LabLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // Dev-only specimen archive (deploy checklist Phase 0), like the dashboard labs.
+  if (process.env.NODE_ENV !== "development") {
+    notFound();
+  }
+
   return (
     <div
       className={`carimbo-root ${archivo.variable} ${publicSans.variable} ${courier.variable}`}
