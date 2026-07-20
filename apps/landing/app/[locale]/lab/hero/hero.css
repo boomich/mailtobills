@@ -1,0 +1,688 @@
+/*
+ * CARIMBO hero bake-off — three hand-composed hero prototypes.
+ * Shares tokens/fonts from .carimbo-root (lab.css). DESIGN.md is law:
+ * §8 thunk + no-invisible-content + seamless loops, §9 radius-0 paper.
+ * Hero A loop timeline: cycle 5s, keyframe %s computed below (§10.1).
+ */
+
+.hero {
+  min-height: 100vh;
+  position: relative;
+  padding: 92px clamp(24px, 6vw, 80px) 56px;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+.lab-switch--overlay {
+  position: absolute;
+  top: 26px;
+  left: clamp(24px, 6vw, 80px);
+  margin: 0;
+  max-width: none;
+}
+
+.btn--big {
+  font-size: 14px;
+  padding: 15px 28px;
+}
+
+/* ================================================================ HERO B —
+   THE STAMPED LETTER: the page is the letter; the carimbo certifies it. */
+
+.hero-b {
+  align-items: center;
+  justify-content: center;
+}
+
+.letter {
+  width: min(880px, 100%);
+  background: var(--paper-raised);
+  border: 1px solid var(--rule);
+  box-shadow: 5px 5px 0 color-mix(in oklab, var(--ink) 13%, transparent);
+  padding: clamp(28px, 5vw, 64px);
+}
+
+.letter__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: clamp(28px, 4vw, 48px);
+}
+
+.letter__mark {
+  width: 84px;
+  height: 84px;
+  color: var(--ink);
+}
+
+.letter__place {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--ink-muted);
+}
+
+.letter__body {
+  position: relative;
+}
+
+.letter__headline {
+  font-family: var(--display);
+  font-weight: 780;
+  font-stretch: 112%;
+  font-size: clamp(38px, 6vw, 68px);
+  line-height: 1.0;
+  letter-spacing: -0.015em;
+  margin: 0;
+  max-width: 15ch;
+}
+
+.letter__stamp {
+  position: absolute;
+  top: -6px;
+  right: clamp(0px, 2vw, 34px);
+}
+
+/* delayed thunk: pre-delay shows the 0% frame (the press hasn't landed yet) */
+.letter__stamp .carimbo--thunk {
+  animation-delay: 0.55s;
+  animation-fill-mode: backwards;
+}
+
+.letter__sub {
+  font-size: clamp(17px, 1.6vw, 19px);
+  line-height: 1.6;
+  color: var(--ink-muted);
+  max-width: 52ch;
+  margin: 26px 0 30px;
+}
+
+.letter__cta {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.letter__note {
+  margin: 22px 0 0;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--ink-muted);
+}
+
+.letter__fold {
+  border-top: 1px solid var(--rule-minor);
+  margin: clamp(28px, 4vw, 44px) 0;
+}
+
+.letter__address {
+  display: grid;
+  gap: 10px;
+  max-width: 560px;
+}
+
+.letter__address-hint {
+  margin: 0;
+  font-size: 13px;
+  color: var(--ink-muted);
+}
+
+/* ================================================================ HERO A —
+   THE FRANKING LINE: envelope in → thunk → filed to the month. */
+
+.hero-a {
+  justify-content: center;
+  gap: 24px;
+}
+
+.ha__copy {
+  max-width: 720px;
+}
+
+.ha__headline {
+  font-family: var(--display);
+  font-weight: 780;
+  font-stretch: 112%;
+  font-size: clamp(34px, 4.6vw, 56px);
+  line-height: 1.04;
+  letter-spacing: -0.012em;
+  margin: 0 0 20px;
+}
+
+.ha__sub {
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--ink-muted);
+  max-width: 54ch;
+  margin: 0 0 26px;
+}
+
+.ha__cta {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.ha__note {
+  margin: 20px 0 0;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--ink-muted);
+}
+
+.line-stage {
+  position: relative;
+  height: 330px;
+  margin: 8px calc(-1 * clamp(24px, 6vw, 80px)) 0;
+}
+
+/* the track: a ruled counter line with ticks */
+.line-stage__track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 72px;
+  height: 14px;
+  border-bottom: 1.5px solid var(--rule);
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--rule-minor) 0,
+    var(--rule-minor) 1px,
+    transparent 1px,
+    transparent 48px
+  );
+  background-size: 100% 8px;
+  background-position: 0 bottom;
+  background-repeat: no-repeat;
+}
+
+/* --- the stamp head ------------------------------------------------------
+   press timeline (cycle 5s): rest 0–26%, down 27.6–29%, up by 31%. */
+.stamphead {
+  position: absolute;
+  left: 50%;
+  top: 6px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 4;
+  animation: ha-press 5s infinite;
+}
+
+.stamphead__handle {
+  width: 26px;
+  height: 30px;
+  background: var(--ink);
+  border-radius: 13px 13px 4px 4px; /* postmark-derived curve: a stamp handle */
+}
+
+.stamphead__neck {
+  width: 12px;
+  height: 16px;
+  background: var(--ink);
+}
+
+.stamphead__base {
+  width: 128px;
+  height: 24px;
+  background: var(--ink);
+}
+
+@keyframes ha-press {
+  0%,
+  26% {
+    transform: translateX(-50%) translateY(0);
+  }
+  27.6%,
+  29% {
+    transform: translateX(-50%) translateY(14px);
+  }
+  31%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* --- the envelope ---------------------------------------------------------
+   X timeline (cycle 5s, seamless: frame 100% ≡ frame 0%):
+     0%    offscreen left  (calc(-50vw - 320px): clears any viewport width)
+     24%   0               (arrives under the head, ease-out)
+     40%   0               (hold for certification)
+     62%   offscreen right (calc(50vw + 340px), ease-in)
+     63%   opacity 0 (already offscreen)
+     67%   teleport back left while invisible
+     71%   opacity 1 (still offscreen left)
+   Base styles (reduced motion / no animation) = the stamped tableau. */
+.envelope {
+  position: absolute;
+  left: 50%;
+  bottom: 86px;
+  width: 280px;
+  height: 158px;
+  margin-left: -140px;
+  background: var(--kraft);
+  border: 1.5px solid var(--rule);
+  z-index: 2;
+  animation: ha-envelope 5s infinite;
+}
+
+.envelope__flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 62px;
+  overflow: hidden;
+}
+
+.envelope__flap::before {
+  content: "";
+  position: absolute;
+  top: -160px;
+  left: 50%;
+  width: 198px;
+  height: 198px;
+  transform: translateX(-50%) rotate(45deg);
+  border: 1.5px solid var(--rule);
+  background: color-mix(in oklab, var(--kraft) 92%, var(--ink));
+}
+
+.envelope__address {
+  position: absolute;
+  left: 18px;
+  bottom: 16px;
+  display: grid;
+  gap: 7px;
+  width: 60%;
+}
+
+.envelope__address .mono {
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+}
+
+.envelope__rule {
+  display: block;
+  height: 1.5px;
+  background: color-mix(in oklab, var(--ink) 55%, transparent);
+}
+
+.envelope__rule--short {
+  width: 62%;
+}
+
+.envelope__stamp {
+  position: absolute;
+  right: 12px;
+  top: 48px;
+  transform: scale(0.66);
+  transform-origin: top right;
+  animation: ha-mark 5s infinite;
+}
+
+@keyframes ha-envelope {
+  0% {
+    transform: translateX(calc(-50vw - 320px));
+    opacity: 1;
+  }
+  24% {
+    transform: translateX(0);
+    animation-timing-function: linear;
+  }
+  40% {
+    transform: translateX(0);
+    animation-timing-function: cubic-bezier(0.5, 0, 0.85, 0.4);
+  }
+  62% {
+    transform: translateX(calc(50vw + 340px));
+    opacity: 1;
+  }
+  63% {
+    opacity: 0;
+  }
+  67% {
+    transform: translateX(calc(-50vw - 320px));
+    opacity: 0;
+  }
+  71% {
+    transform: translateX(calc(-50vw - 320px));
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(calc(-50vw - 320px));
+    opacity: 1;
+  }
+}
+
+/* the mark lands at 29% — pressed, never faded (§8) */
+@keyframes ha-mark {
+  0%,
+  28.9% {
+    opacity: 0;
+  }
+  29% {
+    opacity: 1;
+  }
+  62.9% {
+    opacity: 1;
+  }
+  63%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* --- the month dossier (destination) ------------------------------------ */
+.dossier-slot {
+  position: absolute;
+  right: -34px;
+  bottom: 60px;
+  z-index: 3;
+}
+
+.dossier-slot__tab {
+  display: inline-block;
+  padding: 9px 22px 8px;
+  background: var(--kraft);
+  border: 1.5px solid var(--rule);
+  border-bottom: none;
+  clip-path: polygon(8px 0, calc(100% - 8px) 0, 100% 100%, 0 100%);
+  font-family: var(--display);
+  font-weight: 700;
+  font-stretch: 86%;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  position: relative;
+  top: 1.5px;
+}
+
+.dossier-slot__folder {
+  width: min(300px, 30vw);
+  height: 168px;
+  background: var(--kraft);
+  border: 1.5px solid var(--rule);
+  display: flex;
+  align-items: flex-end;
+  padding: 14px 18px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* collected sheets peeking out of the open dossier */
+.dossier-slot__folder::before {
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: 14px;
+  right: 34px;
+  height: 44px;
+  background:
+    linear-gradient(var(--paper-raised), var(--paper-raised)) 0 100% / 82% 12px,
+    linear-gradient(var(--paper-raised), var(--paper-raised)) 12px calc(100% - 14px) / 88% 12px,
+    linear-gradient(var(--paper-raised), var(--paper-raised)) 4px 0 / 78% 12px;
+  background-repeat: no-repeat;
+  border-bottom: 1px solid var(--rule-minor);
+}
+
+.dossier-slot__count {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: color-mix(in oklab, var(--ink) 70%, var(--kraft));
+}
+
+/* ================================================================ HERO C —
+   THE HANDOVER: inbox chaos → one sealed package. */
+
+.hero-c {
+  gap: 40px;
+  justify-content: center;
+}
+
+.hc__head {
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.hc__headline {
+  font-family: var(--display);
+  font-weight: 780;
+  font-stretch: 112%;
+  font-size: clamp(32px, 4.4vw, 54px);
+  line-height: 1.05;
+  letter-spacing: -0.012em;
+  margin: 0 0 16px;
+}
+
+.hc__sub {
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--ink-muted);
+  margin: 0;
+}
+
+.hc__stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 170px minmax(0, 1fr);
+  gap: 28px;
+  align-items: center;
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.hc__inbox,
+.hc__package {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+}
+
+.hc__pile {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+}
+
+.hc__pile-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--paper-raised);
+  border: 1px solid var(--rule-minor);
+  padding: 10px 14px;
+  transform: rotate(var(--tilt, 0deg));
+  margin-top: -5px;
+}
+
+.hc__pile-row:first-child {
+  margin-top: 0;
+}
+
+.hc__pile-subject {
+  font-size: 12px;
+  color: var(--ink-muted);
+  overflow-wrap: anywhere;
+}
+
+.hc__pile-tag {
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  border: 1px solid var(--rule-minor);
+  padding: 2px 6px;
+  color: var(--ink-muted);
+  flex-shrink: 0;
+}
+
+.hc__caption {
+  margin: 4px 0 0;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--ink-muted);
+}
+
+.hc__flow {
+  display: grid;
+  gap: 12px;
+  justify-items: center;
+  align-content: center;
+}
+
+.hc__flow-label {
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  color: var(--ink-muted);
+}
+
+.hc__flow-arrow {
+  width: 100%;
+  height: 1.5px;
+  background: var(--ink);
+  position: relative;
+}
+
+.hc__flow-arrow::after {
+  content: "";
+  position: absolute;
+  right: -1px;
+  top: -5px;
+  border-left: 9px solid var(--ink);
+  border-top: 5.5px solid transparent;
+  border-bottom: 5.5px solid transparent;
+}
+
+.hc__parcel {
+  position: relative;
+  background: var(--kraft);
+  border: 1.5px solid var(--rule);
+  padding: 22px 24px 20px;
+  display: grid;
+  gap: 12px;
+  box-shadow: 5px 5px 0 color-mix(in oklab, var(--ink) 13%, transparent);
+}
+
+.hc__parcel-month {
+  font-family: var(--display);
+  font-weight: 780;
+  font-stretch: 108%;
+  font-size: 30px;
+  letter-spacing: 0.01em;
+}
+
+.hc__manifest {
+  border-collapse: collapse;
+  width: 100%;
+  background: var(--paper-raised);
+  border: 1px solid var(--rule-minor);
+}
+
+.hc__manifest td {
+  font-size: 11px;
+  padding: 7px 12px;
+  border-bottom: 1px solid var(--rule-minor);
+  overflow-wrap: anywhere;
+}
+
+.hc__manifest tr:last-child td {
+  border-bottom: none;
+}
+
+.hc__manifest td:first-child {
+  width: 44px;
+  color: var(--ink-muted);
+  white-space: nowrap;
+}
+
+.hc__parcel-meta {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: color-mix(in oklab, var(--ink) 70%, var(--kraft));
+}
+
+.hc__seal {
+  position: absolute;
+  top: -30px;
+  right: -26px;
+  color: var(--stamp);
+  mix-blend-mode: multiply;
+  filter: url(#ink-rough);
+  animation: thunk 210ms cubic-bezier(0.2, 0.7, 0.3, 1) 0.7s backwards;
+}
+
+.hc__seal-mark {
+  width: 108px;
+  height: 108px;
+}
+
+.hc__cta {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.hc__note {
+  width: 100%;
+  margin: 8px 0 0;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--ink-muted);
+}
+
+/* ============================================================ reduced motion
+   §8: final states render immediately; the tableau is the story. */
+@media (prefers-reduced-motion: reduce) {
+  .stamphead,
+  .envelope,
+  .envelope__stamp,
+  .letter__stamp .carimbo--thunk,
+  .hc__seal {
+    animation: none;
+  }
+}
+
+/* ================================================================ responsive */
+@media (max-width: 900px) {
+  .hero {
+    padding-top: 84px;
+  }
+
+  .line-stage {
+    height: 280px;
+  }
+
+  .dossier-slot__folder {
+    width: 42vw;
+  }
+
+  .hc__stage {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .hc__flow {
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    width: 100%;
+  }
+
+  .hc__flow-arrow {
+    transform: rotate(90deg);
+    width: 42px;
+    justify-self: center;
+  }
+
+  .letter__stamp {
+    position: static;
+    margin-top: 18px;
+    display: inline-block;
+  }
+}

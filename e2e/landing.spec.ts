@@ -7,11 +7,11 @@ test("landing page loads and sign-in CTA points to the dashboard", async ({
 
   await expect(
     page.getByRole("heading", {
-      name: /stop chasing expense pdfs every month/i,
+      name: /stop digging through your inbox for invoices/i,
     }),
   ).toBeVisible();
   await expect(page).toHaveTitle(
-    "MailToBills — Stop chasing expense PDFs every month",
+    "MailToBills — Stop digging through your inbox for invoices",
   );
   await expect(
     page.locator('link[rel="alternate"][hreflang="pt-PT"]'),
@@ -33,11 +33,11 @@ test("language navigation keeps English at root and exposes Portuguese", async (
   await expect(page.locator("html")).toHaveAttribute("lang", "pt-PT");
   await expect(
     page.getByRole("heading", {
-      name: /pare de procurar pdfs de despesas todos os meses/i,
+      name: /pare de procurar faturas na caixa de entrada/i,
     }),
   ).toBeVisible();
   await expect(page).toHaveTitle(
-    "MailToBills — Pare de procurar PDFs de despesas todos os meses",
+    "MailToBills — Pare de procurar faturas na caixa de entrada",
   );
 
   await page.getByRole("link", { name: "EN", exact: true }).click();
@@ -53,6 +53,50 @@ test("skip link moves keyboard focus to the main content", async ({ page }) => {
 
   await skipLink.press("Enter");
   await expect(page.locator("#main-content")).toBeFocused();
+});
+
+// DESIGN.md §11 feel regression: content is never invisible before its
+// entrance animation — the hero must render fully without JavaScript.
+test.describe("no blank first paint", () => {
+  test.use({ javaScriptEnabled: false });
+
+  test("hero headline and CTAs render without JavaScript", async ({
+    page,
+  }) => {
+    await page.goto("/");
+
+    await expect(
+      page.getByRole("heading", {
+        name: /stop digging through your inbox for invoices/i,
+      }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("link", { name: /start collecting free/i }).first(),
+    ).toBeVisible();
+  });
+});
+
+// DESIGN.md §11 feel regression: FAQ panels slide open (§8 micro-motion),
+// they do not snap — asymmetric (close 160ms, open 240ms) with the ink
+// fading in alongside the height.
+test("faq details animate their content", async ({ page }) => {
+  await page.goto("/");
+
+  const details = page.locator("#faq details").first();
+  const closed = await details.evaluate((el) => {
+    const styles = getComputedStyle(el, "::details-content");
+    return `${styles.transitionProperty} ${styles.transitionDuration}`;
+  });
+  expect(closed).toContain("block-size");
+  expect(closed).toContain("opacity");
+  expect(closed).toContain("0.16s");
+
+  await details.locator("summary").click();
+  const open = await details.evaluate((el) => {
+    const styles = getComputedStyle(el, "::details-content");
+    return styles.transitionDuration;
+  });
+  expect(open).toContain("0.24s");
 });
 
 for (const { cta, path, width } of [

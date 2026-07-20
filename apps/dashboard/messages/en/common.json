@@ -18,7 +18,6 @@
     "customer": "Customer",
     "menu": "Menu",
     "dashboard": "Dashboard",
-    "reports": "Reports",
     "settings": "Settings",
     "toggle": "Toggle submenu",
     "toggleSidebar": "Toggle sidebar",
@@ -45,6 +44,31 @@
     "goToCurrentMonth": "Go to current month, {month}",
     "monthIsCurrent": "{month}, current month"
   },
+  "CounterBar": {
+    "collectionAddress": "Collection Address",
+    "copyCollectionAddress": "Copy Collection Address",
+    "copied": "Copied"
+  },
+  "Feedback": {
+    "trigger": "Feedback",
+    "title": "A letter to MailToBills",
+    "description": "Tell us what is working, what is missing, or what could be clearer.",
+    "letterLabel": "Your letter",
+    "placeholder": "Type your feedback here…",
+    "counter": "{count} / 2000",
+    "submit": "Send",
+    "sending": "Sending…",
+    "cancel": "Cancel",
+    "close": "Close",
+    "received": "Received — thank you.",
+    "error": "Your letter could not be sent. Please try again."
+  },
+  "YearRegister": {
+    "label": "Collection Months",
+    "previousYear": "Previous year",
+    "nextYear": "Next year",
+    "month": "{month}, {count, plural, one {# document} other {# documents}}"
+  },
   "Auth": {
     "language": "Language",
     "signInTitle": "Welcome back",
@@ -66,7 +90,7 @@
     "tagline": "Expense documents. Organized.",
     "heroTitle": "Forward expense PDFs. We'll organize them.",
     "heroDescription": "Collect received expense documents by month and export the current primary PDFs with a CSV manifest for your accountant.",
-    "legal": "By continuing, you agree to our Terms of Service and Privacy Policy.",
+    "legal": "By continuing, you agree to our <termsLink>Terms of Service</termsLink> and <privacyLink>Privacy Policy</privacyLink>.",
     "missingCredentials": "Please enter both email and password.",
     "oauthError": "Unable to start the sign-in flow.",
     "signInError": "Failed to sign in.",
@@ -75,6 +99,33 @@
   "Settings": {
     "title": "Settings",
     "description": "Manage how MailToBills collects Expense Documents and prepares Accountant Exports.",
+    "form": {
+      "code": "MOD. C-02 · CUSTOMER RECORD",
+      "pro": "PRO",
+      "collection": {
+        "title": "Collection Address",
+        "copyLabel": "Copy",
+        "copiedLabel": "Copied",
+        "description": "Forward Expense Documents to this address. It is private and cannot be changed."
+      },
+      "forwarding": {
+        "title": "Trusted senders",
+        "description": "Only emails forwarded from these addresses are accepted into your collection."
+      },
+      "accountant": {
+        "title": "Accountant"
+      },
+      "schedule": {
+        "title": "Export Schedule"
+      },
+      "preferences": {
+        "title": "Preferences"
+      },
+      "billing": {
+        "title": "Plan & billing",
+        "note": "EUR · VAT EXCL."
+      }
+    },
     "sections": {
       "forwardingTitle": "Forwarding Addresses",
       "forwardingDescription": "Control which email addresses can send Expense Documents to your account.",
@@ -104,7 +155,18 @@
       "remove": "Remove {email}",
       "inputLabel": "Additional forwarding address",
       "placeholder": "name@example.com",
-      "add": "Add"
+      "add": "Add",
+      "proGate": "Additional verified addresses",
+      "pro": "Pro"
+    },
+    "accountant": {
+      "name": "Name (optional)",
+      "namePlaceholder": "e.g. Marta Silva",
+      "address": "Accountant Address",
+      "addressPlaceholder": "accountant@example.com",
+      "description": "Accountant Exports sent directly go to this address, with a copy to you.",
+      "save": "Save accountant",
+      "saved": "Saved ✓"
     },
     "delivery": {
       "lockedTitle": "Pro turns month-end handoff into a saved delivery route.",
@@ -122,7 +184,8 @@
       "off": "Off",
       "nextExport": "Next export (UTC): {date}, covering {month}",
       "save": "Save Export Schedule",
-      "disable": "Disable"
+      "disable": "Disable",
+      "accountantRequired": "Save a valid Accountant Address above before enabling the schedule."
     },
     "billing": {
       "features": {
@@ -193,6 +256,11 @@
     "sectionLabel": "Collection Month",
     "description": "Collected Expense Documents ready for review, download, or Accountant Export.",
     "exportMonth": "Export month",
+    "registrationLine": "COLLECTION MONTH · M/{month} · OPEN",
+    "downloadZip": "Download ZIP",
+    "exportContents": "Accountant Export: {count} Primary PDFs + manifest.csv",
+    "freeScheduleUpsell": "Automate this every month — Pro",
+    "scheduleNextRun": "Export Schedule: day {day}",
     "stats": {
       "collected": "Collected",
       "pdfAttachments": "PDF Attachments",
@@ -204,25 +272,18 @@
       "title": "Collection Month not found",
       "description": "Use a Collection Month in YYYY-MM format to browse collected Expense Documents.",
       "openMonth": "Open {month}"
-    }
-  },
-  "Reports": {
-    "sectionLabel": "Accountant Export",
-    "description": "Download the current primary PDFs and a CSV manifest for collected expense documents in this collection month.",
-    "exportZip": "Export ZIP",
-    "stats": {
-      "documents": "Documents",
-      "pdfAttachments": "PDF Attachments",
-      "filesInExport": "Files in Export",
-      "vsPrevious": "VS {month}",
-      "new": "New"
     },
-    "zipContents": {
-      "title": "What is inside the ZIP",
-      "primaryPdfs": "One PDF for each collected document with a Primary Attachment.",
-      "manifest": "A CSV manifest with sender, subject, received date, and filename for every included document.",
-      "skipped": "{count, plural, one {# collected document without a Primary Attachment is not included.} other {# collected documents without a Primary Attachment are not included.}}",
-      "estimate": "This estimate uses stored document metadata. The downloaded ZIP is authoritative if a Primary Attachment cannot be read."
+    "seal": {
+      "trigger": "Download ZIP",
+      "registration": "ACCOUNTANT EXPORT",
+      "title": "Seal {month}",
+      "description": "Review the Manifest, press the seal, and hand the month over. The ZIP contains every Primary PDF plus manifest.csv.",
+      "contents": "{count, plural, one {# Primary PDF} other {# Primary PDFs}} + manifest.csv",
+      "readyStatus": "Ready to seal",
+      "sealedStatus": "Sealed — download starting",
+      "sealAction": "Seal and download",
+      "cancel": "Cancel",
+      "close": "Close"
     }
   },
   "ExpenseDocuments": {
@@ -231,12 +292,11 @@
       "description": "One row per accepted forwarded email.",
       "count": "{count, plural, one {# doc} other {# docs}}",
       "headers": {
-        "expand": "Expand",
+        "number": "No.",
         "sender": "Sender",
         "document": "Document",
         "received": "Received",
-        "pdfs": "PDFs",
-        "actions": "Actions"
+        "attachments": "Attachments"
       },
       "emptyTitle": "No documents",
       "emptyMonth": "No expense documents collected in {month}.",
@@ -316,8 +376,19 @@
     "proRequiredNotice": "Direct send is available on Pro. ZIP download is still included. <settingsLink>Upgrade in settings</settingsLink>.",
     "missingAccountantNotice": "No accountant configured. <settingsLink>Configure accountant first</settingsLink>.",
     "send": "Send to accountant",
+    "pro": "PRO",
+    "title": "Send {month} to your accountant",
+    "description": "Confirm the addressee and dispatch this month's Accountant Export by email — every Primary PDF plus manifest.csv.",
+    "addresseeLabel": "Addressee",
+    "contentsLabel": "Contents",
+    "contents": "{count, plural, one {# Primary PDF} other {# Primary PDFs}} + manifest.csv",
+    "readyStatus": "Ready to dispatch",
+    "sentStatus": "Dispatched",
+    "confirmSend": "Send export",
     "sending": "Sending...",
     "sentTo": "Sent to {email}",
+    "cancel": "Cancel",
+    "close": "Close",
     "errors": {
       "accountantMissing": "Configure an Accountant Address before sending.",
       "proRequired": "Upgrade to Pro to send Accountant Exports directly.",

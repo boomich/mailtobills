@@ -1,10 +1,7 @@
 "use client";
 
 import {
-  CheckCircle2,
-  Lock,
   MailPlus,
-  ShieldCheck,
   Trash2,
 } from "lucide-react";
 import { useActionState, useEffect, useState } from "react";
@@ -14,10 +11,19 @@ import {
   updateForwardingAddress,
   type CustomerSettingsActionState,
 } from "@/features/customer/actions/updateCustomerSettings";
-import { Badge } from "@mailtobills/ui/components/badge";
 import { Button } from "@mailtobills/ui/components/button";
 import { Input } from "@mailtobills/ui/components/input";
-import { Label } from "@mailtobills/ui/components/label";
+
+function ProTag({ label }: { label: string }) {
+  return (
+    <a
+      href="#plan"
+      className="inline-flex items-center border-[1.5px] border-primary px-1.5 py-0.5 font-display text-[9.5px] font-bold tracking-[0.14em] text-primary uppercase [font-stretch:88%] transition-colors hover:bg-primary hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+    >
+      {label}
+    </a>
+  );
+}
 
 function isPlausibleEmail(value: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
@@ -48,52 +54,25 @@ export function ForwardingAddressesForm({
   }, [actionState]);
 
   return (
-    <div className="space-y-4">
-      {!isPro ? (
-        <div className="flex items-start gap-3 rounded-md border border-amber-500/25 bg-amber-500/10 px-3 py-3 text-sm text-amber-800 dark:text-amber-200">
-          <Lock className="mt-0.5 size-4 shrink-0" />
-          <div className="space-y-3">
-            <div className="space-y-1">
-              <p className="font-medium">{t("lockedTitle")}</p>
-              <p>{t("lockedDescription")}</p>
-            </div>
-            <form action="/api/billing/checkout" method="post">
-              <Button type="submit" size="sm" variant="outline">
-                {t("upgrade")}
-              </Button>
-            </form>
-          </div>
-        </div>
-      ) : (
-        <div className="flex items-center gap-2 rounded-md border border-emerald-500/25 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-700 dark:text-emerald-300">
-          <CheckCircle2 className="size-4" />
-          {t("unlocked")}
-        </div>
-      )}
-
-      <div className="space-y-2">
-        <Label>{t("primary")}</Label>
-        <div className="bg-muted/40 flex items-center justify-between gap-3 rounded-md border px-3 py-2 text-sm">
-          <span className="min-w-0 truncate">
+    <div className="max-w-[560px]">
+      <ul className="border-t-2 border-foreground">
+        <li className="flex items-baseline justify-between gap-4 border-b border-border py-3">
+          <span className="min-w-0 truncate font-mono text-[13px] font-bold">
             {primaryEmail ?? t("noPrimary")}
           </span>
-          <Badge variant="secondary">
-            <ShieldCheck className="size-3" />
-            {t("trusted")}
-          </Badge>
-        </div>
-      </div>
-
-      <div className="space-y-2">
-        <Label>{t("additional")}</Label>
+          <span className="shrink-0 font-mono text-[9.5px] tracking-[0.12em] text-muted-foreground uppercase">
+            {t("primary")}
+          </span>
+        </li>
         {forwardingEmails.length > 0 ? (
-          <div className="divide-y rounded-md border">
-            {forwardingEmails.map((forwardingEmail) => (
-              <div
+          forwardingEmails.map((forwardingEmail) => (
+            <li
                 key={forwardingEmail}
-                className="flex items-center justify-between gap-3 px-3 py-2 text-sm"
+                className="flex items-center justify-between gap-3 border-b border-border py-3"
               >
-                <span className="min-w-0 truncate">{forwardingEmail}</span>
+                <span className="min-w-0 truncate font-mono text-[13px]">
+                  {forwardingEmail}
+                </span>
                 <form
                   action={formAction}
                   onSubmit={() => setHasChangedSinceResult(false)}
@@ -106,48 +85,52 @@ export function ForwardingAddressesForm({
                     variant="ghost"
                     disabled={!isPro || isPending}
                     aria-label={t("remove", { email: forwardingEmail })}
+                    className="rounded-none"
                   >
                     <Trash2 className="size-4" />
                   </Button>
                 </form>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="text-muted-foreground rounded-md border border-dashed px-3 py-3 text-sm">
-            {t("none")}
-          </div>
-        )}
-      </div>
+            </li>
+          ))
+        ) : null}
 
-      <form
-        className="flex flex-col gap-2 sm:flex-row"
-        action={formAction}
-        onSubmit={() => setHasChangedSinceResult(false)}
-      >
-        <input type="hidden" name="intent" value="add" />
-        <Input
-          type="email"
-          name="email"
-          value={email}
-          disabled={!isPro}
-          onChange={(event) => {
-            setEmail(event.target.value);
-            setHasChangedSinceResult(true);
-          }}
-          placeholder={t("placeholder")}
-          aria-label={t("inputLabel")}
-        />
-        <Button type="submit" disabled={!canSubmit}>
-          <MailPlus className="size-4" />
-          {t("add")}
-        </Button>
-      </form>
+        <li className="flex flex-wrap items-center justify-between gap-3 border-b border-border py-3">
+          <form
+            className="flex min-w-0 flex-1 flex-col gap-2 sm:flex-row"
+            action={formAction}
+            onSubmit={() => setHasChangedSinceResult(false)}
+          >
+            <input type="hidden" name="intent" value="add" />
+            <Input
+              type="email"
+              name="email"
+              value={email}
+              disabled={!isPro}
+              onChange={(event) => {
+                setEmail(event.target.value);
+                setHasChangedSinceResult(true);
+              }}
+              placeholder={t("placeholder")}
+              aria-label={t("inputLabel")}
+              className="h-9 max-w-[280px] rounded-none font-mono text-[13px]"
+            />
+            <Button type="submit" size="sm" disabled={!canSubmit} className="rounded-none">
+              <MailPlus className="size-4" />
+              {t("add")}
+            </Button>
+          </form>
+          {!isPro ? (
+            <span className="flex items-center gap-2 text-[12.5px] text-muted-foreground">
+              {t("proGate")} <ProTag label={t("pro")} />
+            </span>
+          ) : null}
+        </li>
+      </ul>
 
       {!isPending &&
       !hasChangedSinceResult &&
       actionState.status === "success" ? (
-        <p className="text-sm text-emerald-700" aria-live="polite">
+        <p className="text-sm text-primary" aria-live="polite">
           {actionState.message}
         </p>
       ) : null}

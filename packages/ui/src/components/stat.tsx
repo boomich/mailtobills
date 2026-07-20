@@ -7,7 +7,7 @@ const statGroupVariants = cva("", {
   variants: {
     variant: {
       grid: "grid gap-4 sm:grid-cols-2 lg:grid-cols-3",
-      row: "divide-border bg-card grid grid-cols-1 divide-y overflow-hidden rounded-xl border shadow-xs sm:grid-cols-3 sm:divide-x sm:divide-y-0",
+      row: "divide-border bg-card grid grid-cols-1 divide-y overflow-hidden border sm:grid-cols-3 sm:divide-x sm:divide-y-0",
     },
   },
   defaultVariants: {
@@ -41,16 +41,14 @@ function Stat({ className, ...props }: React.ComponentProps<"div">) {
 }
 
 const statIconVariants = cva(
-  "flex size-10 shrink-0 items-center justify-center rounded-lg border [&>svg]:size-5",
+  "flex size-10 shrink-0 items-center justify-center border [&>svg]:size-5",
   {
     variants: {
       tone: {
         neutral: "bg-background text-foreground",
-        success:
-          "border-emerald-500/20 bg-emerald-500/10 text-emerald-700 dark:border-emerald-400/15 dark:text-emerald-400",
-        warning:
-          "border-amber-500/20 bg-amber-500/10 text-amber-700 dark:border-amber-400/15 dark:text-amber-400",
-        info: "border-sky-500/20 bg-sky-500/10 text-sky-700 dark:border-sky-400/15 dark:text-sky-400",
+        success: "border-primary/20 bg-primary/10 text-primary",
+        warning: "border-foreground/20 bg-secondary text-secondary-foreground",
+        info: "border-primary/20 bg-primary/10 text-primary",
       },
     },
     defaultVariants: {
@@ -152,7 +150,7 @@ function StatTilePeriod({ className, ...props }: React.ComponentProps<"span">) {
     <span
       data-slot="stat-tile-period"
       className={cn(
-        "text-muted-foreground rounded-sm border px-1.5 py-0.5 font-mono text-[10px] font-medium tracking-[0.08em] whitespace-nowrap uppercase",
+        "text-muted-foreground border px-1.5 py-0.5 font-mono text-[10px] font-medium tracking-[0.08em] whitespace-nowrap uppercase",
         className,
       )}
       {...props}

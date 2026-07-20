@@ -26,11 +26,13 @@ export function PreferencesSettings() {
   ] as const;
 
   return (
-    <div className="space-y-5">
-      <div className="grid gap-3 md:grid-cols-[180px_1fr] md:items-start">
-        <div className="space-y-1">
-          <Label>{t("theme")}</Label>
-          <p className="text-muted-foreground text-sm">
+    <div className="grid max-w-[560px] gap-6">
+      <div className="grid gap-3 sm:grid-cols-[180px_1fr] sm:items-start">
+        <div className="grid gap-1">
+          <Label className="font-display text-[11px] font-semibold tracking-[0.14em] text-muted-foreground uppercase [font-stretch:80%]">
+            {t("theme")}
+          </Label>
+          <p className="text-[12.5px] text-muted-foreground">
             {t("themeDescription")}
           </p>
         </div>
@@ -45,7 +47,7 @@ export function PreferencesSettings() {
                 variant={isSelected ? "default" : "outline"}
                 onClick={() => setTheme(value)}
                 aria-pressed={isSelected}
-                className="justify-between"
+                className="justify-between rounded-none"
               >
                 <span className="flex items-center gap-2">
                   <Icon className="size-4" />
@@ -58,10 +60,15 @@ export function PreferencesSettings() {
         </div>
       </div>
 
-      <div className="grid gap-3 md:grid-cols-[180px_1fr] md:items-start">
-        <div className="space-y-1">
-          <Label htmlFor="language">{t("language")}</Label>
-          <p className="text-muted-foreground text-sm">
+      <div className="grid gap-3 sm:grid-cols-[180px_1fr] sm:items-start">
+        <div className="grid gap-1">
+          <Label
+            htmlFor="language"
+            className="font-display text-[11px] font-semibold tracking-[0.14em] text-muted-foreground uppercase [font-stretch:80%]"
+          >
+            {t("language")}
+          </Label>
+          <p className="text-[12.5px] text-muted-foreground">
             {t("languageDescription")}
           </p>
         </div>

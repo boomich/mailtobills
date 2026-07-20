@@ -1,10 +1,5 @@
-import { AppSidebar } from "@/components/app-sidebar";
+import { CounterBar } from "@/components/counter-bar";
 import { requireCurrentCustomer } from "@/features/customer/read-model/getCurrentCustomer";
-
-import {
-  SidebarInset,
-  SidebarProvider,
-} from "@mailtobills/ui/components/sidebar";
 
 export default async function DashboardLayout({
   children,
@@ -14,21 +9,18 @@ export default async function DashboardLayout({
   const { customer } = await requireCurrentCustomer();
 
   return (
-    <SidebarProvider>
-      <AppSidebar
-        user={{
-          name: customer.name,
-          email: customer.email ?? "",
-          avatar: customer.avatarUrl ?? "",
-        }}
+    <div className="min-h-svh bg-secondary text-foreground">
+      <CounterBar
+        customer={{ name: customer.name, email: customer.email }}
+        collectionAddress="inbox@mailtobills.com"
       />
-      <SidebarInset
+      <main
         id="main-content"
         tabIndex={-1}
-        className="min-w-0 overflow-x-hidden outline-none"
+        className="mx-auto min-w-0 max-w-[1160px] overflow-x-hidden px-2.5 pt-8 pb-14 outline-none sm:px-6"
       >
         {children}
-      </SidebarInset>
-    </SidebarProvider>
+      </main>
+    </div>
   );
 }

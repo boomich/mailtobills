@@ -1,0 +1,95 @@
+import { getTranslations } from "next-intl/server";
+
+import { Postmark } from "@mailtobills/ui/components/postmark";
+
+import { SectionHead } from "@/components/letter/section-head";
+
+/* ANEXO A — the deliverable enclosed with the letter (DESIGN.md §7:
+   the manifest is shown proudly). */
+const MANIFEST_ROWS = [
+  ["001", "acme-receipt-2026-06.pdf"],
+  ["002", "invoice-A81F42-0033.pdf"],
+  ["003", "fatura-eletricidade-julho.pdf"],
+  ["004", "figma-invoice-jul-2026.pdf"],
+] as const;
+
+export async function ExportSection() {
+  const t = await getTranslations("ExportSection");
+  const bullets = ["zip", "primary", "manifest", "nologin"] as const;
+
+  return (
+    <section
+      id="export"
+      className="scroll-mt-20 border-b border-border px-5 py-12 sm:px-10 sm:py-14 lg:px-14"
+    >
+      <SectionHead n="2" title={t("title")} note="ANEXO A" />
+      <div className="grid items-start gap-10 lg:grid-cols-[1fr_1.02fr] lg:gap-14">
+        <div>
+          <p className="max-w-[46ch] text-lg text-muted-foreground">
+            {t("description")}
+          </p>
+          <ul className="mt-7 grid border-t-2 border-foreground">
+            {bullets.map((bullet) => (
+              <li
+                key={bullet}
+                className="flex items-baseline gap-4 border-b border-border py-3.5"
+              >
+                <span className="font-mono text-[11px] font-bold text-primary">
+                  ✓
+                </span>
+                <span className="text-[15px] leading-relaxed">
+                  {t(`bullets.${bullet}`)}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <figure className="relative mx-auto w-full max-w-[420px] lg:mt-2">
+          <div
+            className="relative grid rotate-[0.6deg] gap-3 border-[1.5px] border-foreground bg-kraft p-6 shadow-[6px_6px_0_0_oklch(0.27_0.025_268/0.13)] transition-[rotate,translate,box-shadow] duration-200 ease-[var(--ease-out-strong)] hover:-translate-y-1 hover:rotate-0 hover:shadow-[10px_10px_0_0_oklch(0.27_0.025_268/0.13)] motion-reduce:transition-none motion-reduce:hover:translate-0 motion-reduce:hover:rotate-[0.6deg] sm:p-7"
+            aria-hidden
+          >
+            <span className="font-display text-[11.5px] font-semibold tracking-[0.16em] text-foreground/70 uppercase [font-stretch:80%]">
+              ACCOUNTANT EXPORT
+            </span>
+            <span className="font-display text-3xl font-extrabold [font-stretch:108%]">
+              JULHO 2026
+            </span>
+            <table className="w-full border-collapse border border-border bg-background font-mono">
+              <tbody>
+                {MANIFEST_ROWS.map((row) => (
+                  <tr
+                    key={row[0]}
+                    className="border-b border-border last:border-b-0"
+                  >
+                    <td className="w-11 px-3 py-1.5 text-[11px] whitespace-nowrap text-muted-foreground">
+                      {row[0]}
+                    </td>
+                    <td className="px-3 py-1.5 text-[11px] break-all">
+                      {row[1]}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <span className="font-mono text-[10px] tracking-[0.12em] text-foreground/70">
+              12 PDFS · MANIFEST.CSV · ONE ZIP
+            </span>
+            <div className="absolute -top-6 -right-1 text-stamp mix-blend-multiply [filter:url(#ink-rough)] sm:-top-8 sm:-right-5">
+              <Postmark
+                withWaves={false}
+                date="JUL 26"
+                className="h-[104px] w-[104px]"
+                label=""
+              />
+            </div>
+          </div>
+          <figcaption className="mt-4 text-center font-mono text-[10.5px] tracking-[0.12em] text-muted-foreground uppercase">
+            {t("caption")}
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+  );
+}

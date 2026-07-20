@@ -23,7 +23,7 @@ function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
   return (
     <thead
       data-slot="table-header"
-      className={cn("bg-muted/40 [&_tr]:border-b", className)}
+      className={cn("[&_tr]:border-b-2 [&_tr]:border-foreground", className)}
       {...props}
     />
   );
@@ -33,7 +33,7 @@ function TableBody({ className, ...props }: React.ComponentProps<"tbody">) {
   return (
     <tbody
       data-slot="table-body"
-      className={cn("[&_tr:last-child]:border-0", className)}
+      className={cn("[&_tr:last-child]:border-b", className)}
       {...props}
     />
   );
@@ -57,7 +57,7 @@ function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
     <tr
       data-slot="table-row"
       className={cn(
-        "hover:bg-muted/40 data-[state=selected]:bg-muted border-b transition-colors",
+        "border-b border-border hover:bg-muted/40 data-[state=selected]:bg-muted transition-colors",
         className,
       )}
       {...props}
@@ -70,7 +70,7 @@ function TableHead({ className, ...props }: React.ComponentProps<"th">) {
     <th
       data-slot="table-head"
       className={cn(
-        "text-muted-foreground h-10 px-4 text-left align-middle text-xs font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0",
+        "text-muted-foreground h-10 px-4 text-left align-middle font-display text-[11px] font-semibold uppercase tracking-[0.16em] [font-stretch:80%] whitespace-nowrap [&:has([role=checkbox])]:pr-0",
         className,
       )}
       {...props}

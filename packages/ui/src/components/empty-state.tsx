@@ -20,7 +20,7 @@ function EmptyStateIcon({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="empty-state-icon"
       className={cn(
-        "bg-muted/40 text-muted-foreground mb-2 flex size-10 items-center justify-center rounded-lg border [&>svg]:size-5",
+        "bg-muted/40 text-muted-foreground mb-2 flex size-10 items-center justify-center border [&>svg]:size-5",
         className,
       )}
       {...props}

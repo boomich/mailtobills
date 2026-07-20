@@ -1,52 +1,39 @@
-import { FileArchive, FolderCheck, Mail } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
-import { SectionEyebrow } from "@/components/section-eyebrow";
+import { SectionHead } from "@/components/letter/section-head";
 
 export async function HowItWorks() {
   const t = await getTranslations("HowItWorks");
-  const steps = [
-    { icon: Mail, step: "01", key: "forward" },
-    { icon: FolderCheck, step: "02", key: "file" },
-    { icon: FileArchive, step: "03", key: "export" },
-  ] as const;
+  const steps = ["forward", "file", "export"] as const;
 
   return (
-    <section id="how-it-works" className="scroll-mt-14 border-b">
-      <div className="mx-auto max-w-6xl px-6 py-16 sm:py-20">
-        <div className="mx-auto max-w-2xl space-y-3 text-center">
-          <SectionEyebrow>{t("eyebrow")}</SectionEyebrow>
-          <h2 className="text-3xl font-semibold tracking-tight text-balance">
-            {t("title")}
-          </h2>
-          <p className="text-muted-foreground text-pretty">
-            {t("description")}
-          </p>
-        </div>
-        <div className="mt-12 grid gap-4 md:grid-cols-3">
-          {steps.map(({ icon: Icon, step, key }) => (
-            <div
-              key={step}
-              className="bg-card hover:border-ring/40 rounded-lg border p-6 shadow-xs transition-colors"
-            >
-              <div className="flex items-center justify-between">
-                <span className="bg-muted/40 flex size-10 items-center justify-center rounded-lg border">
-                  <Icon className="size-5" />
-                </span>
-                <span className="text-muted-foreground font-mono text-sm font-semibold tabular-nums">
-                  {step}
-                </span>
-              </div>
-              <h3 className="mt-4 text-base font-semibold">
-                {t(`steps.${key}.title`)}
-              </h3>
-              <p className="text-muted-foreground mt-2 text-sm leading-6">
-                {t(`steps.${key}.copy`)}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
+    <section
+      id="how-it-works"
+      className="scroll-mt-20 border-b border-border px-5 py-12 sm:px-10 sm:py-14 lg:px-14"
+    >
+      <SectionHead n="1" title={t("title")} note="MOD. C-11" />
+      <p className="mb-8 max-w-[52ch] text-lg text-muted-foreground">
+        {t("description")}
+      </p>
+
+      <ol className="grid border-t-2 border-foreground">
+        {steps.map((step, index) => (
+          <li
+            key={step}
+            className="grid gap-2 border-b border-border py-6 sm:grid-cols-[56px_220px_1fr] sm:gap-6 sm:py-7"
+          >
+            <span className="font-mono text-sm font-bold text-muted-foreground">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <h3 className="font-display text-[15px] font-bold tracking-[0.1em] uppercase [font-stretch:88%]">
+              {t(`steps.${step}.title`)}
+            </h3>
+            <p className="max-w-[52ch] text-[15px] leading-relaxed text-muted-foreground">
+              {t(`steps.${step}.copy`)}
+            </p>
+          </li>
+        ))}
+      </ol>
     </section>
   );
 }

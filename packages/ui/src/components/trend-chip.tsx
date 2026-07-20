@@ -45,7 +45,7 @@ function TrendChip({
         )}
         {...props}
       >
-        <span className="bg-muted text-muted-foreground flex size-4 items-center justify-center rounded-full">
+        <span className="bg-muted text-muted-foreground flex size-4 items-center justify-center">
           <Minus className="size-2.5" />
         </span>
         0{format === "percent" ? "%" : ""}
@@ -75,7 +75,7 @@ function TrendChip({
       {value}
       <span
         className={cn(
-          "flex size-4 items-center justify-center rounded-full",
+          "flex size-4 items-center justify-center",
           isGood
             ? "bg-primary text-primary-foreground"
             : "bg-destructive text-destructive-foreground",

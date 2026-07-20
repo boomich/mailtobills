@@ -1,20 +1,28 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Archivo, Courier_Prime, Public_Sans } from "next/font/google";
 import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
+import { Analytics } from "@vercel/analytics/next";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages, getTranslations } from "next-intl/server";
 
 import "@mailtobills/ui/globals.css";
 import { Providers } from "@/components/providers";
 
-const fontSans = Geist({
+const archivo = Archivo({
   subsets: ["latin"],
-  variable: "--font-sans",
+  axes: ["wdth"],
+  variable: "--font-archivo",
 });
 
-const fontMono = Geist_Mono({
+const publicSans = Public_Sans({
   subsets: ["latin"],
-  variable: "--font-mono",
+  variable: "--font-public",
+});
+
+const courier = Courier_Prime({
+  weight: ["400", "700"],
+  subsets: ["latin"],
+  variable: "--font-courier",
 });
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -48,7 +56,7 @@ export default async function RootLayout({
     <ConvexAuthNextjsServerProvider>
       <html lang={locale} className="overscroll-none" suppressHydrationWarning>
         <body
-          className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased `}
+          className={`${archivo.variable} ${publicSans.variable} ${courier.variable} font-sans antialiased`}
         >
           <NextIntlClientProvider locale={locale} messages={messages}>
             <a
@@ -59,6 +67,7 @@ export default async function RootLayout({
             </a>
             <Providers>{children}</Providers>
           </NextIntlClientProvider>
+          <Analytics />
         </body>
       </html>
     </ConvexAuthNextjsServerProvider>

@@ -208,6 +208,59 @@ export const listMine = query({
   },
 });
 
+/**
+ * Flat year-register read model. The existing userId index is deliberately
+ * reused here: the schema has no receivedAt index, so this reads a Customer's
+ * active documents and groups the requested calendar year in memory.
+ */
+export const getCollectionYearRegister = query({
+  args: {
+    year: v.number(),
+  },
+  handler: async (ctx, args) => {
+    if (!Number.isInteger(args.year) || args.year < 2000 || args.year > 9999) {
+      throw new Error("INVALID_COLLECTION_YEAR");
+    }
+
+    const userId = await requireSignedInUserId(ctx);
+    const [customer, documents] = await Promise.all([
+      ctx.db.get(userId),
+      ctx.db
+        .query("expenseDocuments")
+        .withIndex("userId", (q) => q.eq("userId", userId))
+        .collect(),
+    ]);
+
+    if (!customer) {
+      throw new Error("CUSTOMER_NOT_FOUND");
+    }
+
+    const activeDocuments = documents.filter((document) => !document.deletedAt);
+    const counts = Array.from({ length: 12 }, () => 0);
+
+    for (const document of activeDocuments) {
+      const receivedAt = new Date(document.receivedAt);
+      if (receivedAt.getUTCFullYear() === args.year) {
+        const monthIndex = receivedAt.getUTCMonth();
+        counts[monthIndex] = (counts[monthIndex] ?? 0) + 1;
+      }
+    }
+
+    const firstReceivedAt = documents.reduce<number | null>(
+      (earliest, document) =>
+        earliest === null || document.receivedAt < earliest
+          ? document.receivedAt
+          : earliest,
+      null,
+    );
+
+    return {
+      counts,
+      earliestYear: new Date(firstReceivedAt ?? customer._creationTime).getUTCFullYear(),
+    };
+  },
+});
+
 export const getCollectionMonthDashboard = query({
   args: {
     month: v.string(),

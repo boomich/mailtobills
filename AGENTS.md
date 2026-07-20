@@ -1,7 +1,13 @@
 # MailToBills – Agents Guide
 
 ⚠️ **This file is the source of truth for AI agents (Codex, Copilot, etc.) working on this repo.**  
-If there is any ambiguity, follow this file over README or DESIGN.
+If there is any ambiguity, follow this file over README.
+
+⚠️ **Design constitution: `DESIGN.md` (CARIMBO) is binding for ALL UI work** —
+palette roles, typography, radius, motion laws, copy language layers. A UI
+change that violates DESIGN.md is wrong even if it "looks fine". `CONTEXT.md`
+is binding for product copy in both locales. The shadcn-default aesthetic was
+replaced by the CARIMBO redesign; do not reintroduce it.
 
 ---
 
@@ -50,9 +56,10 @@ Este repositório é um **monorepo** gerido com **pnpm + Turborepo**.
 
 - `packages/ui`
 
-  - Design system leve
-  - Tailwind + shadcn/ui
-  - Não reinventar componentes base
+  - Design system CARIMBO (ver `DESIGN.md`)
+  - Tailwind; primitivos Radix/shadcn mantidos pela acessibilidade,
+    mas a *aparência* (tokens, radius, sombras, tipografia) é a do DESIGN.md
+  - Não reinventar componentes base; não reintroduzir o look shadcn default
 
 - `packages/domain`
 

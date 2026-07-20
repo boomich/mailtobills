@@ -51,6 +51,13 @@ const subscriptions = defineTable({
   .index("userId", ["userId"])
   .index("lemonSqueezySubscriptionId", ["lemonSqueezySubscriptionId"]);
 
+const feedback = defineTable({
+  userId: v.id("users"),
+  message: v.string(),
+  forwardedAt: v.optional(v.number()),
+  asanaTaskGid: v.optional(v.string()),
+}).index("userId", ["userId"]);
+
 const users = defineTable({
   name: v.optional(v.string()),
   image: v.optional(v.string()),
@@ -77,6 +84,7 @@ export default defineSchema({
   ...authTables,
   users,
   subscriptions,
+  feedback,
   expenseDocuments,
   expenseDocumentAttachments,
 });

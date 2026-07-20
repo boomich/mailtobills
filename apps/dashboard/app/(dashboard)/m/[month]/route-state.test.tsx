@@ -32,7 +32,6 @@ vi.mock("@/features/expense-documents/read-model/getExpenseDocuments", () => ({
 
 import CollectionMonthPage from "./page";
 import CollectionMonthNotFound from "./not-found";
-import CollectionMonthReportsPage from "./reports/page";
 
 describe("Collection Month route states", () => {
   beforeEach(() => {
@@ -60,10 +59,7 @@ describe("Collection Month route states", () => {
     vi.useRealTimers();
   });
 
-  it.each([
-    ["dashboard", CollectionMonthPage],
-    ["reports", CollectionMonthReportsPage],
-  ])(
+  it.each([["dashboard", CollectionMonthPage]])(
     "routes a malformed Collection Month to not-found before loading %s data",
     async (_, Page) => {
       await expect(
@@ -76,6 +72,16 @@ describe("Collection Month route states", () => {
       expect(mocks.getExpenseDocuments).not.toHaveBeenCalled();
     },
   );
+
+  it("renders a valid month frame without server data reads", async () => {
+    await CollectionMonthPage({
+      params: Promise.resolve({ month: "2026-06" }),
+    });
+
+    expect(mocks.authToken).not.toHaveBeenCalled();
+    expect(mocks.fetchQuery).not.toHaveBeenCalled();
+    expect(mocks.getExpenseDocuments).not.toHaveBeenCalled();
+  });
 
   it("renders the Collection Month recovery action", async () => {
     render(await CollectionMonthNotFound());

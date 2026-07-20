@@ -1,46 +1,40 @@
 import { ChevronDown } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
-import { SectionEyebrow } from "@/components/section-eyebrow";
+import { SectionHead } from "@/components/letter/section-head";
 
 export async function Faq() {
   const t = await getTranslations("Faq");
   const faqKeys = [
     "forward",
-    "accountant",
-    "files",
+    "export",
+    "efatura",
     "senders",
-    "demo",
+    "files",
+    "accountant",
   ] as const;
 
   return (
-    <section id="faq" className="scroll-mt-14 border-b">
-      <div className="mx-auto max-w-3xl px-6 py-16 sm:py-20">
-        <div className="space-y-3 text-center">
-          <SectionEyebrow>{t("eyebrow")}</SectionEyebrow>
-          <h2 className="text-3xl font-semibold tracking-tight text-balance">
-            {t("title")}
-          </h2>
-        </div>
-        <div className="mt-10 space-y-3">
-          {faqKeys.map((key) => (
-            <details
-              key={key}
-              className="bg-card group rounded-lg border px-5 shadow-xs"
-            >
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-4 text-sm font-medium [&::-webkit-details-marker]:hidden">
-                {t(`items.${key}.question`)}
-                <ChevronDown
-                  className="text-muted-foreground size-4 shrink-0 transition-transform duration-200 group-open:rotate-180"
-                  aria-hidden
-                />
-              </summary>
-              <p className="text-muted-foreground animate-in fade-in slide-in-from-top-1 pb-4 text-sm leading-6 duration-200">
-                {t(`items.${key}.answer`)}
-              </p>
-            </details>
-          ))}
-        </div>
+    <section
+      id="faq"
+      className="scroll-mt-20 border-b border-border px-5 py-12 sm:px-10 sm:py-14 lg:px-14"
+    >
+      <SectionHead n="4" title={t("title")} note="VERSO DO FORMULÁRIO" />
+      <div className="border-t-2 border-foreground">
+        {faqKeys.map((key) => (
+          <details key={key} className="group details-slide border-b border-border">
+            <summary className="flex cursor-pointer list-none items-baseline justify-between gap-4 py-4.5 text-[15px] font-semibold [&::-webkit-details-marker]:hidden">
+              {t(`items.${key}.question`)}
+              <ChevronDown
+                className="size-4 shrink-0 self-center text-muted-foreground transition-transform duration-[240ms] ease-[var(--ease-out-strong)] group-open:rotate-180 motion-reduce:transition-none"
+                aria-hidden
+              />
+            </summary>
+            <p className="max-w-[62ch] pb-5 text-sm leading-relaxed text-muted-foreground">
+              {t(`items.${key}.answer`)}
+            </p>
+          </details>
+        ))}
       </div>
     </section>
   );

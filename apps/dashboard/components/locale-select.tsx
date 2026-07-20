@@ -66,7 +66,7 @@ export function LocaleSelect({
         value={selectedLocale}
         disabled={isPending}
         onChange={(event) => changeLocale(event.target.value)}
-        className="border-input bg-background ring-offset-background focus-visible:ring-ring flex h-9 w-full rounded-md border px-3 py-1 text-sm shadow-xs focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-70"
+        className="border-input bg-background ring-offset-background focus-visible:ring-ring flex h-10 w-full rounded-none border px-3 py-1 font-mono text-[13px] shadow-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-70"
       >
         {supportedLocales.map((locale) => (
           <option key={locale} value={locale}>
