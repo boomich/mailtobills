@@ -138,12 +138,15 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
-/* Tailwind v4 does not generate a family utility for the `--font-display`
-   theme key (the name collides with the font-display descriptor), so the
-   official-register utility is defined explicitly. */
-@utility font-display {
-  font-family: var(--font-archivo), "Archivo", var(--font-public),
-    "Public Sans", system-ui, sans-serif;
+/* Keep the display family in a normal utilities layer. `@utility` can be
+   omitted from an app's production bundle when Tailwind scans a shared
+   package from a Vercel project root, even though the class is used there. */
+@layer utilities {
+  .font-display {
+    font-family:
+      var(--font-archivo), "Archivo", var(--font-public), "Public Sans",
+      system-ui, sans-serif;
+  }
 }
 
 /* Sliding <details> (DESIGN.md §8): asymmetric — opening gets room to

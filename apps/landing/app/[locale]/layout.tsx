@@ -98,10 +98,13 @@ export default async function LocaleLayout({
   const messages = await getMessages({ locale });
 
   return (
-    <html lang={locale} data-scroll-behavior="smooth" suppressHydrationWarning>
-      <body
-        className={`${archivo.variable} ${publicSans.variable} ${courier.variable} font-sans antialiased`}
-      >
+    <html
+      lang={locale}
+      className={`${archivo.variable} ${publicSans.variable} ${courier.variable}`}
+      data-scroll-behavior="smooth"
+      suppressHydrationWarning
+    >
+      <body className="font-sans antialiased">
         <NextIntlClientProvider locale={locale} messages={messages}>
           <Providers>{children}</Providers>
         </NextIntlClientProvider>
