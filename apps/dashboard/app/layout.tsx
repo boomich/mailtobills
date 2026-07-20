@@ -54,10 +54,12 @@ export default async function RootLayout({
 
   return (
     <ConvexAuthNextjsServerProvider>
-      <html lang={locale} className="overscroll-none" suppressHydrationWarning>
-        <body
-          className={`${archivo.variable} ${publicSans.variable} ${courier.variable} font-sans antialiased`}
-        >
+      <html
+        lang={locale}
+        className={`${archivo.variable} ${publicSans.variable} ${courier.variable} overscroll-none`}
+        suppressHydrationWarning
+      >
+        <body className="font-sans antialiased">
           <NextIntlClientProvider locale={locale} messages={messages}>
             <a
               href="#main-content"
