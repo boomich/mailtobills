@@ -6,8 +6,8 @@ If there is any ambiguity, follow this file over README.
 ⚠️ **Design constitution: `DESIGN.md` (CARIMBO) is binding for ALL UI work** —
 palette roles, typography, radius, motion laws, copy language layers. A UI
 change that violates DESIGN.md is wrong even if it "looks fine". `CONTEXT.md`
-is binding for product copy in both locales. The shadcn-default aesthetic is
-being replaced on the `redesign/carimbo` branch; do not reintroduce it.
+is binding for product copy in both locales. The shadcn-default aesthetic was
+replaced by the CARIMBO redesign; do not reintroduce it.
 
 ---
 
